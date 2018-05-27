@@ -5,7 +5,7 @@ Version: 0.0.0.9001
 Author: Albert Cobos
 Maintainer: The package maintainer <acobos@ub.edu>
 Description: Reads Openclinica XML export files (odm 1.3 Clinical Extensions).
-    Use four spaces when indenting paragraphs within the Description.
+URL: https://github.com/acobos/ox
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true
