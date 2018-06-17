@@ -4,6 +4,7 @@
 #' @param name_encoding
 #'
 #' @return dataframe
+#' @export
 #'
 #' @examples
 #'
