@@ -58,18 +58,35 @@ ox_group_to_df <- function (GroupOID, item_data, item_ref) {
 
 
 # # To define factors ----
-#
+# dics
+ox_codelist_ref(doc) %>%
+  left_join(ox_codelist_item(doc)) %>%
+  select(item_oid, codelist_oid, coded_value, code_label) -> dic
+
 # identify vars with codelist
-# ox_group_to_df("IG_V1D01_UNGROUPED") -> g
-#
-#
-# vars <- names(g)[names(g) %in% cl_r$item_oid]
-#
-# vars[1] -> var
-#
-# # get codelist for one var
-# ox_codelist_ref(doc) %>%
-#   filter(item_oid == var) %>% pull(codelist_oid) -> var_cl_oid
+g <- ox_group_to_df("IG_CANCE_CANCERHISTOLOGYANDRECEPTOR",
+                    item_data, item_ref)
+
+vars_with_cl <- names(g)[names(g) %in% unique(dic$item_oid)]
+
+# solve for a single var: PENDING !!
+
+vars_with_cl[1] -> var
+
+define_factor <- function (df, varname) {
+  # subset codelist for var
+  dic %>%
+    filter(item_oid == varname) -> var_dic
+
+  # define factor
+  factor(df[[varname]],
+         levels = var_dic$coded_value,
+         labels = var_dic$code_label)
+}
+
+define_factor(g, var)
+
+
 #
 # ox_codelist_item(doc) %>%
 #   filter(codelist_oid == var_cl_oid) %>%
