@@ -2,7 +2,7 @@
 % Please edit documentation in R/ox.R
 \name{ox}
 \alias{ox}
-\title{Title}
+\title{Cretaes an ox object from a parsed OpenClinica xml file}
 \usage{
 ox(parsed_xml)
 }
@@ -10,13 +10,13 @@ ox(parsed_xml)
 \item{parsed_xml}{}
 }
 \value{
-a list of two elements: data and metadata. The data element is a
+An ox object, which is a list of two elements: data and metadata. The data element is a
 dataframe containig all clinical data. The metadata element is a list of
 dataframes (and a vector with global variables), documenting events, forms,
-groups, items, codelists and measurement units.
+groups, items, codelists, measurement units and sites.
 }
 \description{
-Title
+Cretaes an ox object from a parsed OpenClinica xml file
 }
 \examples{
 
