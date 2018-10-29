@@ -2,7 +2,11 @@
 #'
 #' @param parsed_xml
 #'
-#' @return dataframes
+#' @return a list of two elements: data and metadata. The data element is a
+#' dataframe containig all clinical data. The metadata element is a list of
+#' dataframes (and a vector with global variables), documenting events, forms,
+#' groups, items, codelists and measurement units.
+#'
 #' @export
 #'
 #' @examples
