@@ -1,11 +1,11 @@
-#' Title
+#' Cretaes an ox object from a parsed OpenClinica xml file
 #'
 #' @param parsed_xml
 #'
-#' @return a list of two elements: data and metadata. The data element is a
+#' @return An ox object, which is a list of two elements: data and metadata. The data element is a
 #' dataframe containig all clinical data. The metadata element is a list of
 #' dataframes (and a vector with global variables), documenting events, forms,
-#' groups, items, codelists and measurement units.
+#' groups, items, codelists, measurement units and sites.
 #'
 #' @export
 #'
@@ -28,7 +28,28 @@ ox <- function (parsed_xml) {
                        codelist_item = ox_codelist_item(parsed_xml),
                        codelist_ref = ox_codelist_ref(parsed_xml),
                        units = ox_measurement_units(parsed_xml),
-                       sites = ox_sites(parsed_xml)))
-}
+                       sites = ox_sites(parsed_xml))) -> ox_obj
 
+  # assign class ox
+  class(ox_obj) <- c("ox", "list")
+
+  # return
+  ox_obj
+}
+#'
+#'
+#'
+#'
+summary.ox <- function (ox_obj, form_info = TRUE) {
+  ox_obj$data %>%
+    select(form_oid, form_version, group_oid, event_oid) %>%
+    arrange(form_oid, form_version, group_oid, event_oid) %>%
+    unique() %>%
+    mutate(`form_oid, form_version, group_oid` = paste(form_oid, form_version, group_oid, sep=", ")) -> k
+  if (form_info == TRUE) {
+    with(k, table(`form_oid, form_version, group_oid`, event_oid))
+  } else {
+    with(k, table(`form_oid, form_version, group_oid`, event_oid))
+  }
+}
 
