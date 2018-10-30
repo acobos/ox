@@ -1,6 +1,9 @@
-#' Cretaes an ox object from a parsed OpenClinica xml file
+#' @title Creates an ox object from a parsed OpenClinica xml file
 #'
-#' @param parsed_xml
+#' @description Returns and ox object from a parsed OpenClinica xml file
+#' provided as argument
+#'
+#' @param parsed_xml A
 #'
 #' @return An ox object, which is a list of two elements: data and metadata. The data element is a
 #' dataframe containig all clinical data. The metadata element is a list of
@@ -23,12 +26,12 @@ ox <- function (parsed_xml) {
                        group_ref = ox_group_ref(parsed_xml),
                        item_def = ox_item_def(parsed_xml),
                        item_ref = ox_item_ref(parsed_xml),
-                       subject_data = ox_subject_data(parsed_xml),
                        codelist = ox_codelist(parsed_xml),
                        codelist_item = ox_codelist_item(parsed_xml),
                        codelist_ref = ox_codelist_ref(parsed_xml),
                        units = ox_measurement_units(parsed_xml),
-                       sites = ox_sites(parsed_xml))) -> ox_obj
+                       sites = ox_sites(parsed_xml),
+                       subjects = ox_subject_data(parsed_xml))) -> ox_obj
 
   # assign class ox
   class(ox_obj) <- c("ox", "list")
@@ -52,4 +55,3 @@ summary.ox <- function (ox_obj, form_info = TRUE) {
     with(k, table(`form_oid, form_version, group_oid`, event_oid))
   }
 }
-
