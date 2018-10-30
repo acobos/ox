@@ -1,12 +1,32 @@
-#' Title
+#' Gets OpenClinica (OC) study event definitions
 #'
-#' @param parsed_xml an object of class XMLInternalDocument
-#' @param name_encoding
+#' Returns a dataframe with study event definitions from a parsed OC .xml
+#' export file, provided as argument. Allows to define the character encoding
+#' for event names.
 #'
-#' @return dataframe
+#' @param parsed_xml An object of class \code{XMLInternalDocument}, as returned
+#' by \code{XML::xmlParse()}.
+#' @param name_encoding A character string of length 1, either \code{"UTF-8"} (default)
+#' or \code{"latin-1"}, to define the encoding of event names.
+#'
+#' @return A dataframe documenting the event definitions.
 #' @export
 #'
 #' @examples
+#'\dontrun{
+#'
+#' xmlFile <- "you_OC_export_file_address.xml"
+#'
+#' # Parsing the xml file
+#' library(XML)
+#' doc <- xmlParse(xmlFile, encoding="US_ASCII")
+#'
+#' # get event definitions
+#'ox_event_def(doc)
+#'
+#'# same, defining encoding
+#'ox_event_def(doc, "latin-1")
+#'}
 #'
 ox_event_def <- function (parsed_xml, name_encoding="UTF-8") {
 
