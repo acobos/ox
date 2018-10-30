@@ -16,12 +16,12 @@ summary.ox <- function (ox_obj, form_info = TRUE) {
     select(form_oid, form_version, group_oid, event_oid) %>%
     arrange(form_oid, form_version, group_oid, event_oid) %>%
     unique() %>%
-    mutate(`form_oid, form_version, group_oid` = paste(form_oid, form_version, group_oid, sep=", ")) -> k
+    mutate(`form_oid, group_oid` = paste(form_oid, group_oid, sep=", ")) -> k
 
   if (form_info == TRUE) {
-    str <- with(k, table(`form_oid, form_version, group_oid`, event_oid))
+    str <- with(k, table(`form_oid, group_oid`, event_oid))
   } else {
-    str <- with(k, table(`form_oid, form_version, group_oid`, event_oid))
+    str <- with(k, table(group_oid, event_oid))
   }
 
   list(data = c(datapoints = nrow(ox_obj$data),
