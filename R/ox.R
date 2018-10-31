@@ -3,7 +3,7 @@
 #' @description Returns and ox object from a parsed OpenClinica xml file
 #' provided as argument
 #'
-#' @param parsed_xml A
+#' @param parsed_xml
 #'
 #' @return An ox object, which is a list of two elements: data and metadata. The data element is a
 #' dataframe containig all clinical data. The metadata element is a list of
