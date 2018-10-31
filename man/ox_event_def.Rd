@@ -14,22 +14,21 @@ by \code{XML::xmlParse()}.}
 A dataframe.
 }
 \description{
-Returns a dataframe with study event definitions from a parsed OpenClinicaC
+Returns a dataframe with study event definitions from a parsed OpenClinica
 odm1.3 .xml export file.
 }
 \examples{
-
 # Get the example file address
-file_address <- system.file("extdata",
-                            "odm1.3_clinical_ext_example.xml",
-                            package = "ox",
-                            mustWork = TRUE)
+file <- system.file("extdata",
+                    "odm1.3_clinical_ext_example.xml",
+                    package = "ox",
+                    mustWork = TRUE)
 
 # Parsing the xml file
 library(XML)
 doc <- xmlParse(file_address)
 
 # Event definitions in a dataframe
-ox_event_def(doc)
-
+event_def <- ox_event_def(doc)
+head(event_def)
 }
