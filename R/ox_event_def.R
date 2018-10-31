@@ -10,7 +10,7 @@
 #' @export
 #'
 #' @examples
-#' # Get the example file address
+#' # The example xml file address
 #' file <- system.file("extdata",
 #'                     "odm1.3_clinical_ext_example.xml",
 #'                     package = "ox",
@@ -22,7 +22,7 @@
 #'
 #' # Event definitions in a dataframe
 #' event_def <- ox_event_def(doc)
-#' head(event_def)
+#' View(event_def)
 ox_event_def <- function (parsed_xml) {
 
   if (! "XMLInternalDocument" %in% class(parsed_xml)) {
