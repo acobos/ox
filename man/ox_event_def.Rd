@@ -2,39 +2,34 @@
 % Please edit documentation in R/ox_event_def.R
 \name{ox_event_def}
 \alias{ox_event_def}
-\title{Gets OpenClinica (OC) study event definitions}
+\title{Event definitions in a dataframe}
 \usage{
-ox_event_def(parsed_xml, name_encoding = "UTF-8")
+ox_event_def(parsed_xml)
 }
 \arguments{
 \item{parsed_xml}{An object of class \code{XMLInternalDocument}, as returned
 by \code{XML::xmlParse()}.}
-
-\item{name_encoding}{A character string of length 1, either \code{"UTF-8"} (default)
-or \code{"latin-1"}, to define the encoding of event names.}
 }
 \value{
-A dataframe documenting the event definitions.
+A dataframe.
 }
 \description{
-Returns a dataframe with study event definitions from a parsed OC .xml
-export file, provided as argument. Allows to define the character encoding
-for event names.
+Returns a dataframe with study event definitions from a parsed OpenClinicaC
+odm1.3 .xml export file.
 }
 \examples{
-\dontrun{
 
-xmlFile <- "you_OC_export_file_address.xml"
+# Get the example file address
+file_address <- system.file("extdata",
+                            "odm1.3_clinical_ext_example.xml",
+                            package = "ox",
+                            mustWork = TRUE)
 
 # Parsing the xml file
 library(XML)
-doc <- xmlParse(xmlFile, encoding="US_ASCII")
+doc <- xmlParse(file_address)
 
-# get event definitions
+# Event definitions in a dataframe
 ox_event_def(doc)
-
-# same, defining encoding
-ox_event_def(doc, "latin-1")
-}
 
 }
