@@ -2,7 +2,7 @@
 % Please edit documentation in R/ox.R
 \name{ox}
 \alias{ox}
-\title{Cretaes an ox object from a parsed OpenClinica xml file}
+\title{Creates an ox object from a parsed OpenClinica xml file}
 \usage{
 ox(parsed_xml)
 }
@@ -16,7 +16,8 @@ dataframes (and a vector with global variables), documenting events, forms,
 groups, items, codelists, measurement units and sites.
 }
 \description{
-Cretaes an ox object from a parsed OpenClinica xml file
+Returns and ox object from a parsed OpenClinica xml file
+provided as argument
 }
 \examples{
 
