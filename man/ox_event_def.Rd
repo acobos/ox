@@ -18,7 +18,7 @@ Returns a dataframe with study event definitions from a parsed OpenClinica
 odm1.3 .xml export file.
 }
 \examples{
-# Get the example file address
+# The example xml file address
 file <- system.file("extdata",
                     "odm1.3_clinical_ext_example.xml",
                     package = "ox",
@@ -30,5 +30,5 @@ doc <- xmlParse(file_address)
 
 # Event definitions in a dataframe
 event_def <- ox_event_def(doc)
-head(event_def)
+View(event_def)
 }
