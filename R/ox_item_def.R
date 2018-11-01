@@ -32,7 +32,7 @@ ox_item_def <- function (parsed_xml) {
   # return
   bind_rows(lapply(xpathApply(parsed_xml,
                               "//ns:ItemDef",
-                              namespaces = ox_alias_default_ns(parsed_xml),
+                              namespaces = .ns_alias(parsed_xml, "ns"),
                               fun=xmlAncestors,
                               xmlAttrs),
                    data.frame,

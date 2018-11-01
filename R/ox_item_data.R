@@ -12,7 +12,7 @@ ox_item_data <- function(parsed_xml, value_encoding = "UTF-8") {
 
   item_data <- bind_rows(lapply(xpathApply(parsed_xml,
                                            "//ns:ItemData",
-                                           namespaces = ox_alias_default_ns(parsed_xml),
+                                           namespaces = .ns_alias(parsed_xml, "ns"),
                                            fun=xmlAncestors,
                                            xmlAttrs),
                                 data.frame,

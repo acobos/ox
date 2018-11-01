@@ -23,12 +23,12 @@
 #' # Audit log in a dataframe
 #' audit_log <- ox_audit_log(doc)
 #' View(audit_log)
-ox_audit_log <- function (ox_obj) {
+ox_audit_log <- function (parsed_xml) {
 
-  OpenClinica.ns <- c(OpenClinica=xmlNamespaces(doc)$OpenClinica$uri)
+ # OpenClinica.ns <- c(OpenClinica=xmlNamespaces(doc)$OpenClinica$uri)
 
-  bind_rows(lapply(xpathApply(doc, "//OpenClinica:AuditLog",
-                    namespaces=OpenClinica.ns,
+  bind_rows(lapply(xpathApply(parsed_xml, "//OpenClinica:AuditLog",
+                    namespaces = .ns_alias(parsed_xml, "OpenClinica"),
                     fun=xmlAncestors,xmlAttrs),
          data.frame,
          stringsAsFactors=FALSE))

@@ -13,7 +13,7 @@ ox_group_repeat <- function(parsed_xml) {
 
   bind_rows(lapply(xpathApply(parsed_xml,
                               "//oc:ItemGroupRepeat",
-                              namespaces = ox_alias_oc_ns(parsed_xml),
+                              namespaces = .ns_alias(parsed_xml, "oc"),
                               fun=xmlAncestors,
                               xmlAttrs),
                    data.frame,

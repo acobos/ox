@@ -12,7 +12,7 @@ ox_event_ref <- function (parsed_xml, simplify = FALSE) {
 
   bind_rows(lapply(xpathApply(doc,
                               "//ns:StudyEventRef",
-                              namespaces = ox_alias_default_ns(parsed_xml),
+                              namespaces = .ns_alias(parsed_xml, "ns"),
                               fun=xmlAncestors,
                               xmlAttrs),
                    data.frame, stringsAsFactors=FALSE)) %>%

@@ -26,7 +26,7 @@
 ox_measurement_units <- function (parsed_xml) {
   bind_rows(lapply(xpathApply(parsed_xml,
                               "//ns:MeasurementUnit",
-                              namespaces = ox_alias_default_ns(parsed_xml),
+                              namespaces = .ns_alias(parsed_xml, "ns"),
                               fun=xmlAncestors,
                               xmlAttrs),
                    data.frame,

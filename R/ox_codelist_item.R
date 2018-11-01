@@ -28,7 +28,7 @@ ox_codelist_item <- function (parsed_xml, label_encoding = "UTF-8") {
 
   labels <- data.frame(sapply(xpathApply(parsed_xml,
                                          "//ns:CodeList/ns:CodeListItem/ns:Decode/ns:TranslatedText",
-                                         namespaces = ox_alias_default_ns(parsed_xml),
+                                         namespaces = .ns_alias(parsed_xml, "ns"),
                                          fun=xmlValue),
                               unlist),
                        stringsAsFactors=FALSE) %>%

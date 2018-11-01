@@ -31,7 +31,7 @@ ox_sites <- function (parsed_xml){
 
   # reading Study OIDs
   o <- xpathApply(parsed_xml, "//ns:Study",
-                  namespaces=ox_alias_default_ns(doc),
+                  namespaces = .ns_alias(parsed_xml, "ns"),
                   fun=xmlAttrs)
 
   # Merging
