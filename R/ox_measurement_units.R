@@ -1,26 +1,34 @@
-#' Title Measurement units
+#' Measurement units in a dataframe
 #'
-#' @param parsed_xml an object of class XMLInternalDocument
-#' @param name_encoding
+#' Returns a dataframe with measurement units from a parsed OpenClinica
+#' odm1.3 .xml export file.
 #'
-#' @return dataframe
+#' @param parsed_xml An object of class \code{XMLInternalDocument}, as returned
+#' by \code{XML::xmlParse()}.
+#'
+#' @return A dataframe.
 #' @export
 #'
 #' @examples
+#' # The example xml file address
+#' file <- system.file("extdata",
+#'                     "odm1.3_clinical_ext_example.xml",
+#'                     package = "ox",
+#'                     mustWork = TRUE)
 #'
-ox_measurement_units <- function (parsed_xml, name_encoding="UTF-8") {
-  mu <- bind_rows(lapply(xpathApply(parsed_xml,
-                                    "//ns:MeasurementUnit",
-                                    namespaces = ox_alias_default_ns(parsed_xml),
-                                    fun=xmlAncestors,
-                                    xmlAttrs),
-                         data.frame,
-                         stringsAsFactors=FALSE))
-
-  # %>%
-  #   select(StudyOID = OID, OID = OID.1, Name)
-
-  # Encoding(mu$Name) <- name_encoding
-
-  mu
+#' # Parsing the xml file
+#' library(XML)
+#' doc <- xmlParse(file_address)
+#'
+#' # Measurement units in a dataframe
+#' measurement_units <- ox_measurement_units(doc)
+#' View(measurement_units)
+ox_measurement_units <- function (parsed_xml) {
+  bind_rows(lapply(xpathApply(parsed_xml,
+                              "//ns:MeasurementUnit",
+                              namespaces = ox_alias_default_ns(parsed_xml),
+                              fun=xmlAncestors,
+                              xmlAttrs),
+                   data.frame,
+                   stringsAsFactors=FALSE))
 }
