@@ -2,19 +2,33 @@
 % Please edit documentation in R/ox_form_def.R
 \name{ox_form_def}
 \alias{ox_form_def}
-\title{Title Form definitions}
+\title{Form definitions in a dataframe}
 \usage{
 ox_form_def(parsed_xml)
 }
 \arguments{
-\item{parsed_xml}{an object of class XMLInternalDocument}
+\item{parsed_xml}{An object of class \code{XMLInternalDocument}, as returned
+by \code{XML::xmlParse()}.}
 }
 \value{
-dataframe
+A dataframe.
 }
 \description{
-Title Form definitions
+Returns a dataframe with study form definitions from a parsed OpenClinica
+odm1.3 .xml export file.
 }
 \examples{
+# The example xml file address
+file <- system.file("extdata",
+                    "odm1.3_clinical_ext_example.xml",
+                    package = "ox",
+                    mustWork = TRUE)
 
+# Parsing the xml file
+library(XML)
+doc <- xmlParse(file_address)
+
+# Form definitions in a dataframe
+form_def <- ox_form_def(doc)
+View(event_def)
 }
