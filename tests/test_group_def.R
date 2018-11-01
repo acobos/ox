@@ -19,15 +19,15 @@ res <- ox_group_def(doc)
 test_that("returns dataframe with expected variables, at least 1 row", {
   expect_is(res, "data.frame")
   # vars
-  expect_true("study_oid" %in% names(ox_group_def(doc)))
-  expect_true("version" %in% names(ox_group_def(doc)))
-  expect_true("metadata_version" %in% names(ox_group_def(doc)))
-  expect_true("group_oid" %in% names(ox_group_def(doc)))
-  expect_true("group_name" %in% names(ox_group_def(doc)))
-  expect_true("group_repeating" %in% names(ox_group_def(doc)))
-  expect_true("sas_dataset_name" %in% names(ox_group_def(doc)))
+  expect_true("study_oid" %in% names(res))
+  expect_true("version" %in% names(res))
+  expect_true("metadata_version" %in% names(res))
+  expect_true("group_oid" %in% names(res))
+  expect_true("group_name" %in% names(res))
+  expect_true("group_repeating" %in% names(res))
+  expect_true("sas_dataset_name" %in% names(res))
   # rows
-  expect_true(nrow(ox_group_def(doc)) >= 1)
+  expect_true(nrow(res) >= 1)
 })
 
 test_that("dataframe has no factors", {
