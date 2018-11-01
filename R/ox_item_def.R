@@ -1,22 +1,42 @@
-#' Title Item definitions
+#' Item definitions in a dataframe
 #'
-#' @param parsed_xml an object of class XMLInternalDocument
-#' @param comment_encoding
+#' Returns a dataframe with study item definitions from a parsed OpenClinica
+#' odm1.3 .xml export file.
 #'
-#' @return dataframe
+#' @param parsed_xml An object of class \code{XMLInternalDocument}, as returned
+#' by \code{XML::xmlParse()}.
+#'
+#' @return A dataframe.
 #' @export
 #'
 #' @examples
+#' # The example xml file address
+#' file <- system.file("extdata",
+#'                     "odm1.3_clinical_ext_example.xml",
+#'                     package = "ox",
+#'                     mustWork = TRUE)
 #'
-ox_item_def <- function (parsed_xml, comment_encoding="UTF-8") {
+#' # Parsing the xml file
+#' library(XML)
+#' doc <- xmlParse(file_address)
+#'
+#' # Item definitions in a dataframe
+#' item_def <- ox_item_def(doc)
+#' View(item_def)
+ox_item_def <- function (parsed_xml) {
 
-  i_def <- bind_rows(lapply(xpathApply(parsed_xml,
-                                       "//ns:ItemDef",
-                                       namespaces = ox_alias_default_ns(parsed_xml),
-                                       fun=xmlAncestors,
-                                       xmlAttrs),
-                            data.frame,
-                            stringsAsFactors=FALSE))  %>%
+  if (! "XMLInternalDocument" %in% class(parsed_xml)) {
+    stop("parsed_xml should be an object of class XMLInternalDocument", call. = FALSE)
+  }
+
+  # return
+  bind_rows(lapply(xpathApply(parsed_xml,
+                              "//ns:ItemDef",
+                              namespaces = ox_alias_default_ns(parsed_xml),
+                              fun=xmlAncestors,
+                              xmlAttrs),
+                   data.frame,
+                   stringsAsFactors=FALSE))  %>%
     select(study_oid = OID,
            version = OID.1,
            metadata_version = Name,
@@ -24,13 +44,9 @@ ox_item_def <- function (parsed_xml, comment_encoding="UTF-8") {
            item_name = Name.1,
            item_data_type = DataType,
            item_length = Length,
+           item_significant_digits = SignificantDigits,
            item_sas_field_name = SASFieldName,
            item_comment = Comment,
-           form_oid = FormOIDs,
-           item_significant_digits = SignificantDigits)
-
-  Encoding(i_def$item_comment) <- comment_encoding
-
-  i_def
+           form_oid = FormOIDs)
 }
 
