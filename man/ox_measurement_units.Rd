@@ -2,21 +2,33 @@
 % Please edit documentation in R/ox_measurement_units.R
 \name{ox_measurement_units}
 \alias{ox_measurement_units}
-\title{Title Measurement units}
+\title{Measurement units in a dataframe}
 \usage{
-ox_measurement_units(parsed_xml, name_encoding = "UTF-8")
+ox_measurement_units(parsed_xml)
 }
 \arguments{
-\item{parsed_xml}{an object of class XMLInternalDocument}
-
-\item{name_encoding}{}
+\item{parsed_xml}{An object of class \code{XMLInternalDocument}, as returned
+by \code{XML::xmlParse()}.}
 }
 \value{
-dataframe
+A dataframe.
 }
 \description{
-Title Measurement units
+Returns a dataframe with measurement units from a parsed OpenClinica
+odm1.3 .xml export file.
 }
 \examples{
+# The example xml file address
+file <- system.file("extdata",
+                    "odm1.3_clinical_ext_example.xml",
+                    package = "ox",
+                    mustWork = TRUE)
 
+# Parsing the xml file
+library(XML)
+doc <- xmlParse(file_address)
+
+# Measurement units in a dataframe
+measurement_units <- ox_measurement_units(doc)
+View(measurement_units)
 }
