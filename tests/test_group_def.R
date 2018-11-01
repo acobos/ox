@@ -1,4 +1,4 @@
-context("Form definitions")
+context("Group definitions")
 
 # getting the file address
 file <- system.file("extdata", "odm1.3_clinical_ext_example.xml",
