@@ -8,8 +8,10 @@
 #' @examples
 #'
 ox_group_repeat <- function(parsed_xml) {
-  # pending simplify
-  # oid.2 seems to be identical to group_oid... why ??
+
+  if (! "XMLInternalDocument" %in% class(parsed_xml)) {
+    stop("parsed_xml should be an object of class XMLInternalDocument", call. = FALSE)
+  }
 
   bind_rows(lapply(xpathApply(parsed_xml,
                               "//oc:ItemGroupRepeat",

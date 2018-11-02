@@ -16,6 +16,10 @@
 #'
 ox <- function (parsed_xml) {
 
+  if (! "XMLInternalDocument" %in% class(parsed_xml)) {
+    stop("parsed_xml should be an object of class XMLInternalDocument", call. = FALSE)
+  }
+
   list(data = ox_item_data(parsed_xml),
        metadata = list(global_vars = ox_global_vars(parsed_xml),
                        event_def = ox_event_def(parsed_xml),

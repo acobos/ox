@@ -25,6 +25,10 @@
 #' View(codelist)
 ox_codelist_item <- function (parsed_xml) {
 
+  if (! "XMLInternalDocument" %in% class(parsed_xml)) {
+    stop("parsed_xml should be an object of class XMLInternalDocument", call. = FALSE)
+  }
+
   cli <- bind_rows(lapply(xpathApply(parsed_xml,
                                      "//ns:CodeList/ns:CodeListItem/ns:Decode/ns:TranslatedText",
                                      namespaces = .ns_alias(parsed_xml, "ns"),

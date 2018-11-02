@@ -25,7 +25,9 @@
 #' View(audit_log)
 ox_audit_log <- function (parsed_xml) {
 
- # OpenClinica.ns <- c(OpenClinica=xmlNamespaces(doc)$OpenClinica$uri)
+  if (! "XMLInternalDocument" %in% class(parsed_xml)) {
+    stop("parsed_xml should be an object of class XMLInternalDocument", call. = FALSE)
+  }
 
   bind_rows(lapply(xpathApply(parsed_xml, "//OpenClinica:AuditLog",
                     namespaces = .ns_alias(parsed_xml, "OpenClinica"),

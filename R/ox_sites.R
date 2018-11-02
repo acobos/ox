@@ -25,6 +25,11 @@
 #' View(sites)
 #'
 ox_sites <- function (parsed_xml){
+
+  if (! "XMLInternalDocument" %in% class(parsed_xml)) {
+    stop("parsed_xml should be an object of class XMLInternalDocument", call. = FALSE)
+  }
+
   s <- as.character(xpathApply(parsed_xml, "//ns:StudyName",
                                namespaces=ox_alias_default_ns(doc),
                                fun=xmlValue))

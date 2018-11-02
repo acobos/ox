@@ -25,6 +25,10 @@
 #' View(subjects)
 ox_subject_data <- function (parsed_xml) {
 
+  if (! "XMLInternalDocument" %in% class(parsed_xml)) {
+    stop("parsed_xml should be an object of class XMLInternalDocument", call. = FALSE)
+  }
+
   # get subject_data
   sd <- xpathApply(parsed_xml, "//ns:ClinicalData/ns:SubjectData",
                    namespaces = .ns_alias(parsed_xml, "ns"),
