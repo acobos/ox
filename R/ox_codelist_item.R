@@ -1,26 +1,38 @@
-#' Title
+#' Codelists items in a dataframe
 #'
-#' @param parsed_xml an object of class XMLInternalDocument
-#' @param label_encoding
+#' Returns a dataframe with study codelist items from a parsed OpenClinica
+#' odm1.3_full .xml export file.
 #'
-#' @return dataframe
+#' @param parsed_xml An object of class \code{XMLInternalDocument}, as returned
+#' by \code{XML::xmlParse()}.
+#'
+#' @return A dataframe.
 #' @export
 #'
 #' @examples
+#' # The example xml file address
+#' file <- system.file("extdata",
+#'                     "odm1.3_clinical_ext_example.xml",
+#'                     package = "ox",
+#'                     mustWork = TRUE)
 #'
-ox_codelist_item <- function (parsed_xml, label_encoding = "UTF-8") {
+#' # Parsing the xml file
+#' library(XML)
+#' doc <- xmlParse(file_address)
+#'
+#' # Codelists items in a dataframe
+#' codelist_item <- ox_codelist_item(doc)
+#' View(codelist)
+ox_codelist_item <- function (parsed_xml) {
 
   cli <- bind_rows(lapply(xpathApply(parsed_xml,
                                      "//ns:CodeList/ns:CodeListItem/ns:Decode/ns:TranslatedText",
-                                     namespaces = ox_alias_default_ns(parsed_xml),
+                                     namespaces = .ns_alias(parsed_xml, "ns"),
                                      fun=xmlAncestors,
                                      xmlAttrs),
                           data.frame,
                           stringsAsFactors=FALSE)) %>%
-    select(study_oid = OID,
-           version = OID.1,
-           metadata_version = Name,
-           codelist_oid = OID.2,
+    select(codelist_oid = OID.2,
            codelist_name = Name.1,
            codelist_data_type = DataType,
            sas_format_name = SASFormatName,
@@ -33,10 +45,6 @@ ox_codelist_item <- function (parsed_xml, label_encoding = "UTF-8") {
                               unlist),
                        stringsAsFactors=FALSE) %>%
     select(code_label = 1)
-
-  # ensure encoding
-  Encoding(labels$code_label) <- label_encoding
-
 
   cli %>%
     cbind(labels)
