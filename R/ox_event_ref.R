@@ -1,13 +1,28 @@
-#' Title
+#' Event references in a dataframe
 #'
-#' @param parsed_xml an object of class XMLInternalDocument
-#' @param simplify logical
+#' Returns a dataframe with study event references from a parsed OpenClinica
+#' odm1.3 .xml export file.
 #'
-#' @return dataframe
+#' @param parsed_xml An object of class \code{XMLInternalDocument}, as returned
+#' by \code{XML::xmlParse()}.
+#'
+#' @return A dataframe.
 #' @export
 #'
 #' @examples
+#' # The example xml file address
+#' file <- system.file("extdata",
+#'                     "odm1.3_clinical_ext_example.xml",
+#'                     package = "ox",
+#'                     mustWork = TRUE)
 #'
+#' # Parsing the xml file
+#' library(XML)
+#' doc <- xmlParse(file_address)
+#'
+#' # Event references in a dataframe
+#' event_ref <- ox_event_ref(doc)
+#' View(event_ref)
 ox_event_ref <- function (parsed_xml, simplify = FALSE) {
 
   bind_rows(lapply(xpathApply(doc,
