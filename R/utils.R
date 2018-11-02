@@ -1,5 +1,6 @@
-# Helper function to get namespace alias
+# Helper functions
 
+# namespace alias
 .ns_alias <- function (parsed_xml, alias) {
 
   x <- c(ns = xmlNamespaces(parsed_xml)[[1]]$uri,
