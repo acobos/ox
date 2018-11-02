@@ -1,13 +1,28 @@
-
-#' Title
+#' Codelists in a dataframe
 #'
-#' @param parsed_xml an object of class XMLInternalDocument
+#' Returns a dataframe with study codelists from a parsed OpenClinica
+#' odm1.3_full .xml export file.
 #'
-#' @return dataframe
+#' @param parsed_xml An object of class \code{XMLInternalDocument}, as returned
+#' by \code{XML::xmlParse()}.
+#'
+#' @return A dataframe.
 #' @export
 #'
 #' @examples
+#' # The example xml file address
+#' file <- system.file("extdata",
+#'                     "odm1.3_clinical_ext_example.xml",
+#'                     package = "ox",
+#'                     mustWork = TRUE)
 #'
+#' # Parsing the xml file
+#' library(XML)
+#' doc <- xmlParse(file_address)
+#'
+#' # Codelists in a dataframe
+#' codelist <- ox_codelist(doc)
+#' View(codelist)
 ox_codelist <- function (parsed_xml) {
 
   bind_rows(lapply(xpathApply(parsed_xml,
