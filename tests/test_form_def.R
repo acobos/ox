@@ -13,6 +13,11 @@ library(ox)
 
 library(testthat)
 
+# incorrect call
+test_that("gives error when arg is not of expected class", {
+  expect_error(ox_form_def(file))
+})
+
 # correct call
 res <- ox_form_def(doc)
 
@@ -33,9 +38,6 @@ test_that("dataframe has no factors", {
   expect_false("factor" %in% unique(sapply(res, class)))
 })
 
-test_that("gives error when arg is not of expected class", {
-  expect_error(ox_form_def(file))
-})
 
 # clean
 rm(doc, file, res)

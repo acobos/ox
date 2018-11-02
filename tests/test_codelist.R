@@ -13,7 +13,13 @@ library(ox)
 
 library(testthat)
 
-# function ox_codelist
+# function ox_codelist ----
+
+# incorrect call
+test_that("gives error when arg is not of expected class", {
+  expect_error(ox_codelist(file))
+})
+
 # correct call
 res <- ox_codelist(doc)
 
@@ -32,12 +38,12 @@ test_that("dataframe has no factors", {
   expect_false("factor" %in% unique(sapply(res, class)))
 })
 
+
+# function ox_codelist_item ----
+# incorrect call
 test_that("gives error when arg is not of expected class", {
-  expect_error(ox_event_def(file))
+  expect_error(ox_codelist_item(file))
 })
-
-
-# function ox_codelist_item
 # correct call
 res <- ox_codelist_item(doc)
 
@@ -58,8 +64,6 @@ test_that("dataframe has no factors", {
   expect_false("factor" %in% unique(sapply(res, class)))
 })
 
-test_that("gives error when arg is not of expected class", {
-  expect_error(ox_event_def(file))
-})
+
 # clean
 rm(doc, file, res)
