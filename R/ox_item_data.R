@@ -50,7 +50,8 @@ ox_item_data <- function(parsed_xml) {
            group_repeat_key = ItemGroupRepeatKey,
            trasaction_type = TransactionType,
            item_oid = ItemOID,
-           value = Value)
+           value = Value) %>%
+    mutate(group_repeat_key = as.numeric(group_repeat_key))
 
 }
 
