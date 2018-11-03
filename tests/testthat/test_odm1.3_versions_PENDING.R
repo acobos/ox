@@ -1,0 +1,51 @@
+context("Extract groups from ox object")
+
+# getting the file address
+file <- system.file("extdata", "odm1.3_clinical_ext_example.xml",
+                    package = "ox",
+                    mustWork = TRUE)
+# Parsing the xml file
+library(XML)
+doc <- xmlParse(file)
+
+library(dplyr)
+library(ox)
+
+# ox object
+d <- ox(doc)
+
+library(testthat)
+
+# correct call
+res <- ox_xtract_group(d, "IG_ACUTE_UNGROUPED")
+
+# incorrect call
+test_that("gives error when arg is not of expected class", {
+  expect_error(ox_xtract_group(doc, "IG_ACUTE_UNGROUPED"))
+  expect_error(ox_xtract_group(d))
+  expect_error(ox_xtract_group(d, doc))
+  expect_error(ox_xtract_group(d, "k"))
+  expect_error(ox_xtract_group(d, TRUE, "k"))
+})
+
+test_that("returns dataframe with expected variables, at least 1 row", {
+  expect_is(res, "data.frame")
+  # vars
+  expect_true("study_oid" %in% names(res))
+  expect_true("subject_id" %in% names(res))
+  expect_true("event_oid" %in% names(res))
+  expect_true("form_oid" %in% names(res))
+  expect_true("group_oid" %in% names(res))
+  expect_true("group_repeat_key" %in% names(res))
+
+  expect_is(res$study_oid, "character")
+  expect_is(res$subject_id, "character")
+  expect_is(res$event_oid, "character")
+  expect_is(res$form_oid, "character")
+  expect_is(res$group_oid, "character")
+  expect_is(res$group_repeat_key, "numeric")
+})
+
+# clean
+rm(doc, file, res)
+
