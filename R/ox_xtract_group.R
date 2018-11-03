@@ -1,15 +1,80 @@
-#' Title Creates a dataframe with data from an ItemGroup
+#' Data for a group of items, as a tidy dataframe
 #'
-#' @param group ItemGroupOID as character.
+#' Returns a tidy dataframe from a \code{ox} object, containing data for all
+#' items of the specified \code{group}. In the resulting dataframe, each item is
+#' a variable, and each row is an observation; dataframe variables are
+#' identified by their \code{item_oid} (or optionally, by their \code{item_name}),
+#' and are one of the following classes: \code{Date}, \code{numeric}, or
+#' \code{character}. Optionally, items with codelists can be defined as
+#' \code{factor}.
 #'
-#' @return dataframe
+#' @param ox_obj An object of class \code{ox}, as returned by \code{ox::ox()}.
+#'
+#' @param group A group of items, as \code{character} value. Must be one
+#' of the \code{group_oid} values in \code{ox_obj$metadata$group_def}.
+#'
+#' @param define_factors A \code{logical} value. When \code{TRUE}, items
+#' with codelists are defined as factors using the codelist. Defaults to
+#' \code{FALSE}.
+#'
+#' @param use_item_names A \code{logical} value. When \code{TRUE},
+#' \code{item_name} in \code{ox_obj$metadata$item_def} are used as variable
+#' names in the resulting dataframe. Othewise, \code{item_oid} are used.
+#' Defaults to \code{FALSE}.
+#'
+#' @return A dataframe with study, subject, event, form, group and group repeat keys,
+#' plus all items in \code{group} as variables.
+#'
 #' @export
 #'
 #' @examples
+#' # The example odm1.3 xml file address
+#' my_file <- system.file("extdata",
+#'                        "odm1.3_clinical_ext_example.xml",
+#'                        package = "ox",
+#'                        mustWork = TRUE)
 #'
-ox_xtract_group <- function (ox_obj, group,
+#' # Parsing the xml file
+#' library(XML)
+#' doc <- xmlParse(my_file)
+#'
+#' # Create ox object
+#' my_study <- ox(doc)
+#'
+#' # Item groups
+#' unique(my_study$metadata$group_def$group_oid)
+#'
+#' # Extract data for a group
+#' demo <- ox_xtract_group(my_study,
+#'                         group = "IG_DEMO_DEMOGRAPHICDATA")
+#'
+#' # Same, using item names to identify vars, and
+#' # defining factors for items with codelist
+#' demo <- ox_xtract_group(my_study,
+#'                         group = "IG_DEMO_DEMOGRAPHICDATA",
+#'                         define_factors = TRUE,
+#'                         use_item_names = TRUE)
+#'
+ox_xtract_group <- function (my_study, group,
                              define_factors = FALSE,
                              use_item_names = FALSE) {
+
+  if ( class(ox_obj)[1] != "ox") {
+    stop("ox_obj should be an object of class ox", call. = FALSE)
+  }
+
+  if ( class(group) != "character" | length(group) > 1 |
+       !group %in% d$metadata$group_def$group_oid ) {
+    stop("ox_obj should be an object of class ox", call. = FALSE)
+  }
+
+  if ( class(define_factors) != "logical" | length(define_factors) > 1) {
+    stop("ox_obj should be an object of class ox", call. = FALSE)
+  }
+
+  if ( class(use_item_names) != "logical" | length(use_item_names) > 1) {
+    stop("ox_obj should be an object of class ox", call. = FALSE)
+  }
 
   # to denormalize the group data ----
   ox_obj$data %>%
