@@ -13,6 +13,8 @@ library(ox)
 
 library(testthat)
 
+
+
 # incorrect call
 test_that("gives error when arg is not of expected class", {
   expect_error(ox_event_ref(file))
@@ -22,6 +24,8 @@ test_that("gives error when arg is not of expected class", {
 
 # correct call
 res <- ox_event_ref(doc)
+res_simple <- ox_event_ref(doc, simplify = TRUE)
+
 
 test_that("returns dataframe with expected variables, at least 1 row", {
   expect_is(res, "data.frame")
@@ -40,20 +44,18 @@ test_that("dataframe has no factors", {
   expect_false("factor" %in% unique(sapply(res, class)))
 })
 
-# correct call
-res <- ox_event_ref(doc, simplify = TRUE)
-
+# correct call with simplify = TRUE
 test_that("returns dataframe with expected variables, at least 1 row", {
-  expect_is(res, "data.frame")
+  expect_is(res_simple, "data.frame")
   # vars
-  expect_true("event_oid" %in% names(res))
-  expect_true("event_order" %in% names(res))
-  expect_true("event_mandatory" %in% names(res))
-  expect_true(length(res) == 3)
+  expect_true("event_oid" %in% names(res_simple))
+  expect_true("event_order" %in% names(res_simple))
+  expect_true("event_mandatory" %in% names(res_simple))
+  expect_true(length(res_simple) == 3)
   # rows
-  expect_true(nrow(res) >= 1)
+  expect_true(nrow(res_simple) >= 1)
   # no factors
-  expect_false("factor" %in% unique(sapply(res, class)))
+  expect_false("factor" %in% unique(sapply(res_simple, class)))
 })
 
 # clean
