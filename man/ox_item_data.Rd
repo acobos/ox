@@ -2,21 +2,34 @@
 % Please edit documentation in R/ox_item_data.R
 \name{ox_item_data}
 \alias{ox_item_data}
-\title{Title Clinical data}
+\title{Item data in a dataframe}
 \usage{
-ox_item_data(parsed_xml, value_encoding = "UTF-8")
+ox_item_data(parsed_xml)
 }
 \arguments{
-\item{parsed_xml}{an object of class XMLInternalDocument}
-
-\item{value_encoding}{}
+\item{parsed_xml}{An object of class \code{XMLInternalDocument}, as returned
+by \code{XML::xmlParse()}.}
 }
 \value{
-dataframe
+A dataframe.
 }
 \description{
-Title Clinical data
+Returns a dataframe with patient's data (all patients, all items, all groups,
+all forms, all events), from a parsed OpenClinica odm1.3 .xml export file.
+Be patient, the function is slow, even for small studies.
 }
 \examples{
+# The example odm1.3 xml file address
+my_file <- system.file("extdata",
+                       "odm1.3_clinical_ext_example.xml",
+                       package = "ox",
+                       mustWork = TRUE)
 
+# Parsing the xml file
+library(XML)
+doc <- xmlParse(my_file)
+
+# Event definitions in a dataframe
+d <- item_data(doc)
+View(d)
 }
