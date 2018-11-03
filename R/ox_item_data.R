@@ -1,22 +1,42 @@
-#' Title Clinical data
+#' Item data in a dataframe
 #'
-#' @param parsed_xml an object of class XMLInternalDocument
-#' @param value_encoding
+#' Returns a dataframe with patient's data (all patients, all items, all groups,
+#' all forms, all events), from a parsed OpenClinica odm1.3 .xml export file.
+#' Be patient, the function is slow, even for small studies.
 #'
-#' @return dataframe
+#' @param parsed_xml An object of class \code{XMLInternalDocument}, as returned
+#' by \code{XML::xmlParse()}.
+#'
+#' @return A dataframe.
 #' @export
 #'
 #' @examples
+#' # The example odm1.3 xml file address
+#' my_file <- system.file("extdata",
+#'                        "odm1.3_clinical_ext_example.xml",
+#'                        package = "ox",
+#'                        mustWork = TRUE)
 #'
-ox_item_data <- function(parsed_xml, value_encoding = "UTF-8") {
+#' # Parsing the xml file
+#' library(XML)
+#' doc <- xmlParse(my_file)
+#'
+#' # Event definitions in a dataframe
+#' d <- item_data(doc)
+#' View(d)
+ox_item_data <- function(parsed_xml) {
 
-  item_data <- bind_rows(lapply(xpathApply(parsed_xml,
-                                           "//ns:ItemData",
-                                           namespaces = .ns_alias(parsed_xml, "ns"),
-                                           fun=xmlAncestors,
-                                           xmlAttrs),
-                                data.frame,
-                                stringsAsFactors=FALSE)) %>%
+  if (! "XMLInternalDocument" %in% class(parsed_xml)) {
+    stop("parsed_xml should be an object of class XMLInternalDocument", call. = FALSE)
+  }
+
+  bind_rows(lapply(xpathApply(parsed_xml,
+                              "//ns:ItemData",
+                              namespaces = .ns_alias(parsed_xml, "ns"),
+                              fun=xmlAncestors,
+                              xmlAttrs),
+                   data.frame,
+                   stringsAsFactors=FALSE)) %>%
     select(study_oid = StudyOID,
            metadata_version_oid = MetaDataVersionOID,
            subject_key = SubjectKey,
@@ -31,11 +51,6 @@ ox_item_data <- function(parsed_xml, value_encoding = "UTF-8") {
            trasaction_type = TransactionType,
            item_oid = ItemOID,
            value = Value)
-
-  Encoding(item_data$value) <- value_encoding
-
-  # return
-  item_data
 
 }
 
