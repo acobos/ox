@@ -2,20 +2,65 @@
 % Please edit documentation in R/ox_xtract_group.R
 \name{ox_xtract_group}
 \alias{ox_xtract_group}
-\title{Title Creates a dataframe with data from an ItemGroup}
+\title{Data for a group of items, as a tidy dataframe}
 \usage{
-ox_xtract_group(ox_obj, group, define_factors = FALSE,
+ox_xtract_group(my_study, group, define_factors = FALSE,
   use_item_names = FALSE)
 }
 \arguments{
-\item{group}{ItemGroupOID as character.}
+\item{group}{A group of items, as \code{character} value. Must be one
+of the \code{group_oid} values in \code{ox_obj$metadata$group_def}.}
+
+\item{define_factors}{A \code{logical} value. When \code{TRUE}, items
+with codelists are defined as factors using the codelist. Defaults to
+\code{FALSE}.}
+
+\item{use_item_names}{A \code{logical} value. When \code{TRUE},
+\code{item_name} in \code{ox_obj$metadata$item_def} are used as variable
+names in the resulting dataframe. Othewise, \code{item_oid} are used.
+Defaults to \code{FALSE}.}
+
+\item{ox_obj}{An object of class \code{ox}, as returned by \code{ox::ox()}.}
 }
 \value{
-dataframe
+A dataframe with study, subject, event, form, group and group repeat keys,
+plus all items in \code{group} as variables.
 }
 \description{
-Title Creates a dataframe with data from an ItemGroup
+Returns a tidy dataframe from a \code{ox} object, containing data for all
+items of the specified \code{group}. In the resulting dataframe, each item is
+a variable, and each row is an observation; dataframe variables are
+identified by their \code{item_oid} (or optionally, by their \code{item_name}),
+and are one of the following classes: \code{Date}, \code{numeric}, or
+\code{character}. Optionally, items with codelists can be defined as
+\code{factor}.
 }
 \examples{
+# The example odm1.3 xml file address
+my_file <- system.file("extdata",
+                       "odm1.3_clinical_ext_example.xml",
+                       package = "ox",
+                       mustWork = TRUE)
+
+# Parsing the xml file
+library(XML)
+doc <- xmlParse(my_file)
+
+# Create ox object
+my_study <- ox(doc)
+
+# Item groups
+unique(my_study$metadata$group_def$group_oid)
+
+# Extract data for a group
+demo <- ox_xtract_group(my_study,
+                        group = "IG_DEMO_DEMOGRAPHICDATA")
+
+# Same, using item names to identify vars, and
+# defining factors for items with codelist
+demo <- ox_xtract_group(my_study,
+                        group = "IG_DEMO_DEMOGRAPHICDATA",
+                        define_factors = TRUE,
+                        use_item_names = TRUE)
 
 }
