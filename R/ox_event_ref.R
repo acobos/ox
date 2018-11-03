@@ -44,7 +44,7 @@ ox_event_ref <- function (parsed_xml, simplify = FALSE) {
     stop("simplify should be a logical value", call. = FALSE)
   }
 
-  bind_rows(lapply(xpathApply(doc,
+  bind_rows(lapply(xpathApply(parsed_xml,
                               "//ns:StudyEventRef",
                               namespaces = .ns_alias(parsed_xml, "ns"),
                               fun=xmlAncestors,
