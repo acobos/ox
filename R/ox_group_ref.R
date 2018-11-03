@@ -1,11 +1,28 @@
-#' Title ItemGroup references
+#' Group references in a dataframe
 #'
-#' @param parsed_xml an object of class XMLInternalDocument
+#' Returns a dataframe with study (item) group references from a parsed OpenClinica
+#' odm1.3 .xml export file.
 #'
-#' @return dataframe
+#' @param parsed_xml An object of class \code{XMLInternalDocument}, as returned
+#' by \code{XML::xmlParse()}.
+#'
+#' @return A dataframe.
 #' @export
 #'
 #' @examples
+#' # The example odm1.3 xml file address
+#' my_file <- system.file("extdata",
+#'                        "odm1.3_clinical_ext_example.xml",
+#'                        package = "ox",
+#'                        mustWork = TRUE)
+#'
+#' # Parsing the xml file
+#' library(XML)
+#' doc <- xmlParse(my_file)
+#'
+#' # Form references in a dataframe
+#' group_ref <- ox_group_ref(doc)
+#' View(group_ref)
 #'
 ox_group_ref <- function (parsed_xml) {
 
