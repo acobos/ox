@@ -16,6 +16,9 @@ d <- ox(doc)
 
 library(testthat)
 
+# correct call
+res <- ox_xtract_group(d, "IG_ACUTE_UNGROUPED")
+
 # incorrect call
 test_that("gives error when arg is not of expected class", {
   expect_error(ox_xtract_group(doc, "IG_ACUTE_UNGROUPED"))
@@ -23,11 +26,7 @@ test_that("gives error when arg is not of expected class", {
   expect_error(ox_xtract_group(d, doc))
   expect_error(ox_xtract_group(d, "k"))
   expect_error(ox_xtract_group(d, TRUE, "k"))
-  expect_error(ox_xtract_group(d, c(TRUE, TRUE)))
 })
-
-# correct call
-res <- ox_xtract_group(d, "IG_ACUTE_UNGROUPED")
 
 test_that("returns dataframe with expected variables, at least 1 row", {
   expect_is(res, "data.frame")
