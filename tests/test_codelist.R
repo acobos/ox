@@ -38,6 +38,8 @@ test_that("dataframe has no factors", {
   expect_false("factor" %in% unique(sapply(res, class)))
 })
 
+# cleaning
+rm(res)
 
 # function ox_codelist_item ----
 # incorrect call
@@ -64,6 +66,32 @@ test_that("dataframe has no factors", {
   expect_false("factor" %in% unique(sapply(res, class)))
 })
 
+# cleaning
+rm(res)
+
+
+# function ox_codelist_ref ----
+
+# incorrect call
+test_that("gives error when arg is not of expected class", {
+  expect_error(ox_codelist_ref(file))
+})
+# correct call
+res <- ox_codelist_ref(doc)
+
+test_that("returns dataframe with expected variables, at least 1 row", {
+  expect_is(res, "data.frame")
+  # vars
+  expect_true("form_oid" %in% names(res))
+  expect_true("item_oid" %in% names(res))
+  expect_true("codelist_oid" %in% names(res))
+  # rows
+  # a study can have no codelists
+})
+
+test_that("dataframe has no factors", {
+  expect_false("factor" %in% unique(sapply(res, class)))
+})
 
 # clean
 rm(doc, file, res)
