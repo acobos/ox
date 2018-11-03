@@ -6,6 +6,17 @@
 #' @param parsed_xml An object of class \code{XMLInternalDocument}, as returned
 #' by \code{XML::xmlParse()}.
 #'
+#' @param simplify A \code{logical} indicting whether or not to simplify output
+#' whenever possible (see details). Defaults to \code{FALSE}.
+#'
+#' @details In OpenClinica, diferent sites (\code{study_oid}) may have diferent
+#' events defined. For this reason, by default (\code{simplify = FALSE}), events
+#' (\code{event_oid}) and event characteristics (\code{event_order},
+#' \code{event_mandatory}) are returned for each site (\code{study_oid}). However, in
+#' most studies, all sites have the same events and characteristics. If this is
+#' the case, and \code{simplify = TRUE}, only unique combinations of
+#' \code{event_oid}, \code{event_order} and \code{event_mandatory} are returned.
+#'
 #' @return A dataframe.
 #' @export
 #'
@@ -25,6 +36,14 @@
 #' View(event_ref)
 ox_event_ref <- function (parsed_xml, simplify = FALSE) {
 
+  if (! "XMLInternalDocument" %in% class(parsed_xml)) {
+    stop("parsed_xml should be an object of class XMLInternalDocument", call. = FALSE)
+  }
+
+  if (!("logical" %in% class(simplify) & length(simplify) == 1)) {
+    stop("simplify should be a logical value", call. = FALSE)
+  }
+
   bind_rows(lapply(xpathApply(doc,
                               "//ns:StudyEventRef",
                               namespaces = .ns_alias(parsed_xml, "ns"),
@@ -37,6 +56,7 @@ ox_event_ref <- function (parsed_xml, simplify = FALSE) {
            event_oid = StudyEventOID,
            event_order = OrderNumber,
            event_mandatory = Mandatory) %>%
+    mutate(event_order = as.numeric(event_order)) %>%
     arrange(study_oid, version, event_order) -> e_r
 
   # Pending to decide if allow for simplification when all sites have same data in
@@ -62,7 +82,8 @@ ox_event_ref <- function (parsed_xml, simplify = FALSE) {
         select(event_oid:event_mandatory) %>%
         unique() -> e_r
       }
-    }
+  }
+
   # return
   e_r
   }

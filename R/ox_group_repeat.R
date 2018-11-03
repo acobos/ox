@@ -1,11 +1,28 @@
-#' Title
+#' Group repetitions in a dataframe
 #'
-#' @param parsed_xml an object of class XMLInternalDocument
+#' Returns a dataframe with study item group repetitions from a parsed OpenClinica
+#' odm1.3 .xml export file.
 #'
-#' @return dataframe
+#' @param parsed_xml An object of class \code{XMLInternalDocument}, as returned
+#' by \code{XML::xmlParse()}.
+#'
+#' @return A dataframe.
 #' @export
 #'
 #' @examples
+#' # The example xml file address
+#' my_file <- system.file("extdata",
+#'                        "odm1.3_clinical_ext_example.xml",
+#'                        package = "ox",
+#'                        mustWork = TRUE)
+#'
+#' # Parsing the xml file
+#' library(XML)
+#' doc <- xmlParse(my_file)
+#'
+#' # Group repetitions in a dataframe
+#' group_repeats <- ox_group_repeat(doc)
+#' View(group_repeats)
 #'
 ox_group_repeat <- function(parsed_xml) {
 
@@ -23,15 +40,13 @@ ox_group_repeat <- function(parsed_xml) {
     select(study_oid = OID,
            version = OID.1,
            metadata_version = Name,
-           oid.2 = OID.2,
+           group_oid = OID.2,
            group_name = Name.1,
            group_repeating = Repeating,
            sas_dataset_name = SASDatasetName,
-           group_oid = ItemGroupOID,
            form_oid = FormOID,
            show_group = ShowGroup,
            repeat_number = RepeatNumber,
            repeat_max = RepeatMax)
-
 }
 

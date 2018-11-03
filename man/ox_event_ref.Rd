@@ -9,6 +9,9 @@ ox_event_ref(parsed_xml, simplify = FALSE)
 \arguments{
 \item{parsed_xml}{An object of class \code{XMLInternalDocument}, as returned
 by \code{XML::xmlParse()}.}
+
+\item{simplify}{A \code{logical} indicting whether or not to simplify output
+whenever possible (see details). Defaults to \code{FALSE}.}
 }
 \value{
 A dataframe.
@@ -16,6 +19,15 @@ A dataframe.
 \description{
 Returns a dataframe with study event references from a parsed OpenClinica
 odm1.3 .xml export file.
+}
+\details{
+In OpenClinica, diferent sites (\code{study_oid}) may have diferent
+events defined. For this reason, by default (\code{simplify = FALSE}), events
+(\code{event_oid}) and event characteristics (\code{event_order},
+\code{event_mandatory}) are returned for each site (\code{study_oid}). However, in
+most studies, all sites have the same events and characteristics. If this is
+the case, and \code{simplify = TRUE}, only unique combinations of
+\code{event_oid}, \code{event_order} and \code{event_mandatory} are returned.
 }
 \examples{
 # The example odm1.3 xml file address

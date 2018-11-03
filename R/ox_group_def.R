@@ -11,14 +11,14 @@
 #'
 #' @examples
 #' # The example xml file address
-#' file <- system.file("extdata",
-#'                     "odm1.3_clinical_ext_example.xml",
-#'                     package = "ox",
-#'                     mustWork = TRUE)
+#' my_file <- system.file("extdata",
+#'                        "odm1.3_clinical_ext_example.xml",
+#'                        package = "ox",
+#'                        mustWork = TRUE)
 #'
 #' # Parsing the xml file
 #' library(XML)
-#' doc <- xmlParse(file_address)
+#' doc <- xmlParse(my_file)
 #'
 #' # Event definitions in a dataframe
 #' group_def <- ox_group_def(doc)
