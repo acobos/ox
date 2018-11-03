@@ -4,7 +4,7 @@
 \alias{ox_codelist_item}
 \title{Codelists items in a dataframe}
 \usage{
-ox_codelist_item(parsed_xml, label_encoding = "UTF-8")
+ox_codelist_item(parsed_xml)
 }
 \arguments{
 \item{parsed_xml}{An object of class \code{XMLInternalDocument}, as returned
@@ -18,15 +18,15 @@ Returns a dataframe with study codelist items from a parsed OpenClinica
 odm1.3_full .xml export file.
 }
 \examples{
-# The example xml file address
-file <- system.file("extdata",
-                    "odm1.3_clinical_ext_example.xml",
-                    package = "ox",
-                    mustWork = TRUE)
+# The example odm1.3 xml file address
+my_file <- system.file("extdata",
+                       "odm1.3_clinical_ext_example.xml",
+                       package = "ox",
+                       mustWork = TRUE)
 
 # Parsing the xml file
 library(XML)
-doc <- xmlParse(file_address)
+doc <- xmlParse(my_file)
 
 # Codelists items in a dataframe
 codelist_item <- ox_codelist_item(doc)

@@ -2,21 +2,33 @@
 % Please edit documentation in R/ox_event_ref.R
 \name{ox_event_ref}
 \alias{ox_event_ref}
-\title{Title}
+\title{Event references in a dataframe}
 \usage{
 ox_event_ref(parsed_xml, simplify = FALSE)
 }
 \arguments{
-\item{parsed_xml}{an object of class XMLInternalDocument}
-
-\item{simplify}{logical}
+\item{parsed_xml}{An object of class \code{XMLInternalDocument}, as returned
+by \code{XML::xmlParse()}.}
 }
 \value{
-dataframe
+A dataframe.
 }
 \description{
-Title
+Returns a dataframe with study event references from a parsed OpenClinica
+odm1.3 .xml export file.
 }
 \examples{
+# The example odm1.3 xml file address
+my_file <- system.file("extdata",
+                       "odm1.3_clinical_ext_example.xml",
+                       package = "ox",
+                       mustWork = TRUE)
 
+# Parsing the xml file
+library(XML)
+doc <- xmlParse(my_file)
+
+# Event references in a dataframe
+event_ref <- ox_event_ref(doc)
+View(event_ref)
 }

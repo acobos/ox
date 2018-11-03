@@ -18,15 +18,15 @@ Returns a dataframe with study form definitions from a parsed OpenClinica
 odm1.3 .xml export file.
 }
 \examples{
-# The example xml file address
-file <- system.file("extdata",
-                    "odm1.3_clinical_ext_example.xml",
-                    package = "ox",
-                    mustWork = TRUE)
+# The example odm1.3 xml file address
+my_file <- system.file("extdata",
+                       "odm1.3_clinical_ext_example.xml",
+                       package = "ox",
+                       mustWork = TRUE)
 
 # Parsing the xml file
 library(XML)
-doc <- xmlParse(file_address)
+doc <- xmlParse(my_file)
 
 # Form definitions in a dataframe
 form_def <- ox_form_def(doc)
