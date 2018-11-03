@@ -55,7 +55,7 @@
 #'                         define_factors = TRUE,
 #'                         use_item_names = TRUE)
 #'
-ox_xtract_group <- function (my_study, group,
+ox_xtract_group <- function (ox_obj, group,
                              define_factors = FALSE,
                              use_item_names = FALSE) {
 
@@ -63,8 +63,8 @@ ox_xtract_group <- function (my_study, group,
     stop("ox_obj should be an object of class ox", call. = FALSE)
   }
 
-  if ( class(group) != "character" | length(group) > 1 |
-       !group %in% d$metadata$group_def$group_oid ) {
+  if ( class(group) != "character" | length(group) != 1 |
+       !group %in% ox_obj$metadata$group_def$group_oid ) {
     stop("ox_obj should be an object of class ox", call. = FALSE)
   }
 
