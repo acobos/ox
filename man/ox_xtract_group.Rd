@@ -4,10 +4,12 @@
 \alias{ox_xtract_group}
 \title{Data for a group of items, as a tidy dataframe}
 \usage{
-ox_xtract_group(my_study, group, define_factors = FALSE,
+ox_xtract_group(ox_obj, group, define_factors = FALSE,
   use_item_names = FALSE)
 }
 \arguments{
+\item{ox_obj}{An object of class \code{ox}, as returned by \code{ox::ox()}.}
+
 \item{group}{A group of items, as \code{character} value. Must be one
 of the \code{group_oid} values in \code{ox_obj$metadata$group_def}.}
 
@@ -19,8 +21,6 @@ with codelists are defined as factors using the codelist. Defaults to
 \code{item_name} in \code{ox_obj$metadata$item_def} are used as variable
 names in the resulting dataframe. Othewise, \code{item_oid} are used.
 Defaults to \code{FALSE}.}
-
-\item{ox_obj}{An object of class \code{ox}, as returned by \code{ox::ox()}.}
 }
 \value{
 A dataframe with study, subject, event, form, group and group repeat keys,
