@@ -31,7 +31,7 @@ ox_sites <- function (parsed_xml){
   }
 
   s <- as.character(xpathApply(parsed_xml, "//ns:StudyName",
-                               namespaces=ox_alias_default_ns(doc),
+                               namespaces=.ns_alias(parsed_xml, "ns"),
                                fun=xmlValue))
 
   # reading Study OIDs
