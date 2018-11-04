@@ -10,7 +10,8 @@ License: What license is it under?
 Encoding: UTF-8
 LazyData: true
 Imports: dplyr,
-    XML
+    XML,
+    pbapply
 RoxygenNote: 6.0.1
 Suggests: testthat,
     knitr,
