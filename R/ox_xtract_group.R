@@ -88,7 +88,6 @@ ox_xtract_group <- function (ox_obj, group,
            item_oid,
            group_repeat_key,
            value) %>%
-    mutate(group_repeat_key = as.numeric(group_repeat_key)) %>%
     tidyr::spread(item_oid , value) -> k
 
   # to define the var order of non-key vars
