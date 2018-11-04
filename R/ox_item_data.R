@@ -30,13 +30,18 @@ ox_item_data <- function(parsed_xml) {
     stop("parsed_xml should be an object of class XMLInternalDocument", call. = FALSE)
   }
 
-  bind_rows(lapply(xpathApply(parsed_xml,
-                              "//ns:ItemData",
-                              namespaces = .ns_alias(parsed_xml, "ns"),
-                              fun=xmlAncestors,
-                              xmlAttrs),
-                   data.frame,
-                   stringsAsFactors=FALSE)) %>%
+  message("Creating list, please be patient...")
+  xpathApply(parsed_xml,
+             "//ns:ItemData",
+             namespaces = .ns_alias(parsed_xml, "ns"),
+             fun=xmlAncestors,
+             xmlAttrs) -> k
+
+  message("Creating dataframe.")
+  # pbapply::pblapply()  is a lapply() with a progress bar
+  k %>% bind_rows(pbapply::pblapply(k,
+                                    data.frame,
+                                    stringsAsFactors=FALSE)) %>%
     select(study_oid = StudyOID,
            metadata_version_oid = MetaDataVersionOID,
            subject_key = SubjectKey,
@@ -52,7 +57,12 @@ ox_item_data <- function(parsed_xml) {
            trasaction_type = TransactionType,
            item_oid = ItemOID,
            value = Value) %>%
-    mutate(group_repeat_key = as.numeric(group_repeat_key))
+    mutate(group_repeat_key = as.numeric(group_repeat_key)) -> res
+
+  message("Done.")
+
+  #return
+  res
 
 }
 
