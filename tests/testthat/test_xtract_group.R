@@ -17,7 +17,7 @@ d <- ox(doc)
 library(testthat)
 
 # correct call
-res <- ox_xtract_group(d, "IG_ACUTE_UNGROUPED")
+res <- ox_xtract_group(d, "IG_DEMO_DEMOGRAPHICDATA")
 
 # incorrect call
 test_that("gives error when arg is not of expected class", {
@@ -44,6 +44,7 @@ test_that("returns dataframe with expected variables, at least 1 row", {
   expect_is(res$form_oid, "character")
   expect_is(res$group_oid, "character")
   expect_is(res$group_repeat_key, "numeric")
+  expect_is(res$event_repeat_key, "numeric")
 })
 
 # clean
