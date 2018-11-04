@@ -43,6 +43,7 @@ ox_item_data <- function(parsed_xml) {
            subject_id = StudySubjectID,
            subject_status = Status,
            event_oid = StudyEventOID,
+           event_repeat_key = StudyEventRepeatKey,
            form_oid = FormOID,
            form_version = Version,
            form_status = Status.1,
