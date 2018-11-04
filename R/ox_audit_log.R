@@ -29,10 +29,22 @@ ox_audit_log <- function (parsed_xml) {
     stop("parsed_xml should be an object of class XMLInternalDocument", call. = FALSE)
   }
 
-  bind_rows(lapply(xpathApply(parsed_xml, "//OpenClinica:AuditLog",
-                    namespaces = .ns_alias(parsed_xml, "OpenClinica"),
-                    fun=xmlAncestors,xmlAttrs),
-         data.frame,
-         stringsAsFactors=FALSE))
+  message("Reading audit log data... (may take long, please be patient)")
+
+  k <- xpathApply(parsed_xml, "//OpenClinica:AuditLog",
+             namespaces = .ns_alias(parsed_xml, "OpenClinica"),
+             fun=xmlAncestors,xmlAttrs)
+
+  message("Creating dataframe with audit log data...")
+
+  res <- pbapply::pblapply(k,
+                           data.frame,
+                           stringsAsFactors=FALSE) %>%
+    bind_rows()
+
+  message("Done.")
+
+  #return
+  res
 }
 
