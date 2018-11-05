@@ -34,7 +34,8 @@ ox_subject_data <- function (parsed_xml) {
                         namespaces = .ns_alias(parsed_xml, "ns"),
                         fun = XML::xmlAttrs)
   # return
-  as.data.frame(do.call(rbind, sd),
-                stringsAsFactors = FALSE)
+  dplyr::bind_rows(
+    lapply(sd, function (x) data.frame(as.list(x), stringsAsFactors=FALSE))
+    )
 }
 
