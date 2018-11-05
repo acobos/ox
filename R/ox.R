@@ -34,7 +34,7 @@
 #' View(my_study$data)
 #'
 #' # Elements (names) in metadata
-#' names(v$metadata)
+#' names(my_study$metadata)
 #'
 #' # Accessing metadata elements:
 #' # Event definitions
