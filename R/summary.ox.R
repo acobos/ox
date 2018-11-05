@@ -9,6 +9,6 @@ summary.ox <- function (ox_obj, form_info = TRUE) {
   if (form_info == TRUE) {
     with(k, table(`form_oid, form_version, group_oid`, event_oid))
   } else {
-    with(k, table(`form_oid, form_version, group_oid`, event_oid))
+    with(k, table(`group_oid`, event_oid))
   }
 }
