@@ -9,10 +9,12 @@ URL: https://github.com/acobos/ox
 License: GPL-3
 Encoding: UTF-8
 LazyData: true
-Imports: dplyr,
+Imports: 
+    dplyr,
     tidyr,
     XML,
-    pbapply
+    pbapply,
+    magrittr
 RoxygenNote: 6.0.1
 Suggests: testthat,
     knitr,
