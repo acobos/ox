@@ -31,16 +31,17 @@ ox_audit_log <- function (parsed_xml) {
 
   message("Reading audit log data... (may take long, please be patient)")
 
-  k <- xpathApply(parsed_xml, "//OpenClinica:AuditLog",
+  k <- XML::xpathApply(parsed_xml, "//OpenClinica:AuditLog",
              namespaces = .ns_alias(parsed_xml, "OpenClinica"),
-             fun=xmlAncestors,xmlAttrs)
+             fun = XML::xmlAncestors,
+             XML::xmlAttrs)
 
   message("Creating dataframe with audit log data...")
 
   res <- pbapply::pblapply(k,
                            data.frame,
                            stringsAsFactors=FALSE) %>%
-    bind_rows()
+    dplyr::bind_rows()
 
   message("Done.")
 

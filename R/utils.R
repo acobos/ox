@@ -3,9 +3,9 @@
 # namespace alias
 .ns_alias <- function (parsed_xml, alias) {
 
-  x <- c(ns = xmlNamespaces(parsed_xml)[[1]]$uri,
-         oc = xmlNamespaces(parsed_xml)$OpenClinica$uri,
-         OpenClinica = xmlNamespaces(parsed_xml)$OpenClinica$uri)
+  x <- c(ns = XML::xmlNamespaces(parsed_xml)[[1]]$uri,
+         oc = XML::xmlNamespaces(parsed_xml)$OpenClinica$uri,
+         OpenClinica = XML::xmlNamespaces(parsed_xml)$OpenClinica$uri)
 
   # return
   x[alias]
