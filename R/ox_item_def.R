@@ -30,23 +30,24 @@ ox_item_def <- function (parsed_xml) {
   }
 
   # return
-  bind_rows(lapply(xpathApply(parsed_xml,
-                              "//ns:ItemDef",
-                              namespaces = .ns_alias(parsed_xml, "ns"),
-                              fun=xmlAncestors,
-                              xmlAttrs),
-                   data.frame,
-                   stringsAsFactors=FALSE))  %>%
-    select(study_oid = OID,
-           version = OID.1,
-           metadata_version = Name,
-           item_oid = OID.2,
-           item_name = Name.1,
-           item_data_type = DataType,
-           item_length = Length,
-           item_significant_digits = SignificantDigits,
-           item_sas_field_name = SASFieldName,
-           item_comment = Comment,
-           form_oid = FormOIDs)
+  dplyr::bind_rows(
+    lapply(XML::xpathApply(parsed_xml,
+                           "//ns:ItemDef",
+                           namespaces = .ns_alias(parsed_xml, "ns"),
+                           fun=XML::xmlAncestors,
+                           XML::xmlAttrs),
+           data.frame,
+           stringsAsFactors=FALSE))  %>%
+    dplyr::select(study_oid = OID,
+                  version = OID.1,
+                  metadata_version = Name,
+                  item_oid = OID.2,
+                  item_name = Name.1,
+                  item_data_type = DataType,
+                  item_length = Length,
+                  item_significant_digits = SignificantDigits,
+                  item_sas_field_name = SASFieldName,
+                  item_comment = Comment,
+                  form_oid = FormOIDs)
 }
 

@@ -30,9 +30,9 @@ ox_subject_data <- function (parsed_xml) {
   }
 
   # get subject_data
-  sd <- xpathApply(parsed_xml, "//ns:ClinicalData/ns:SubjectData",
-                   namespaces = .ns_alias(parsed_xml, "ns"),
-                   fun=xmlAttrs)
+  sd <- XML::xpathApply(parsed_xml, "//ns:ClinicalData/ns:SubjectData",
+                        namespaces = .ns_alias(parsed_xml, "ns"),
+                        fun = XML::xmlAttrs)
   # return
   as.data.frame(do.call(rbind, sd),
                 stringsAsFactors = FALSE)

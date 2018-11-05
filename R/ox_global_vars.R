@@ -29,11 +29,11 @@ ox_global_vars <- function (parsed_xml) {
     stop("parsed_xml should be an object of class XMLInternalDocument", call. = FALSE)
   }
 
-  as.list(lapply(xpathApply(parsed_xml,
+  as.list(lapply(XML::xpathApply(parsed_xml,
                             "//ns:Study/ns:GlobalVariables",
                             namespaces = .ns_alias(parsed_xml, "ns"),
-                            fun=xmlChildren)[[1]],
-                 xmlValue))
+                            fun = XML::xmlChildren)[[1]],
+                 XML::xmlValue))
 }
 
 

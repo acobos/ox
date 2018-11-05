@@ -25,22 +25,24 @@
 #' View(form_ref)
 #'
 ox_form_ref <- function (parsed_xml) {
-  bind_rows(lapply(xpathApply(parsed_xml,
-                              "//ns:FormRef",
-                              namespaces = .ns_alias(parsed_xml, "ns"),
-                              fun=xmlAncestors,
-                              xmlAttrs),
-                   data.frame, stringsAsFactors=FALSE)) %>%
-    select(study_oid = OID,
-           version = OID.1,
-           metadata_version = Name,
-           event_oid = OID.2,
-           event_name = Name.1,
-           event_repeating = Repeating,
-           event_type = Type,
-           form_oid = FormOID,
-           form_mandatory = Mandatory,
-           FormOID, Mandatory)
+  dplyr::bind_rows(
+    lapply(
+      XML::xpathApply(parsed_xml,
+                      "//ns:FormRef",
+                      namespaces = .ns_alias(parsed_xml, "ns"),
+                      fun = XML::xmlAncestors,
+                      XML::xmlAttrs),
+      data.frame, stringsAsFactors=FALSE)) %>%
+    dplyr::select(study_oid = OID,
+                  version = OID.1,
+                  metadata_version = Name,
+                  event_oid = OID.2,
+                  event_name = Name.1,
+                  event_repeating = Repeating,
+                  event_type = Type,
+                  form_oid = FormOID,
+                  form_mandatory = Mandatory,
+                  FormOID, Mandatory)
 
 }
 

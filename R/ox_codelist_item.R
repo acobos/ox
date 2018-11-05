@@ -29,26 +29,30 @@ ox_codelist_item <- function (parsed_xml) {
     stop("parsed_xml should be an object of class XMLInternalDocument", call. = FALSE)
   }
 
-  cli <- bind_rows(lapply(xpathApply(parsed_xml,
-                                     "//ns:CodeList/ns:CodeListItem/ns:Decode/ns:TranslatedText",
-                                     namespaces = .ns_alias(parsed_xml, "ns"),
-                                     fun=xmlAncestors,
-                                     xmlAttrs),
-                          data.frame,
-                          stringsAsFactors=FALSE)) %>%
-    select(codelist_oid = OID.2,
-           codelist_name = Name.1,
-           codelist_data_type = DataType,
-           sas_format_name = SASFormatName,
-           coded_value = CodedValue)
+  cli <- dplyr::bind_rows(
+    lapply(
+      XML::xpathApply(
+        parsed_xml,
+        "//ns:CodeList/ns:CodeListItem/ns:Decode/ns:TranslatedText",
+        namespaces = .ns_alias(parsed_xml, "ns"),
+        fun = XML::xmlAncestors, XML::xmlAttrs),
+      data.frame, stringsAsFactors=FALSE) ) %>%
+    dplyr::select(codelist_oid = OID.2,
+                  codelist_name = Name.1,
+                  codelist_data_type = DataType,
+                  sas_format_name = SASFormatName,
+                  coded_value = CodedValue)
 
-  labels <- data.frame(sapply(xpathApply(parsed_xml,
-                                         "//ns:CodeList/ns:CodeListItem/ns:Decode/ns:TranslatedText",
-                                         namespaces = .ns_alias(parsed_xml, "ns"),
-                                         fun=xmlValue),
-                              unlist),
-                       stringsAsFactors=FALSE) %>%
-    select(code_label = 1)
+  labels <- data.frame(
+    sapply(
+      xpathApply(
+        parsed_xml,
+        "//ns:CodeList/ns:CodeListItem/ns:Decode/ns:TranslatedText",
+        namespaces = .ns_alias(parsed_xml, "ns"),
+        fun=xmlValue),
+      unlist),
+    stringsAsFactors=FALSE) %>%
+    dplyr::select(code_label = 1)
 
   cli %>%
     cbind(labels)

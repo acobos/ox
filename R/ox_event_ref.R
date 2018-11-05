@@ -44,20 +44,22 @@ ox_event_ref <- function (parsed_xml, simplify = FALSE) {
     stop("simplify should be a logical value", call. = FALSE)
   }
 
-  bind_rows(lapply(xpathApply(parsed_xml,
-                              "//ns:StudyEventRef",
-                              namespaces = .ns_alias(parsed_xml, "ns"),
-                              fun=xmlAncestors,
-                              xmlAttrs),
-                   data.frame, stringsAsFactors=FALSE)) %>%
-    select(study_oid = OID,
-           version = OID.1,
-           metadata_version = Name,
-           event_oid = StudyEventOID,
-           event_order = OrderNumber,
-           event_mandatory = Mandatory) %>%
-    mutate(event_order = as.numeric(event_order)) %>%
-    arrange(study_oid, version, event_order) -> e_r
+  dplyr::bind_rows(
+    lapply(
+      XML::xpathApply(parsed_xml,
+                      "//ns:StudyEventRef",
+                      namespaces = .ns_alias(parsed_xml, "ns"),
+                      fun = XML::xmlAncestors,
+                      XML::xmlAttrs),
+      data.frame, stringsAsFactors=FALSE)) %>%
+    dplyr::select(study_oid = OID,
+                  version = OID.1,
+                  metadata_version = Name,
+                  event_oid = StudyEventOID,
+                  event_order = OrderNumber,
+                  event_mandatory = Mandatory) %>%
+    dplyr::mutate(event_order = as.numeric(event_order)) %>%
+    dplyr::arrange(study_oid, version, event_order) -> e_r
 
   # Pending to decide if allow for simplification when all sites have same data in
   # event_oid, event_order and event_mandatory:

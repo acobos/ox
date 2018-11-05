@@ -78,8 +78,8 @@ ox_xtract_group <- function (ox_obj, group,
 
   # to denormalize the group data ----
   ox_obj$data %>%
-    filter(group_oid == group) %>%
-    select(study_oid,
+    dplyr::filter(group_oid == group) %>%
+    dplyr::select(study_oid,
            subject_id,
            event_oid,
            event_repeat_key,
@@ -92,16 +92,17 @@ ox_xtract_group <- function (ox_obj, group,
 
   # to define the var order of non-key vars
   ox_obj$metadata$item_ref %>%
-    filter(group_oid == group) %>%
-    arrange(item_order_number) %>%
-    pull(item_oid) -> vars_in_order
+    dplyr::filter(group_oid == group) %>%
+    dplyr::arrange(item_order_number) %>%
+    dplyr::pull(item_oid) -> vars_in_order
 
   # to identify key vars
   key_vars <- names(k)[!(names(k) %in% vars_in_order)]
 
   # basic output ----
   k %>%
-    select(one_of(key_vars), one_of(vars_in_order)) -> res
+    dplyr::select(dplyr::one_of(key_vars),
+                  dplyr::one_of(vars_in_order)) -> res
 
 
   # all item values are character; some codelist values may be character
@@ -112,8 +113,8 @@ ox_xtract_group <- function (ox_obj, group,
   if (define_factors == TRUE) {
     # res <- define_factors(res)
     ox_obj$metadata$codelist_ref %>%
-      left_join(ox_obj$metadata$codelist_item) %>%
-      select(item_oid, codelist_oid, coded_value, code_label) -> dic
+      dplyr::left_join(ox_obj$metadata$codelist_item) %>%
+      dplyr::select(item_oid, codelist_oid, coded_value, code_label) -> dic
 
     # identify vars with codelist
     vars_with_cl <- names(res)[names(res) %in% unique(dic$item_oid)]
@@ -122,7 +123,7 @@ ox_xtract_group <- function (ox_obj, group,
 
       # subset codelist for var
       dic %>%
-        filter(item_oid == i) -> var_dic
+        dplyr::filter(item_oid == i) -> var_dic
 
       # define factor
       res[[i]] <- factor(res[[i]],
@@ -134,13 +135,13 @@ ox_xtract_group <- function (ox_obj, group,
 
   # define vartypes ----
   ox_obj$metadata$item_def %>%
-    select(item_oid, item_name, item_data_type, item_significant_digits) %>%
-    filter(item_oid %in% names(res)[7:length(res)]) -> item_info
+    dplyr::select(item_oid, item_name, item_data_type, item_significant_digits) %>%
+    dplyr::filter(item_oid %in% names(res)[7:length(res)]) -> item_info
 
   # dates
   item_info %>%
-    filter(item_data_type == "date") %>%
-    pull(item_oid) -> dates
+    dplyr::filter(item_data_type == "date") %>%
+    dplyr::pull(item_oid) -> dates
 
   if (length(dates) > 0) {
     for (i in 1:length(dates)) {
@@ -150,8 +151,8 @@ ox_xtract_group <- function (ox_obj, group,
 
   # numerics
   item_info %>%
-    filter(item_data_type %in% c("integer","float")) %>%
-    pull(item_oid) -> numerics
+    dplyr::filter(item_data_type %in% c("integer","float")) %>%
+    dplyr::pull(item_oid) -> numerics
 
   lapply(res, class)[7:length(res)] -> resvar_class
   resvar_class[!resvar_class %in% c("factor", "Date")] -> k

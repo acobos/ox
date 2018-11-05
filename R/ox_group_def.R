@@ -30,20 +30,22 @@ ox_group_def <- function (parsed_xml) {
   }
 
   # return
-  bind_rows(lapply(xpathApply(parsed_xml,
-                              "//ns:ItemGroupDef",
-                              namespaces = .ns_alias(parsed_xml, "ns"),
-                              fun=xmlAncestors,
-                              xmlAttrs),
-                   data.frame,
-                   stringsAsFactors=FALSE)) %>%
-    select(study_oid = OID,
-           version = OID.1,
-           metadata_version = Name,
-           group_oid = OID.2,
-           group_name = Name.1,
-           group_repeating = Repeating,
-           sas_dataset_name = SASDatasetName)
+  dplyr::bind_rows(
+    lapply(
+      XML::xpathApply(parsed_xml,
+                      "//ns:ItemGroupDef",
+                      namespaces = .ns_alias(parsed_xml, "ns"),
+                      fun = XML::xmlAncestors,
+                      XML::xmlAttrs),
+      data.frame,
+      stringsAsFactors=FALSE)) %>%
+    dplyr::select(study_oid = OID,
+                  version = OID.1,
+                  metadata_version = Name,
+                  group_oid = OID.2,
+                  group_name = Name.1,
+                  group_repeating = Repeating,
+                  sas_dataset_name = SASDatasetName)
 }
 
 

@@ -32,11 +32,11 @@ ox_item_data <- function(parsed_xml) {
 
   message("Reading data... (may take long, please be patient)")
 
-  k <- xpathApply(parsed_xml,
-             "//ns:ItemData",
-             namespaces = .ns_alias(parsed_xml, "ns"),
-             fun=xmlAncestors,
-             xmlAttrs)
+  k <- XML::xpathApply(parsed_xml,
+                       "//ns:ItemData",
+                       namespaces = .ns_alias(parsed_xml, "ns"),
+                       fun=XML::xmlAncestors,
+                       XML::xmlAttrs)
 
   message("Creating dataframe with data...")
 
@@ -44,24 +44,24 @@ ox_item_data <- function(parsed_xml) {
   pbapply::pblapply(k,
                     data.frame,
                     stringsAsFactors=FALSE) %>%
-    bind_rows() %>%
-    select(study_oid = StudyOID,
-           metadata_version_oid = MetaDataVersionOID,
-           subject_key = SubjectKey,
-           subject_id = StudySubjectID,
-           subject_status = Status,
-           event_oid = StudyEventOID,
-           event_repeat_key = StudyEventRepeatKey,
-           form_oid = FormOID,
-           form_version = Version,
-           form_status = Status.1,
-           group_oid = ItemGroupOID,
-           group_repeat_key = ItemGroupRepeatKey,
-           trasaction_type = TransactionType,
-           item_oid = ItemOID,
-           value = Value) %>%
-    mutate(group_repeat_key = as.numeric(group_repeat_key),
-           event_repeat_key = as.numeric(event_repeat_key)) -> res
+    dplyr::bind_rows() %>%
+    dplyr::select(study_oid = StudyOID,
+                  metadata_version_oid = MetaDataVersionOID,
+                  subject_key = SubjectKey,
+                  subject_id = StudySubjectID,
+                  subject_status = Status,
+                  event_oid = StudyEventOID,
+                  event_repeat_key = StudyEventRepeatKey,
+                  form_oid = FormOID,
+                  form_version = Version,
+                  form_status = Status.1,
+                  group_oid = ItemGroupOID,
+                  group_repeat_key = ItemGroupRepeatKey,
+                  trasaction_type = TransactionType,
+                  item_oid = ItemOID,
+                  value = Value) %>%
+    dplyr::mutate(group_repeat_key = as.numeric(group_repeat_key),
+                  event_repeat_key = as.numeric(event_repeat_key)) -> res
 
   message("Done.")
 

@@ -29,11 +29,13 @@ ox_measurement_units <- function (parsed_xml) {
     stop("parsed_xml should be an object of class XMLInternalDocument", call. = FALSE)
   }
 
-  bind_rows(lapply(xpathApply(parsed_xml,
-                              "//ns:MeasurementUnit",
-                              namespaces = .ns_alias(parsed_xml, "ns"),
-                              fun=xmlAncestors,
-                              xmlAttrs),
-                   data.frame,
-                   stringsAsFactors=FALSE))
+  dplyr::bind_rows(
+    lapply(
+      XML::xpathApply(parsed_xml,
+                      "//ns:MeasurementUnit",
+                      namespaces = .ns_alias(parsed_xml, "ns"),
+                      fun = XML::xmlAncestors,
+                      XML::xmlAttrs),
+      data.frame,
+      stringsAsFactors=FALSE))
 }
