@@ -35,31 +35,32 @@ ox_item_data <- function(parsed_xml) {
                            "//ns:ItemData",
                            namespaces = .ns_alias(doc, "ns"))
 
-  # to store results
-  res_list <- vector("list", length(nodes))
+  # # to store results
+  # res_list <- vector("list", length(nodes))
 
   message("Extracting data from ItemData nodes...")
 
-  # start progress bar
-  pb <- pbapply::startpb(0, length(nodes))
+  # # start progress bar
+  # pb <- pbapply::startpb(0, length(nodes))
+  #
+  # # loop over nodes
+  # for (i in seq_along(1:length(nodes))) {
+  #
+  #   # extract attributes from node and ancestors
+  #   res_list[[i]] <- data.frame(xmlAncestors(nodes[[i]], xmlAttrs),
+  #                          stringsAsFactors = FALSE)
+  #   # update progress bar
+  #   pbapply::setpb(pb, i)
+  # }
+  #
+  # # close and remove progress bar
+  # pbapply::closepb(pb)
+  # rm(pb)
 
-  # loop over nodes
-  for (i in seq_along(1:length(nodes))) {
-
-    # extract attributes from node and ancestors
-    res_list[[i]] <- data.frame(xmlAncestors(nodes[[i]], xmlAttrs),
-                           stringsAsFactors = FALSE)
-    # update progress bar
-    pbapply::setpb(pb, i)
-  }
-
-  # close and remove progress bar
-  pbapply::closepb(pb)
-  rm(pb)
-
-  message("Extraction completed. Creating dataframe...")
-
-  res_df <- dplyr::bind_rows(res_list) %>%
+  res <- pbapply::pblapply(nodes,
+                    FUN = function (x) data.frame(xmlAncestors(x, xmlAttrs),
+                                                  stringsAsFactors = FALSE)) %>%
+    dplyr::bind_rows() %>%
     dplyr::select(study_oid = StudyOID,
                   metadata_version_oid = MetaDataVersionOID,
                   subject_key = SubjectKey,
@@ -80,6 +81,6 @@ ox_item_data <- function(parsed_xml) {
   message("Done")
 
   #return
-  res_df
+  res
 }
 
