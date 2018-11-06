@@ -30,21 +30,36 @@ ox_item_data <- function(parsed_xml) {
     stop("parsed_xml should be an object of class XMLInternalDocument", call. = FALSE)
   }
 
-  message("Reading data... (may take long, please be patient)")
+  message("Getting ItemData nodes...")
+  nodes <- XML::xpathApply(doc,
+                           "//ns:ItemData",
+                           namespaces = .ns_alias(doc, "ns"))
 
-  k <- XML::xpathApply(parsed_xml,
-                       "//ns:ItemData",
-                       namespaces = .ns_alias(parsed_xml, "ns"),
-                       fun=XML::xmlAncestors,
-                       XML::xmlAttrs)
+  # to store results
+  res_list <- vector("list", length(nodes))
 
-  message("Creating dataframe with data...")
+  message("Extracting data from ItemData nodes...")
 
-  # pbapply::pblapply()  is a lapply() with a progress bar
-  pbapply::pblapply(k,
-                    data.frame,
-                    stringsAsFactors=FALSE) %>%
-    dplyr::bind_rows() %>%
+  # start progress bar
+  pb <- pbapply::startpb(0, length(nodes))
+
+  # loop over nodes
+  for (i in seq_along(1:length(nodes))) {
+
+    # extract attributes from node and ancestors
+    res_list[[i]] <- data.frame(xmlAncestors(nodes[[i]], xmlAttrs),
+                           stringsAsFactors = FALSE)
+    # update progress bar
+    pbapply::setpb(pb, i)
+  }
+
+  # close and remove progress bar
+  pbapply::closepb(pb)
+  rm(pb)
+
+  message("Extraction completed. Creating dataframe...")
+
+  res_df <- dplyr::bind_rows(res_list) %>%
     dplyr::select(study_oid = StudyOID,
                   metadata_version_oid = MetaDataVersionOID,
                   subject_key = SubjectKey,
@@ -61,11 +76,10 @@ ox_item_data <- function(parsed_xml) {
                   item_oid = ItemOID,
                   value = Value) %>%
     dplyr::mutate(group_repeat_key = as.numeric(group_repeat_key),
-                  event_repeat_key = as.numeric(event_repeat_key)) -> res
-
-  message("Done.")
+                  event_repeat_key = as.numeric(event_repeat_key))
+  message("Done")
 
   #return
-  res
+  res_df
 }
 
