@@ -30,9 +30,9 @@ ox_sites <- function (parsed_xml){
     stop("parsed_xml should be an object of class XMLInternalDocument", call. = FALSE)
   }
 
-  s <- as.character(xpathApply(parsed_xml, "//ns:StudyName",
+  s <- as.character(XML::xpathApply(parsed_xml, "//ns:StudyName",
                                namespaces=.ns_alias(parsed_xml, "ns"),
-                               fun=xmlValue))
+                               fun = XML::xmlValue))
 
   # reading Study OIDs
   o <- XML::xpathApply(parsed_xml, "//ns:Study",

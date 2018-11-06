@@ -41,7 +41,7 @@ ox_item_data <- function(parsed_xml) {
   # extract attributes for node an ancestors,
   # bind_rows and renames
   res <- pbapply::pblapply(nodes,
-                    FUN = function (x) data.frame(xmlAncestors(x, xmlAttrs),
+                    FUN = function (x) data.frame(XML::xmlAncestors(x, XML::xmlAttrs),
                                                   stringsAsFactors = FALSE)) %>%
     dplyr::bind_rows() %>%
     dplyr::select(study_oid = StudyOID,

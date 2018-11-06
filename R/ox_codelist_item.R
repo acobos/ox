@@ -45,11 +45,11 @@ ox_codelist_item <- function (parsed_xml) {
 
   labels <- data.frame(
     sapply(
-      xpathApply(
+      XML::xpathApply(
         parsed_xml,
         "//ns:CodeList/ns:CodeListItem/ns:Decode/ns:TranslatedText",
         namespaces = .ns_alias(parsed_xml, "ns"),
-        fun=xmlValue),
+        fun=XML::xmlValue),
       unlist),
     stringsAsFactors=FALSE) %>%
     dplyr::select(code_label = 1)
