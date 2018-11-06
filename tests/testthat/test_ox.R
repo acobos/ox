@@ -21,7 +21,7 @@ test_that("gives error when arg is not of expected class", {
 # correct call
 res <- ox(doc)
 
-test_that("returns dataframe with expected variables, at least 1 row", {
+test_that("returns ox object", {
   expect_is(res, "ox")
   # ox list elements
   expect_true("data" %in% names(res))
