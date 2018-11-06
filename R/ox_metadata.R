@@ -42,21 +42,27 @@ ox_metadata <- function (parsed_xml) {
     stop("parsed_xml should be an object of class XMLInternalDocument", call. = FALSE)
   }
 
-  list(global_vars = ox_global_vars(parsed_xml),
-       event_def = ox_event_def(parsed_xml),
-       event_ref = ox_event_ref(parsed_xml),
-       form_def = ox_form_def(parsed_xml),
-       form_ref = ox_form_ref(parsed_xml),
-       group_def = ox_group_def(parsed_xml),
-       group_ref = ox_group_ref(parsed_xml),
-       item_def = ox_item_def(parsed_xml),
-       item_ref = ox_item_ref(parsed_xml),
-       codelist = ox_codelist(parsed_xml),
-       codelist_item = ox_codelist_item(parsed_xml),
-       codelist_ref = ox_codelist_ref(parsed_xml),
-       units = ox_measurement_units(parsed_xml),
-       sites = ox_sites(parsed_xml),
-       subjects = ox_subject_data(parsed_xml))
+  message("Extracting metadata...")
 
+  res <- list(global_vars = ox_global_vars(parsed_xml),
+              event_def = ox_event_def(parsed_xml),
+              event_ref = ox_event_ref(parsed_xml),
+              form_def = ox_form_def(parsed_xml),
+              form_ref = ox_form_ref(parsed_xml),
+              group_def = ox_group_def(parsed_xml),
+              group_ref = ox_group_ref(parsed_xml),
+              item_def = ox_item_def(parsed_xml),
+              item_ref = ox_item_ref(parsed_xml),
+              codelist = ox_codelist(parsed_xml),
+              codelist_item = ox_codelist_item(parsed_xml),
+              codelist_ref = ox_codelist_ref(parsed_xml),
+              units = ox_measurement_units(parsed_xml),
+              sites = ox_sites(parsed_xml),
+              subjects = ox_subject_data(parsed_xml))
+
+  message("Done")
+
+  #return
+  res
 }
 
