@@ -19,5 +19,5 @@ test_that("if file is odm1.3_clinical, then sorry message", {
 
 
 # clean
-rm(doc, file, res)
+rm(doc, file)
 
