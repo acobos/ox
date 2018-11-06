@@ -35,28 +35,11 @@ ox_item_data <- function(parsed_xml) {
                            "//ns:ItemData",
                            namespaces = .ns_alias(doc, "ns"))
 
-  # # to store results
-  # res_list <- vector("list", length(nodes))
-
   message("Extracting data from ItemData nodes...")
 
-  # # start progress bar
-  # pb <- pbapply::startpb(0, length(nodes))
-  #
-  # # loop over nodes
-  # for (i in seq_along(1:length(nodes))) {
-  #
-  #   # extract attributes from node and ancestors
-  #   res_list[[i]] <- data.frame(xmlAncestors(nodes[[i]], xmlAttrs),
-  #                          stringsAsFactors = FALSE)
-  #   # update progress bar
-  #   pbapply::setpb(pb, i)
-  # }
-  #
-  # # close and remove progress bar
-  # pbapply::closepb(pb)
-  # rm(pb)
-
+  # loop over nodes with a progress bar,
+  # extract attributes for node an ancestors,
+  # bind_rows and renames
   res <- pbapply::pblapply(nodes,
                     FUN = function (x) data.frame(xmlAncestors(x, xmlAttrs),
                                                   stringsAsFactors = FALSE)) %>%
