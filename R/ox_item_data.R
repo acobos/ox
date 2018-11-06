@@ -31,9 +31,9 @@ ox_item_data <- function(parsed_xml) {
   }
 
   message("Getting ItemData nodes...")
-  nodes <- XML::xpathApply(doc,
+  nodes <- XML::xpathApply(parsed_xml,
                            "//ns:ItemData",
-                           namespaces = .ns_alias(doc, "ns"))
+                           namespaces = .ns_alias(parsed_xml, "ns"))
 
   message("Extracting data from ItemData nodes...")
 
