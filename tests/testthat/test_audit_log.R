@@ -1,7 +1,7 @@
 context("Audit log")
 
 # getting the file address
-file <- system.file("extdata", "odm1.3_clinical_ext_example.xml",
+file <- system.file("extdata", "odm1.3_full_example_Optimal.xml",
                     package = "ox",
                     mustWork = TRUE)
 # Parsing the xml file
@@ -21,16 +21,13 @@ test_that("gives error when arg is not of expected class", {
 # correct call
 res <- ox_audit_log(doc)
 
-test_that("returns dataframe, at least 1 row", {
+test_that("returns dataframe, at least 1 row, no factors", {
   expect_is(res, "data.frame")
-
-  # no further tests on vars or rows, because if data export does not contain
-  # audit log entries, a void dataframe is returned (0 vars, 0 rows)
-})
-
-test_that("dataframe has no factors", {
   expect_false("factor" %in% unique(sapply(res, class)))
 })
+
+# no further tests, because if export is not odm1.3full,
+# this dataframe will be empty
 
 # clean
 rm(doc, file, res)
