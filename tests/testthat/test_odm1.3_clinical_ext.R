@@ -43,5 +43,5 @@ test_that("ox_xtract_group() works", {
 })
 
 # clean
-rm(doc, file, res)
+rm(doc, file, d)
 
