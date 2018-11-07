@@ -29,13 +29,14 @@ ox_audit_log <- function (parsed_xml) {
     stop("parsed_xml should be an object of class XMLInternalDocument", call. = FALSE)
   }
 
-  message("Reading audit log data... (may take long, please be patient)")
+  message("Looking for audit_log data...")
 
   k <- XML::xpathApply(parsed_xml, "//OpenClinica:AuditLog",
              namespaces = .ns_alias(parsed_xml, "OpenClinica"),
              fun = XML::xmlAncestors,
              XML::xmlAttrs)
 
+  if (length(k) > 0) {
   message("Creating dataframe with audit log data...")
 
   res <- pbapply::pblapply(k,
@@ -47,5 +48,7 @@ ox_audit_log <- function (parsed_xml) {
 
   #return
   res
+  } else message("Sorry, audit_log data was not found.")
+
 }
 
