@@ -2,19 +2,33 @@
 % Please edit documentation in R/ox_subject_data.R
 \name{ox_subject_data}
 \alias{ox_subject_data}
-\title{Title Subject data}
+\title{Subject data in a dataframe}
 \usage{
 ox_subject_data(parsed_xml)
 }
 \arguments{
-\item{parsed_xml}{an object of class XMLInternalDocument}
+\item{parsed_xml}{An object of class \code{XMLInternalDocument}, as returned
+by \code{XML::xmlParse()}.}
 }
 \value{
-dataframe
+A dataframe.
 }
 \description{
-Title Subject data
+Returns a dataframe with study subjects data from a parsed OpenClinica
+odm1.3 .xml export file.
 }
 \examples{
+# The example odm1.3 xml file address
+my_file <- system.file("extdata",
+                       "odm1.3_clinical_ext_example.xml",
+                       package = "ox",
+                       mustWork = TRUE)
 
+# Parsing the xml file
+library(XML)
+doc <- xmlParse(my_file)
+
+# Subject data in a dataframe
+subjects <- ox_subject_data(doc)
+View(subjects)
 }

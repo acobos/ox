@@ -1,42 +1,58 @@
-#' Title
+#' Codelists items in a dataframe
 #'
-#' @param parsed_xml an object of class XMLInternalDocument
-#' @param label_encoding
+#' Returns a dataframe with study codelist items from a parsed OpenClinica
+#' odm1.3_full .xml export file.
 #'
-#' @return dataframe
+#' @param parsed_xml An object of class \code{XMLInternalDocument}, as returned
+#' by \code{XML::xmlParse()}.
+#'
+#' @return A dataframe.
 #' @export
 #'
 #' @examples
+#' # The example odm1.3 xml file address
+#' my_file <- system.file("extdata",
+#'                        "odm1.3_clinical_ext_example.xml",
+#'                        package = "ox",
+#'                        mustWork = TRUE)
 #'
-ox_codelist_item <- function (parsed_xml, label_encoding = "UTF-8") {
+#' # Parsing the xml file
+#' library(XML)
+#' doc <- xmlParse(my_file)
+#'
+#' # Codelists items in a dataframe
+#' codelist_item <- ox_codelist_item(doc)
+#' View(codelist)
+ox_codelist_item <- function (parsed_xml) {
 
-  cli <- bind_rows(lapply(xpathApply(parsed_xml,
-                                     "//ns:CodeList/ns:CodeListItem/ns:Decode/ns:TranslatedText",
-                                     namespaces = ox_alias_default_ns(parsed_xml),
-                                     fun=xmlAncestors,
-                                     xmlAttrs),
-                          data.frame,
-                          stringsAsFactors=FALSE)) %>%
-    select(study_oid = OID,
-           version = OID.1,
-           metadata_version = Name,
-           codelist_oid = OID.2,
-           codelist_name = Name.1,
-           codelist_data_type = DataType,
-           sas_format_name = SASFormatName,
-           coded_value = CodedValue)
+  if (! "XMLInternalDocument" %in% class(parsed_xml)) {
+    stop("parsed_xml should be an object of class XMLInternalDocument", call. = FALSE)
+  }
 
-  labels <- data.frame(sapply(xpathApply(parsed_xml,
-                                         "//ns:CodeList/ns:CodeListItem/ns:Decode/ns:TranslatedText",
-                                         namespaces = ox_alias_default_ns(parsed_xml),
-                                         fun=xmlValue),
-                              unlist),
-                       stringsAsFactors=FALSE) %>%
-    select(code_label = 1)
+  cli <- dplyr::bind_rows(
+    lapply(
+      XML::xpathApply(
+        parsed_xml,
+        "//ns:CodeList/ns:CodeListItem/ns:Decode/ns:TranslatedText",
+        namespaces = .ns_alias(parsed_xml, "ns"),
+        fun = XML::xmlAncestors, XML::xmlAttrs),
+      data.frame, stringsAsFactors=FALSE) ) %>%
+    dplyr::select(codelist_oid = OID.2,
+                  codelist_name = Name.1,
+                  codelist_data_type = DataType,
+                  sas_format_name = SASFormatName,
+                  coded_value = CodedValue)
 
-  # ensure encoding
-  Encoding(labels$code_label) <- label_encoding
-
+  labels <- data.frame(
+    sapply(
+      XML::xpathApply(
+        parsed_xml,
+        "//ns:CodeList/ns:CodeListItem/ns:Decode/ns:TranslatedText",
+        namespaces = .ns_alias(parsed_xml, "ns"),
+        fun=XML::xmlValue),
+      unlist),
+    stringsAsFactors=FALSE) %>%
+    dplyr::select(code_label = 1)
 
   cli %>%
     cbind(labels)

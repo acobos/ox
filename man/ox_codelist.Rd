@@ -2,19 +2,33 @@
 % Please edit documentation in R/ox_codelist.R
 \name{ox_codelist}
 \alias{ox_codelist}
-\title{Title}
+\title{Codelists in a dataframe}
 \usage{
 ox_codelist(parsed_xml)
 }
 \arguments{
-\item{parsed_xml}{an object of class XMLInternalDocument}
+\item{parsed_xml}{An object of class \code{XMLInternalDocument}, as returned
+by \code{XML::xmlParse()}.}
 }
 \value{
-dataframe
+A dataframe.
 }
 \description{
-Title
+Returns a dataframe with study codelists from a parsed OpenClinica
+odm1.3_full .xml export file.
 }
 \examples{
+# The example odm1.3 xml file address
+my_file <- system.file("extdata",
+                       "odm1.3_clinical_ext_example.xml",
+                       package = "ox",
+                       mustWork = TRUE)
 
+# Parsing the xml file
+library(XML)
+doc <- xmlParse(my_file)
+
+# Codelists in a dataframe
+codelist <- ox_codelist(doc)
+View(codelist)
 }

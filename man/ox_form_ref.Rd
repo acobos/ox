@@ -2,19 +2,34 @@
 % Please edit documentation in R/ox_form_ref.R
 \name{ox_form_ref}
 \alias{ox_form_ref}
-\title{Title Form references}
+\title{Form references in a dataframe}
 \usage{
 ox_form_ref(parsed_xml)
 }
 \arguments{
-\item{parsed_xml}{an object of class XMLInternalDocument}
+\item{parsed_xml}{An object of class \code{XMLInternalDocument}, as returned
+by \code{XML::xmlParse()}.}
 }
 \value{
-dataframe
+A dataframe.
 }
 \description{
-Title Form references
+Returns a dataframe with study form references from a parsed OpenClinica
+odm1.3 .xml export file.
 }
 \examples{
+# The example odm1.3 xml file address
+my_file <- system.file("extdata",
+                       "odm1.3_clinical_ext_example.xml",
+                       package = "ox",
+                       mustWork = TRUE)
+
+# Parsing the xml file
+library(XML)
+doc <- xmlParse(my_file)
+
+# Form references in a dataframe
+form_ref <- ox_form_ref(doc)
+View(form_ref)
 
 }

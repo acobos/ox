@@ -2,19 +2,33 @@
 % Please edit documentation in R/ox_global_vars.R
 \name{ox_global_vars}
 \alias{ox_global_vars}
-\title{Title Global study variables}
+\title{Global variables in a list}
 \usage{
 ox_global_vars(parsed_xml)
 }
 \arguments{
-\item{parsed_xml}{an object of class XMLInternalDocument}
+\item{parsed_xml}{An object of class \code{XMLInternalDocument}, as returned
+by \code{XML::xmlParse()}.}
 }
 \value{
-dataframe
+A list.
 }
 \description{
-Title Global study variables
+Returns a list with study global variables from a parsed OpenClinica
+odm1.3 .xml export file.
 }
 \examples{
+# The example odm1.3 xml file address
+my_file <- system.file("extdata",
+                       "odm1.3_clinical_ext_example.xml",
+                       package = "ox",
+                       mustWork = TRUE)
 
+# Parsing the xml file
+library(XML)
+doc <- xmlParse(my_file)
+
+# Global variables in a list
+global_vars <- ox_global_vars(doc)
+View(global_vars)
 }

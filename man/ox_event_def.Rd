@@ -2,21 +2,33 @@
 % Please edit documentation in R/ox_event_def.R
 \name{ox_event_def}
 \alias{ox_event_def}
-\title{Title}
+\title{Event definitions in a dataframe}
 \usage{
-ox_event_def(parsed_xml, name_encoding = "UTF-8")
+ox_event_def(parsed_xml)
 }
 \arguments{
-\item{parsed_xml}{an object of class XMLInternalDocument}
-
-\item{name_encoding}{}
+\item{parsed_xml}{An object of class \code{XMLInternalDocument}, as returned
+by \code{XML::xmlParse()}.}
 }
 \value{
-dataframe
+A dataframe.
 }
 \description{
-Title
+Returns a dataframe with study event definitions from a parsed OpenClinica
+odm1.3 .xml export file.
 }
 \examples{
+# The example odm1.3 xml file address
+my_file <- system.file("extdata",
+                       "odm1.3_clinical_ext_example.xml",
+                       package = "ox",
+                       mustWork = TRUE)
 
+# Parsing the xml file
+library(XML)
+doc <- xmlParse(my_file)
+
+# Event definitions in a dataframe
+event_def <- ox_event_def(doc)
+View(event_def)
 }

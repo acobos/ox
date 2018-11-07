@@ -2,21 +2,33 @@
 % Please edit documentation in R/ox_codelist_item.R
 \name{ox_codelist_item}
 \alias{ox_codelist_item}
-\title{Title}
+\title{Codelists items in a dataframe}
 \usage{
-ox_codelist_item(parsed_xml, label_encoding = "UTF-8")
+ox_codelist_item(parsed_xml)
 }
 \arguments{
-\item{parsed_xml}{an object of class XMLInternalDocument}
-
-\item{label_encoding}{}
+\item{parsed_xml}{An object of class \code{XMLInternalDocument}, as returned
+by \code{XML::xmlParse()}.}
 }
 \value{
-dataframe
+A dataframe.
 }
 \description{
-Title
+Returns a dataframe with study codelist items from a parsed OpenClinica
+odm1.3_full .xml export file.
 }
 \examples{
+# The example odm1.3 xml file address
+my_file <- system.file("extdata",
+                       "odm1.3_clinical_ext_example.xml",
+                       package = "ox",
+                       mustWork = TRUE)
 
+# Parsing the xml file
+library(XML)
+doc <- xmlParse(my_file)
+
+# Codelists items in a dataframe
+codelist_item <- ox_codelist_item(doc)
+View(codelist)
 }

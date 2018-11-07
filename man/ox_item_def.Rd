@@ -2,21 +2,33 @@
 % Please edit documentation in R/ox_item_def.R
 \name{ox_item_def}
 \alias{ox_item_def}
-\title{Title Item definitions}
+\title{Item definitions in a dataframe}
 \usage{
-ox_item_def(parsed_xml, comment_encoding = "UTF-8")
+ox_item_def(parsed_xml)
 }
 \arguments{
-\item{parsed_xml}{an object of class XMLInternalDocument}
-
-\item{comment_encoding}{}
+\item{parsed_xml}{An object of class \code{XMLInternalDocument}, as returned
+by \code{XML::xmlParse()}.}
 }
 \value{
-dataframe
+A dataframe.
 }
 \description{
-Title Item definitions
+Returns a dataframe with study item definitions from a parsed OpenClinica
+odm1.3 .xml export file.
 }
 \examples{
+# The example odm1.3 xml file address
+my_file <- system.file("extdata",
+                       "odm1.3_clinical_ext_example.xml",
+                       package = "ox",
+                       mustWork = TRUE)
 
+# Parsing the xml file
+library(XML)
+doc <- xmlParse(my_file)
+
+# Item definitions in a dataframe
+item_def <- ox_item_def(doc)
+View(item_def)
 }

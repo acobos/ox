@@ -2,19 +2,34 @@
 % Please edit documentation in R/ox_item_ref.R
 \name{ox_item_ref}
 \alias{ox_item_ref}
-\title{Title Item references}
+\title{Item references in a dataframe}
 \usage{
 ox_item_ref(parsed_xml)
 }
 \arguments{
-\item{parsed_xml}{an object of class XMLInternalDocument}
+\item{parsed_xml}{An object of class \code{XMLInternalDocument}, as returned
+by \code{XML::xmlParse()}.}
 }
 \value{
-dataframe
+A dataframe.
 }
 \description{
-Title Item references
+Returns a dataframe with study item references from a parsed OpenClinica
+odm1.3 .xml export file.
 }
 \examples{
+# The example odm1.3 xml file address
+my_file <- system.file("extdata",
+                       "odm1.3_clinical_ext_example.xml",
+                       package = "ox",
+                       mustWork = TRUE)
+
+# Parsing the xml file
+library(XML)
+doc <- xmlParse(my_file)
+
+# Form references in a dataframe
+item_ref <- ox_item_ref(doc)
+View(item_ref)
 
 }

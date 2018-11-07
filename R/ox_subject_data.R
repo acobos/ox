@@ -1,27 +1,41 @@
-#' Title Subject data
+#' Subject data in a dataframe
 #'
-#' @param parsed_xml an object of class XMLInternalDocument
+#' Returns a dataframe with study subjects data from a parsed OpenClinica
+#' odm1.3 .xml export file.
 #'
-#' @return dataframe
+#' @param parsed_xml An object of class \code{XMLInternalDocument}, as returned
+#' by \code{XML::xmlParse()}.
+#'
+#' @return A dataframe.
 #' @export
 #'
 #' @examples
+#' # The example odm1.3 xml file address
+#' my_file <- system.file("extdata",
+#'                        "odm1.3_clinical_ext_example.xml",
+#'                        package = "ox",
+#'                        mustWork = TRUE)
 #'
+#' # Parsing the xml file
+#' library(XML)
+#' doc <- xmlParse(my_file)
+#'
+#' # Subject data in a dataframe
+#' subjects <- ox_subject_data(doc)
+#' View(subjects)
 ox_subject_data <- function (parsed_xml) {
 
-  sd <- xpathSApply(doc, "//ns:ClinicalData/ns:SubjectData",
-                    namespaces=ox_alias_default_ns(parsed_xml),
-                    fun=xmlAttrs)
-
-  # function to get a df for each element in sd
-  to_df <- function (x) {
-    attr(x, "namespaces") <- NULL   # delete namspace attribute
-    t(as.data.frame(x)) -> x_df     # as df
-    names(x_df) <- attr(x, "names") # because names are lost
-    row.names(x_df) <- NULL         # avoid rownames
-    as.data.frame(x_df, stringsAsFactors=FALSE) # again, as df
+  if (! "XMLInternalDocument" %in% class(parsed_xml)) {
+    stop("parsed_xml should be an object of class XMLInternalDocument", call. = FALSE)
   }
 
-  bind_rows(lapply(sd, to_df))   # apply function to all list elements
+  # get subject_data
+  sd <- XML::xpathApply(parsed_xml, "//ns:ClinicalData/ns:SubjectData",
+                        namespaces = .ns_alias(parsed_xml, "ns"),
+                        fun = XML::xmlAttrs)
+  # return
+  dplyr::bind_rows(
+    lapply(sd, function (x) data.frame(as.list(x), stringsAsFactors=FALSE))
+    )
 }
 
