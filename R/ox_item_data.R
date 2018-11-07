@@ -45,7 +45,7 @@ ox_item_data <- function(parsed_xml) {
                     FUN = function (x) data.frame(XML::xmlAncestors(x, XML::xmlAttrs),
                                                   stringsAsFactors = FALSE)) %>%
     dplyr::bind_rows() %>%
-    dplyr::select(study_oid = StudyOID,
+    dplyr::rename(study_oid = StudyOID,
                   metadata_version_oid = MetaDataVersionOID,
                   subject_key = SubjectKey,
                   # subject_id = StudySubjectID,
@@ -62,6 +62,34 @@ ox_item_data <- function(parsed_xml) {
                   value = Value) %>%
     dplyr::mutate(group_repeat_key = as.numeric(group_repeat_key),
                   event_repeat_key = as.numeric(event_repeat_key))
+
+  # droping unneded vars
+  res$FileOID <- NULL
+  res$Description <- NULL
+  res$CreationDateTime <- NULL
+  res$FileType <- NULL
+  res$ODMVersion <- NULL
+  res$schemaLocation <- NULL
+
+  # renaming additional vars in odm1.3_ext and _full,
+  # (these are NOT present in odm1.3_clinical, so I CANNOT assume
+  # they will be always present)
+  if ("StudySubjectID" %in% names(res)) {
+    names(res)[which(names(res) == "StudySubjectID")] <- "subject_id"
+  }
+
+  if ("Status" %in% names(res)) {
+    names(res)[which(names(res) == "Status")] <- "subject_status"
+  }
+
+  if ("Version" %in% names(res)) {
+    names(res)[which(names(res) == "Version")] <- "form_version"
+  }
+
+  if ("Status.1" %in% names(res)) {
+    names(res)[which(names(res) == "Status.1")] <- "form_status"
+  }
+
   message("Done")
 
   #return
