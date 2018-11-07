@@ -18,7 +18,7 @@ groups, and items, in  \code{ox_obj$data}.
   \item \code{events}: unique values of \code{event_oid} in \code{ox_obj$data}.
   \item \code{forms}: unique values of \code{form_oid} in \code{ox_obj$data}.
   \item \code{groups}: unique values of \code{group_oid} in \code{ox_obj$data}.
-  \item\code{assessments}: table of \code{event_oid} by \code{group_oid}, in
+  \item \code{assessments}: table of \code{event_oid} by \code{group_oid}, in
   \code{ox_obj$data}, Shows the number of datapoints (rows in
 \code{ox_obj$data}) per event-group combination.
 }
