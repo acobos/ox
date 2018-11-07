@@ -1,4 +1,4 @@
-#' Creates an \code{ox} object from a parsed OpenClinica xml file
+#' Creates an \code{ox} object
 #'
 #' Returns an object of class \code{ox}, containing data and metadata, from a
 #' parsed OpenClinica odm1.3 .xml export file provided as argument.
