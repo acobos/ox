@@ -82,7 +82,6 @@ res <- ox_codelist_ref(doc)
 test_that("returns dataframe with expected variables, at least 1 row", {
   expect_is(res, "data.frame")
   # vars
-  expect_true("form_oid" %in% names(res))
   expect_true("item_oid" %in% names(res))
   expect_true("codelist_oid" %in% names(res))
   # rows

@@ -32,7 +32,7 @@ test_that("returns dataframe with expected variables, at least 1 row", {
   expect_true("item_length" %in% names(res))
   expect_true("item_sas_field_name" %in% names(res))
   expect_true("item_comment" %in% names(res))
-  expect_true("form_oid" %in% names(res))
+  # expect_true("form_oid" %in% names(res))
   expect_true("item_significant_digits" %in% names(res))
   # rows
   expect_true(nrow(res) >= 1)
