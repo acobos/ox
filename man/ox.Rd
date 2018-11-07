@@ -19,12 +19,14 @@ An object of class \code{ox}, which is a list of two elements:
   \item \code{metadata}: a list, as returned by \code{ox_metadata()}. See
   \code{\link{ox_metadata}} for more details.
 }
-
-A summary S3 method is available. See \code{\link{summary.ox}} for details.
 }
 \description{
 Returns an object of class \code{ox}, containing data and metadata, from a
 parsed OpenClinica odm1.3 .xml export file provided as argument.
+}
+\details{
+A superficial view of the contents of an \code{ox} object can be
+obtained with \code{\link{ox_info}}.
 }
 \examples{
 # The example odm1.3 xml file address
