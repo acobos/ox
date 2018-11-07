@@ -6,11 +6,14 @@
 #' @param parsed_xml An object of class \code{XMLInternalDocument}, as returned
 #' by \code{XML::xmlParse()}.
 #'
-#' @return An object of class \code{ox}, which is a list of two elements: data
-#' and metadata. The data element is a dataframe containig all clinical data.
-#' The metadata element is a list of elements, most of which are dataframes,
-#' collectively describing the study data structure (events, forms, item groups,
-#' items, codelists, measurement units, sites, and subjects).
+#' @return An object of class \code{ox}, which is a list of two elements:
+#'
+#' \itemize{
+#'   \item \code{data}: a dataframe containig all clinical data, as returned by
+#'   \code{ox_item_data()}.
+#'   \item \code{metadata}: a list, as returned by \code{ox_metadata()}. See
+#'   \code{\link{ox_metadata}} for more details.
+#' }
 #'
 #' A summary S3 method is available. See \code{\link{summary.ox}} for details.
 #'

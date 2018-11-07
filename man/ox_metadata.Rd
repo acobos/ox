@@ -11,9 +11,25 @@ ox_metadata(parsed_xml)
 by \code{XML::xmlParse()}.}
 }
 \value{
-A list of elements, most of which are dataframes, collectively
-describing the study data structure (events, forms, item groups,
-items, codelists, measurement units, sites, and subjects).
+A list containing the following elements:
+
+\itemize{
+  \item \code{file_info}: a list with .xml file information.
+  \item \code{global_vars}: a list with global study variables.
+  \item \code{event_def}: a dataframe of event definitions.
+  \item \code{event_ref}: a dataframe of event references.
+  \item \code{form_def}: a dataframe of form definitions.
+  \item \code{form_ref}: a dataframe of form references.
+  \item \code{group_def}: a dataframe of (item) group definitions.
+  \item \code{group_ref}: a dataframe of (item) group references.
+  \item \code{codelist}: a dataframe of codelists.
+  \item \code{codelist_item}: a dataframe of codelist items.
+  \item \code{codelist_ref}: a dataframe of codelist references.
+
+  \item \code{units}: a dataframe of unit definitions.
+  \item \code{sites}: a dataframe of study sites.
+  \item \code{subjects}: a dataframe of study subjects.
+}
 }
 \description{
 Returns a list of dataframes containing metadata, from a parsed OpenClinica
