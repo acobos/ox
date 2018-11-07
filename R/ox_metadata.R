@@ -47,10 +47,10 @@
 #'
 #' # Accessing metadata elements:
 #' # Event definitions
-#' View(md$event_def)
+#' head(md$event_def)
 #'
 #' # Codelist items
-#' View(md$codelist_item)
+#' head(md$codelist_item)
 #'
 #' # etc.
 ox_metadata <- function (parsed_xml) {

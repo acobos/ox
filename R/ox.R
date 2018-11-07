@@ -37,17 +37,17 @@
 #' names(my_study)
 #'
 #' # The data element
-#' View(my_study$data)
+#' head(my_study$data)
 #'
 #' # Elements (names) in metadata
 #' names(my_study$metadata)
 #'
 #' # Accessing metadata elements:
 #' # Event definitions
-#' View(my_study$metadata$event_def)
+#' head(my_study$metadata$event_def)
 #'
 #' # Codelist items
-#' View(my_study$metadata$codelist_item)
+#' head(my_study$metadata$codelist_item)
 #'
 #' # etc.
 ox <- function (parsed_xml) {
