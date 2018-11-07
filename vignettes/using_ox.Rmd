@@ -12,7 +12,7 @@ vignette: >
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = ">"
 )
 ```
 
@@ -28,11 +28,11 @@ To use the `ox` package, you will need to:
 - Dowload on of these file formats (.zip file), and 
 - Unzip the downloaded file.
 
-## The fast way
+## Creating and inspecting an `ox` object
 
-For most users, the most convenient way to proceed is as follows. 
+For most users, the most convenient way will be to create an `ox`object, and later use a specific function to get a tidy dataframe for related set of items.
 
-First, you need to parse the xml file:
+First, you need to load library `XML` to parse the xml file with function `xmlParse()`.
 
 ```{r}
 # your (unziped) xml export file
@@ -40,16 +40,95 @@ xml_file <- system.file("extdata",
                         "odm1.3_clinical_ext_example_Optimal.xml",
                         package = "ox",
                         mustWork = TRUE)
-library(ox)
 
 # Parsing the xml file
+library(XML)
 doc <- xmlParse(xml_file)
 ```
 
+Then load the `ox` library, and use function `ox_all()` to create an `ox` object, by passing it the parse xml file as argument, and assing the result to an object name of your choice. This is a **very** slow process, even for small studies  (like our example file). 
 
-to use function `ox_all()` from a parsed.
+The result is an object of class `ox`, which is a specialized list containing two elements named `data` and `metadata`. The `data` element is a dataframe containing all the data collected on study subjects, in vertical (normalized) form; the `metadata` element is a list of elements, most of which are dataframes, describing events, forms, item groups, items, and codelists.  
 
-## Styles
+```{r}
+library(ox)
+
+# creating an ox object
+d <- ox_all(doc)
+
+class(d)
+names(d)
+
+# see the class of data and metadata elements in d 
+class(d$data)
+class(d$metadata)
+
+# see the names of elements in d$metadata
+names(d$metadata)
+
+# or, get some summary info on the d `ox` object
+ox_info(d)
+```
+
+
+## Tidy dataframes for a related set of items
+
+Many users, will find unpractical to have all study data in single vertical dataframe like `d$data` above. Rather, they will prefer to have a dataframe for each set of related items. 
+
+In OpenClinica, related items are organised in *item groups*. In the previous output we saw there is an item group identified by the `item_oid` "IG_DEMO_DEMOGRAPHICDATA". A dataframe for this particular item group can be obtained with function `ox_xtract_group()`. In so doing, we can optionally use `item_name` instead of `item_oid` to identify variables in the resulting dataframe; and also define factors for items with a codelist. 
+
+```{r}
+library(dplyr)
+
+demo <- ox_xtract_group(d, group = "IG_DEMO_DEMOGRAPHICDATA")
+names(demo)
+
+# same, using item_names (instead of item_oids) to identify variables
+demo_2 <- ox_xtract_group(d, group = "IG_DEMO_DEMOGRAPHICDATA", 
+                          use_item_names = TRUE)
+names(demo_2)
+
+# note that demo_menstrual is numeric
+class(demo_2$demo_menstrual)
+
+# now defining factors for vars with codelists (like demo_menstrual)
+demo_3 <- ox_xtract_group(d, group = "IG_DEMO_DEMOGRAPHICDATA", 
+                          use_item_names = TRUE,
+                          define_factors = TRUE)
+
+class(demo_3$demo_menstrual)
+levels(demo_3$demo_menstrual)
+```
+
+## Tidy dataframes for all and each item groups
+
+In the likely case that you want a tidy dataframe for all and each item group, 
+the following will do the job:
+
+```{r}
+# create a vector with all item group_oid's 
+all_groups <- unique(d$data$group_oid)
+
+# define an empty list to collect results 
+res <- vector("list", length(all_groups)) 
+
+# loop over all_groups to define a dataframe for each
+for (i in 1:length(all_groups)) {
+  message("Extracting group: ", all_groups[i], ".")
+  res[[i]] <- ox_xtract_group(d, all_groups[i], TRUE, TRUE)
+  names(res)[i] <- all_groups[i]
+}
+
+# you can now access each dataframe in the list (e.g., see its varible names) 
+names(res$IG_DEMO_DEMOGRAPHICDATA)
+
+# in case you want to have all dataframes in the global environment
+list2env(res, envir=.GlobalEnv)
+rm(res)
+```
+
+
+## Other functions
 
 The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
 
