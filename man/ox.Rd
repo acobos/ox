@@ -16,6 +16,8 @@ and metadata. The data element is a dataframe containig all clinical data.
 The metadata element is a list of elements, most of which are dataframes,
 collectively describing the study data structure (events, forms, item groups,
 items, codelists, measurement units, sites, and subjects).
+
+A summary S3 method is available. See \code{\link{summary.ox}} for details.
 }
 \description{
 Returns an object of class \code{ox}, containing data and metadata, from a
