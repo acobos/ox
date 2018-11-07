@@ -39,8 +39,7 @@ ox_codelist_ref <- function(parsed_xml) {
                       XML::xmlAttrs),
       data.frame,
       stringsAsFactors=FALSE)) %>%
-    dplyr::select(# form_oid = FormOIDs,
-                  item_oid = OID.2,
+    dplyr::select(item_oid = OID.2,
                   codelist_oid = CodeListOID)
 
 }

@@ -47,8 +47,6 @@ ox_item_def <- function (parsed_xml) {
                   item_length = Length,
                   item_significant_digits = SignificantDigits,
                   item_sas_field_name = SASFieldName,
-                  item_comment = Comment,
-                  # form_oid = FormOIDs
-                  )
+                  item_comment = Comment)
 }
 
