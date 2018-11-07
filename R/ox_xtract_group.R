@@ -80,14 +80,15 @@ ox_xtract_group <- function (ox_obj, group,
   ox_obj$data %>%
     dplyr::filter(group_oid == group) %>%
     dplyr::select(study_oid,
-           subject_id,
-           event_oid,
-           event_repeat_key,
-           form_oid,
-           group_oid,
-           item_oid,
-           group_repeat_key,
-           value) %>%
+                  subject_key,
+                  # subject_id,
+                  event_oid,
+                  event_repeat_key,
+                  form_oid,
+                  group_oid,
+                  item_oid,
+                  group_repeat_key,
+                  value) %>%
     tidyr::spread(item_oid , value) -> k
 
   # to define the var order of non-key vars
@@ -127,8 +128,8 @@ ox_xtract_group <- function (ox_obj, group,
 
       # define factor
       res[[i]] <- factor(res[[i]],
-                        levels = var_dic$coded_value,
-                        labels = var_dic$code_label)
+                         levels = var_dic$coded_value,
+                         labels = var_dic$code_label)
 
     }
   }
