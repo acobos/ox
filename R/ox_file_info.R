@@ -29,7 +29,7 @@ ox_file_info <- function (parsed_xml) {
     stop("parsed_xml should be an object of class XMLInternalDocument", call. = FALSE)
   }
 
-  as.list(XML::xmlAttrs(xmlRoot(parsed_xml)))
+  as.list(XML::xmlAttrs(XML::xmlRoot(parsed_xml)))
 }
 
 
