@@ -37,18 +37,18 @@
 #'
 summary.ox <- function (ox_obj) {
 
-  list(numbers = c(datapoints = nrow(d$data),
-                   subjects = length(unique(d$data$subject_key)),
-                   sites = length(unique(d$data$study_oid)),
-                   events = length(unique(d$data$event_oid)),
-                   forms = length(unique(d$data$form_oid)),
-                   groups = length(unique(d$data$group_oid)),
-                   items = length(unique(d$data$item_oid))),
+  list(numbers = c(datapoints = nrow(ox_obj$data),
+                   subjects = length(unique(ox_obj$data$subject_key)),
+                   sites = length(unique(ox_obj$data$study_oid)),
+                   events = length(unique(ox_obj$data$event_oid)),
+                   forms = length(unique(ox_obj$data$form_oid)),
+                   groups = length(unique(ox_obj$data$group_oid)),
+                   items = length(unique(ox_obj$data$item_oid))),
 
-       events = unique(d$data$event_oid),
-       forms = unique(d$data$form_oid),
-       groups = unique(d$data$group_oid),
-       assessments = with(d$data, table(group_oid, event_oid))
+       events = unique(ox_obj$data$event_oid),
+       forms = unique(ox_obj$data$form_oid),
+       groups = unique(ox_obj$data$group_oid),
+       assessments = with(ox_obj$data, table(group_oid, event_oid))
   )
 }
 
