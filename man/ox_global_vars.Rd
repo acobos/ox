@@ -30,5 +30,6 @@ doc <- xmlParse(my_file)
 
 # Global variables in a list
 global_vars <- ox_global_vars(doc)
-View(global_vars)
+class(global_vars)
+global_vars
 }

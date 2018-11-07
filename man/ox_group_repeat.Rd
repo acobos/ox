@@ -30,6 +30,6 @@ doc <- xmlParse(my_file)
 
 # Group repetitions in a dataframe
 group_repeats <- ox_group_repeat(doc)
-View(group_repeats)
+head(group_repeats)
 
 }

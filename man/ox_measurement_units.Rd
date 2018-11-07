@@ -30,5 +30,5 @@ doc <- xmlParse(my_file)
 
 # Measurement units in a dataframe
 measurement_units <- ox_measurement_units(doc)
-View(measurement_units)
+head(measurement_units)
 }

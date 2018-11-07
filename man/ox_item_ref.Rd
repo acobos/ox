@@ -30,6 +30,6 @@ doc <- xmlParse(my_file)
 
 # Form references in a dataframe
 item_ref <- ox_item_ref(doc)
-View(item_ref)
+head(item_ref)
 
 }

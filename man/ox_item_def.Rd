@@ -30,5 +30,5 @@ doc <- xmlParse(my_file)
 
 # Item definitions in a dataframe
 item_def <- ox_item_def(doc)
-View(item_def)
+head(item_def)
 }

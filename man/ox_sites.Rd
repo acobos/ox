@@ -30,6 +30,6 @@ doc <- xmlParse(my_file)
 
 # Sites in a dataframe
 sites <- ox_sites(doc)
-View(sites)
+head(sites)
 
 }

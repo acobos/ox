@@ -30,5 +30,5 @@ doc <- xmlParse(my_file)
 
 # Event definitions in a dataframe
 event_def <- ox_event_def(doc)
-View(event_def)
+head(event_def)
 }

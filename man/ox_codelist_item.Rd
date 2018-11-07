@@ -29,6 +29,6 @@ library(XML)
 doc <- xmlParse(my_file)
 
 # Codelists items in a dataframe
-codelist_item <- ox_codelist_item(doc)
-View(codelist)
+codelist_items <- ox_codelist_item(doc)
+head(codelist_items)
 }

@@ -30,5 +30,5 @@ doc <- xmlParse(my_file)
 
 # Subject data in a dataframe
 subjects <- ox_subject_data(doc)
-View(subjects)
+head(subjects)
 }

@@ -30,5 +30,5 @@ doc <- xmlParse(my_file)
 
 # Audit log in a dataframe
 audit_log <- ox_audit_log(doc)
-View(audit_log)
+head(audit_log)
 }

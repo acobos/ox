@@ -42,5 +42,5 @@ doc <- xmlParse(my_file)
 
 # Event references in a dataframe
 event_ref <- ox_event_ref(doc)
-View(event_ref)
+head(event_ref)
 }

@@ -30,5 +30,5 @@ doc <- xmlParse(my_file)
 
 # Codelists in a dataframe
 codelist <- ox_codelist(doc)
-View(codelist)
+head(codelist)
 }

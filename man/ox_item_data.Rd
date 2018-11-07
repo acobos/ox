@@ -29,7 +29,7 @@ my_file <- system.file("extdata",
 library(XML)
 doc <- xmlParse(my_file)
 
-# Event definitions in a dataframe
-d <- item_data(doc)
-View(d)
+# Item data in a dataframe
+d <- ox_item_data(doc)
+head(d)
 }

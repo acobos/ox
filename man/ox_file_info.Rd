@@ -30,5 +30,6 @@ doc <- xmlParse(my_file)
 
 # File info in a list
 file_info <- ox_file_info(doc)
+class(file_info)
 file_info
 }
