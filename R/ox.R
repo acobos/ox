@@ -12,6 +12,8 @@
 #' collectively describing the study data structure (events, forms, item groups,
 #' items, codelists, measurement units, sites, and subjects).
 #'
+#' A summary S3 method is available. See \code{\link{summary.ox}} for details.
+#'
 #' @export
 #'
 #' @examples
