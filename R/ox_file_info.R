@@ -22,6 +22,7 @@
 #'
 #' # File info in a list
 #' file_info <- ox_file_info(doc)
+#' class(file_info)
 #' file_info
 ox_file_info <- function (parsed_xml) {
 

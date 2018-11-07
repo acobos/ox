@@ -47,13 +47,15 @@
 #' # Extract data for a group
 #' demo <- ox_xtract_group(my_study,
 #'                         group = "IG_DEMO_DEMOGRAPHICDATA")
+#' head(demo)
 #'
 #' # Same, using item names to identify vars, and
 #' # defining factors for items with codelist
-#' demo <- ox_xtract_group(my_study,
-#'                         group = "IG_DEMO_DEMOGRAPHICDATA",
-#'                         define_factors = TRUE,
-#'                         use_item_names = TRUE)
+#' demo_2 <- ox_xtract_group(my_study,
+#'                           group = "IG_DEMO_DEMOGRAPHICDATA",
+#'                           define_factors = TRUE,
+#'                           use_item_names = TRUE)
+#' head(demo_2)
 #'
 ox_xtract_group <- function (ox_obj, group,
                              define_factors = FALSE,

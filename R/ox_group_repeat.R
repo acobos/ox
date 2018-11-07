@@ -22,7 +22,7 @@
 #'
 #' # Group repetitions in a dataframe
 #' group_repeats <- ox_group_repeat(doc)
-#' View(group_repeats)
+#' head(group_repeats)
 #'
 ox_group_repeat <- function(parsed_xml) {
 

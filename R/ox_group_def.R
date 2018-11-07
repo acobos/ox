@@ -22,7 +22,7 @@
 #'
 #' # Event definitions in a dataframe
 #' group_def <- ox_group_def(doc)
-#' View(group_def)
+#' head(group_def)
 ox_group_def <- function (parsed_xml) {
 
   if (! "XMLInternalDocument" %in% class(parsed_xml)) {

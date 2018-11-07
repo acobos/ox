@@ -22,7 +22,7 @@
 #'
 #' # Codelists in a dataframe
 #' codelist <- ox_codelist(doc)
-#' View(codelist)
+#' head(codelist)
 ox_codelist <- function (parsed_xml) {
 
   if (! "XMLInternalDocument" %in% class(parsed_xml)) {

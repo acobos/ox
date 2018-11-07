@@ -22,7 +22,7 @@
 #'
 #' # Form definitions in a dataframe
 #' form_def <- ox_form_def(doc)
-#' View(event_def)
+#' head(form_def)
 ox_form_def <- function (parsed_xml) {
 
   if (! "XMLInternalDocument" %in% class(parsed_xml)) {

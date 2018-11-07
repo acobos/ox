@@ -33,7 +33,7 @@
 #'
 #' # Event references in a dataframe
 #' event_ref <- ox_event_ref(doc)
-#' View(event_ref)
+#' head(event_ref)
 ox_event_ref <- function (parsed_xml, simplify = FALSE) {
 
   if (! "XMLInternalDocument" %in% class(parsed_xml)) {

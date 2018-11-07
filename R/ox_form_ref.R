@@ -22,7 +22,7 @@
 #'
 #' # Form references in a dataframe
 #' form_ref <- ox_form_ref(doc)
-#' View(form_ref)
+#' head(form_ref)
 #'
 ox_form_ref <- function (parsed_xml) {
   dplyr::bind_rows(

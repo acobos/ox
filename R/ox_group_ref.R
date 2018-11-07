@@ -22,7 +22,7 @@
 #'
 #' # Form references in a dataframe
 #' group_ref <- ox_group_ref(doc)
-#' View(group_ref)
+#' head(group_ref)
 #'
 ox_group_ref <- function (parsed_xml) {
 

@@ -22,7 +22,7 @@
 #'
 #' # Subject data in a dataframe
 #' subjects <- ox_subject_data(doc)
-#' View(subjects)
+#' head(subjects)
 ox_subject_data <- function (parsed_xml) {
 
   if (! "XMLInternalDocument" %in% class(parsed_xml)) {
