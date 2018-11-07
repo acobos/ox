@@ -3,7 +3,7 @@
 #' Provides asuperficial view of an \code{ox} object, including minimal
 #' information on datapoints, subjects, items, (item) groups, forms and events.
 #'
-#' @param ox_obj An object of class \code{ox}, as returned by \code{ox()}.
+#' @param ox_obj An object of class \code{ox}, as returned by \code{ox_all()}.
 #'
 #' @return A list with the following components:
 #'
@@ -32,7 +32,7 @@
 #' doc <- xmlParse(my_file)
 #'
 #' # Creating ox object and getting summary info
-#' my_ox_obj <- ox(doc)
+#' my_ox_obj <- ox_all(doc)
 #' ox_info(my_ox_obj)
 #'
 ox_info <- function (ox_obj) {

@@ -32,7 +32,7 @@
 #' doc <- xmlParse(my_file)
 #'
 #' # Create ox object
-#' my_study <- ox(doc)
+#' my_study <- ox_all(doc)
 #' class(my_study)
 #' names(my_study)
 #'
@@ -50,7 +50,7 @@
 #' head(my_study$metadata$codelist_item)
 #'
 #' # etc.
-ox <- function (parsed_xml) {
+ox_all <- function (parsed_xml) {
 
   if (! "XMLInternalDocument" %in% class(parsed_xml)) {
     stop("parsed_xml should be an object of class XMLInternalDocument", call. = FALSE)

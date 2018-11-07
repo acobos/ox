@@ -12,7 +12,7 @@ library(dplyr)
 library(ox)
 
 # ox object
-d <- ox(doc)
+d <- ox_all(doc)
 
 library(testthat)
 

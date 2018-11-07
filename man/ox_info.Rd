@@ -7,7 +7,7 @@
 ox_info(ox_obj)
 }
 \arguments{
-\item{ox_obj}{An object of class \code{ox}, as returned by \code{ox()}.}
+\item{ox_obj}{An object of class \code{ox}, as returned by \code{ox_all()}.}
 }
 \value{
 A list with the following components:
@@ -39,7 +39,7 @@ library(XML)
 doc <- xmlParse(my_file)
 
 # Creating ox object and getting summary info
-my_ox_obj <- ox(doc)
+my_ox_obj <- ox_all(doc)
 ox_info(my_ox_obj)
 
 }

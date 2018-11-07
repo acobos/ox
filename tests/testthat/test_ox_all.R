@@ -1,4 +1,4 @@
-context("ox()")
+context("ox_all()")
 
 # getting the file address
 file <- system.file("extdata", "odm1.3_full_example_Optimal.xml",
@@ -15,11 +15,11 @@ library(testthat)
 
 # incorrect call
 test_that("gives error when arg is not of expected class", {
-  expect_error(ox(file))
+  expect_error(ox_all(file))
 })
 
 # correct call
-res <- ox(doc)
+res <- ox_all(doc)
 
 test_that("returns ox object", {
   expect_is(res, "ox")

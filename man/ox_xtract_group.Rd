@@ -8,7 +8,7 @@ ox_xtract_group(ox_obj, group, define_factors = FALSE,
   use_item_names = FALSE)
 }
 \arguments{
-\item{ox_obj}{An object of class \code{ox}, as returned by \code{ox::ox()}.}
+\item{ox_obj}{An object of class \code{ox}, as returned by \code{ox::ox_all()}.}
 
 \item{group}{A group of items, as \code{character} value. Must be one
 of the \code{group_oid} values in \code{ox_obj$metadata$group_def}.}
@@ -47,7 +47,7 @@ library(XML)
 doc <- xmlParse(my_file)
 
 # Create ox object
-my_study <- ox(doc)
+my_study <- ox_all(doc)
 
 # Item groups
 unique(my_study$metadata$group_def$group_oid)

@@ -8,7 +8,7 @@
 #' \code{character}. Optionally, items with codelists can be defined as
 #' \code{factor}.
 #'
-#' @param ox_obj An object of class \code{ox}, as returned by \code{ox::ox()}.
+#' @param ox_obj An object of class \code{ox}, as returned by \code{ox::ox_all()}.
 #'
 #' @param group A group of items, as \code{character} value. Must be one
 #' of the \code{group_oid} values in \code{ox_obj$metadata$group_def}.
@@ -39,7 +39,7 @@
 #' doc <- xmlParse(my_file)
 #'
 #' # Create ox object
-#' my_study <- ox(doc)
+#' my_study <- ox_all(doc)
 #'
 #' # Item groups
 #' unique(my_study$metadata$group_def$group_oid)
