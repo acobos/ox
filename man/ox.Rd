@@ -2,7 +2,7 @@
 % Please edit documentation in R/ox.R
 \name{ox}
 \alias{ox}
-\title{Creates an \code{ox} object from a parsed OpenClinica xml file}
+\title{Creates an \code{ox} object}
 \usage{
 ox(parsed_xml)
 }

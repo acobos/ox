@@ -15,7 +15,8 @@
 #'   \code{\link{ox_metadata}} for more details.
 #' }
 #'
-#' A summary S3 method is available. See \code{\link{summary.ox}} for details.
+#' @details A superficial view of the contents of an \code{ox} object can be
+#' obtained with \code{\link{ox_info}}.
 #'
 #' @export
 #'
