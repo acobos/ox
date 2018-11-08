@@ -1,6 +1,6 @@
 #' Data for a group of items, as a tidy dataframe
 #'
-#' Returns a tidy dataframe from a \code{ox} object, containing data for all
+#' Returns a tidy dataframe from a \code{ox_all} object, containing data for all
 #' items of the specified \code{group}. In the resulting dataframe, each item is
 #' a variable, and each row is an observation; dataframe variables are
 #' identified by their \code{item_oid} (or optionally, by their \code{item_name}),
@@ -8,17 +8,17 @@
 #' \code{character}. Optionally, items with codelists can be defined as
 #' \code{factor}.
 #'
-#' @param ox_obj An object of class \code{ox}, as returned by \code{ox::ox_all()}.
+#' @param ox_all_obj An object of class \code{ox_all}, as returned by \code{ox::ox_all()}.
 #'
 #' @param group A group of items, as \code{character} value. Must be one
-#' of the \code{group_oid} values in \code{ox_obj$metadata$group_def}.
+#' of the \code{group_oid} values in \code{ox_all_obj$metadata$group_def}.
 #'
 #' @param define_factors A \code{logical} value. When \code{TRUE}, items
 #' with codelists are defined as factors using the codelist. Defaults to
 #' \code{FALSE}.
 #'
 #' @param use_item_names A \code{logical} value. When \code{TRUE},
-#' \code{item_name} in \code{ox_obj$metadata$item_def} are used as variable
+#' \code{item_name} in \code{ox_all_obj$metadata$item_def} are used as variable
 #' names in the resulting dataframe. Othewise, \code{item_oid} are used.
 #' Defaults to \code{FALSE}.
 #'
@@ -38,7 +38,7 @@
 #' library(XML)
 #' doc <- xmlParse(my_file)
 #'
-#' # Create ox object
+#' # Create ox_all object
 #' my_study <- ox_all(doc)
 #'
 #' # Item groups
@@ -57,29 +57,29 @@
 #'                           use_item_names = TRUE)
 #' head(demo_2)
 #'
-ox_xtract_group <- function (ox_obj, group,
+ox_xtract_group <- function (ox_all_obj, group,
                              define_factors = FALSE,
                              use_item_names = FALSE) {
 
-  if ( class(ox_obj)[1] != "ox") {
-    stop("ox_obj should be an object of class ox", call. = FALSE)
+  if ( class(ox_all_obj)[1] != "ox_all") {
+    stop("ox_all_obj should be an object of class ox_all", call. = FALSE)
   }
 
   if ( class(group) != "character" | length(group) != 1 |
-       !group %in% ox_obj$metadata$group_def$group_oid ) {
-    stop("ox_obj should be an object of class ox", call. = FALSE)
+       !group %in% ox_all_obj$metadata$group_def$group_oid ) {
+    stop("ox_all_obj should be an object of class ox_all", call. = FALSE)
   }
 
   if ( class(define_factors) != "logical" | length(define_factors) > 1) {
-    stop("ox_obj should be an object of class ox", call. = FALSE)
+    stop("ox_all_obj should be an object of class ox_all", call. = FALSE)
   }
 
   if ( class(use_item_names) != "logical" | length(use_item_names) > 1) {
-    stop("ox_obj should be an object of class ox", call. = FALSE)
+    stop("ox_all_obj should be an object of class ox_all", call. = FALSE)
   }
 
   # to denormalize the group data ----
-  ox_obj$data %>%
+  ox_all_obj$data %>%
     dplyr::filter(group_oid == group) %>%
     dplyr::select(study_oid,
                   subject_key,
@@ -94,7 +94,7 @@ ox_xtract_group <- function (ox_obj, group,
     tidyr::spread(item_oid , value) -> k
 
   # to define the var order of non-key vars
-  ox_obj$metadata$item_ref %>%
+  ox_all_obj$metadata$item_ref %>%
     dplyr::filter(group_oid == group) %>%
     dplyr::arrange(item_order_number) %>%
     dplyr::pull(item_oid) -> vars_in_order
@@ -115,8 +115,8 @@ ox_xtract_group <- function (ox_obj, group,
   # define_factors ----
   if (define_factors == TRUE) {
     # res <- define_factors(res)
-    ox_obj$metadata$codelist_ref %>%
-      dplyr::left_join(ox_obj$metadata$codelist_item) %>%
+    ox_all_obj$metadata$codelist_ref %>%
+      dplyr::left_join(ox_all_obj$metadata$codelist_item) %>%
       dplyr::select(item_oid, codelist_oid, coded_value, code_label) -> dic
 
     # identify vars with codelist
@@ -137,7 +137,7 @@ ox_xtract_group <- function (ox_obj, group,
   }
 
   # define vartypes ----
-  ox_obj$metadata$item_def %>%
+  ox_all_obj$metadata$item_def %>%
     dplyr::select(item_oid, item_name, item_data_type, item_significant_digits) %>%
     dplyr::filter(item_oid %in% names(res)[7:length(res)]) -> item_info
 

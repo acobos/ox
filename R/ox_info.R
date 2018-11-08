@@ -47,8 +47,9 @@ ox_info <- function (ox_obj) {
 
        events = unique(ox_obj$data$event_oid),
        forms = unique(ox_obj$data$form_oid),
-       groups = unique(ox_obj$data$group_oid),
-       assessments = with(ox_obj$data, table(group_oid, event_oid))
+       groups = unique(ox_obj$data$group_oid)
+       # for future versions, with optional args
+       # assessments = with(ox_obj$data, table(group_oid, event_oid))
   )
 }
 

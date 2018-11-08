@@ -22,7 +22,7 @@ test_that("gives error when arg is not of expected class", {
 res <- ox_all(doc)
 
 test_that("returns ox object", {
-  expect_is(res, "ox")
+  expect_is(res, "ox_all")
   # ox list elements
   expect_true("data" %in% names(res))
   expect_true("metadata" %in% names(res))

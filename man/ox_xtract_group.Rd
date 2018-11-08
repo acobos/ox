@@ -4,21 +4,21 @@
 \alias{ox_xtract_group}
 \title{Data for a group of items, as a tidy dataframe}
 \usage{
-ox_xtract_group(ox_obj, group, define_factors = FALSE,
+ox_xtract_group(ox_all_obj, group, define_factors = FALSE,
   use_item_names = FALSE)
 }
 \arguments{
-\item{ox_obj}{An object of class \code{ox}, as returned by \code{ox::ox_all()}.}
+\item{ox_all_obj}{An object of class \code{ox_all}, as returned by \code{ox::ox_all()}.}
 
 \item{group}{A group of items, as \code{character} value. Must be one
-of the \code{group_oid} values in \code{ox_obj$metadata$group_def}.}
+of the \code{group_oid} values in \code{ox_all_obj$metadata$group_def}.}
 
 \item{define_factors}{A \code{logical} value. When \code{TRUE}, items
 with codelists are defined as factors using the codelist. Defaults to
 \code{FALSE}.}
 
 \item{use_item_names}{A \code{logical} value. When \code{TRUE},
-\code{item_name} in \code{ox_obj$metadata$item_def} are used as variable
+\code{item_name} in \code{ox_all_obj$metadata$item_def} are used as variable
 names in the resulting dataframe. Othewise, \code{item_oid} are used.
 Defaults to \code{FALSE}.}
 }
@@ -27,7 +27,7 @@ A dataframe with study, subject, event, form, group and group repeat keys,
 plus all items in \code{group} as variables.
 }
 \description{
-Returns a tidy dataframe from a \code{ox} object, containing data for all
+Returns a tidy dataframe from a \code{ox_all} object, containing data for all
 items of the specified \code{group}. In the resulting dataframe, each item is
 a variable, and each row is an observation; dataframe variables are
 identified by their \code{item_oid} (or optionally, by their \code{item_name}),
@@ -46,7 +46,7 @@ my_file <- system.file("extdata",
 library(XML)
 doc <- xmlParse(my_file)
 
-# Create ox object
+# Create ox_all object
 my_study <- ox_all(doc)
 
 # Item groups

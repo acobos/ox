@@ -2,7 +2,7 @@
 % Please edit documentation in R/ox_all.R
 \name{ox_all}
 \alias{ox_all}
-\title{Creates an \code{ox} object}
+\title{Creates an \code{ox_all} object}
 \usage{
 ox_all(parsed_xml)
 }
@@ -11,7 +11,7 @@ ox_all(parsed_xml)
 by \code{XML::xmlParse()}.}
 }
 \value{
-An object of class \code{ox}, which is a list of two elements:
+An object of class \code{ox_all}, which is a list of two elements:
 
 \itemize{
   \item \code{data}: a dataframe containig all clinical data, as returned by
@@ -21,11 +21,11 @@ An object of class \code{ox}, which is a list of two elements:
 }
 }
 \description{
-Returns an object of class \code{ox}, containing data and metadata, from a
+Returns an object of class \code{ox_all}, containing data and metadata, from a
 parsed OpenClinica odm1.3 .xml export file provided as argument.
 }
 \details{
-A superficial view of the contents of an \code{ox} object can be
+A superficial view of the contents of an \code{ox_all} object can be
 obtained with \code{\link{ox_info}}.
 }
 \examples{
@@ -39,23 +39,23 @@ my_file <- system.file("extdata",
 library(XML)
 doc <- xmlParse(my_file)
 
-# Create ox object
-my_study <- ox_all(doc)
-class(my_study)
-names(my_study)
+# Create ox_all object
+d <- ox_all(doc)
+class(d)
+names(d)
 
 # The data element
 head(my_study$data)
 
 # Elements (names) in metadata
-names(my_study$metadata)
+names(d$metadata)
 
 # Accessing metadata elements:
 # Event definitions
-head(my_study$metadata$event_def)
+head(d$metadata$event_def)
 
 # Codelist items
-head(my_study$metadata$codelist_item)
+head(d$metadata$codelist_item)
 
 # etc.
 }
