@@ -45,7 +45,7 @@ class(d)
 names(d)
 
 # The data element
-head(my_study$data)
+head(d$data)
 
 # Elements (names) in metadata
 names(d$metadata)
