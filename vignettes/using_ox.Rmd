@@ -28,9 +28,9 @@ To use the `ox` package, you will need to:
 - Dowload on of these file formats (.zip file), and 
 - Unzip the downloaded file.
 
-## Creating and inspecting an `ox` object
+## Creating and inspecting an `ox_all` object
 
-For most users, the most convenient way will be to create an `ox`object, and later use a specific function to get a tidy dataframe for related set of items.
+For most users, the most convenient way will be to create an `ox_all` object, and later use a specific function to get a tidy dataframe for related set of items.
 
 First, you need to load library `XML` to parse the xml file with function `xmlParse()`.
 
@@ -46,9 +46,9 @@ library(XML)
 doc <- xmlParse(xml_file)
 ```
 
-Then load the `ox` library, and use function `ox_all()` to create an `ox` object, by passing it the parse xml file as argument, and assing the result to an object name of your choice. This is a **very** slow process, even for small studies  (like our example file). 
+Then load the `ox` library, and use function `ox_all()` to create an `ox_all` object, by passing it the parse xml file as argument, and assing the result to an object name of your choice. This is a VERY slow process, even for small studies (like our example file). A progress bar, and some messages, will be displayed in the console (not seen in the example below).  
 
-The result is an object of class `ox`, which is a specialized list containing two elements named `data` and `metadata`. The `data` element is a dataframe containing all the data collected on study subjects, in vertical (normalized) form; the `metadata` element is a list of elements, most of which are dataframes, describing events, forms, item groups, items, and codelists.  
+The result is an object of class `ox_all`, which is a specialized list containing two elements named `data` and `metadata`. The `data` element is a dataframe containing all the data collected on study subjects, in vertical (normalized) form; the `metadata` element is a list of elements, most of which are dataframes, describing events, forms, item groups, items, and codelists.  
 
 ```{r}
 library(ox)
