@@ -1,10 +1,10 @@
 ---
-title: "Getting OpenClinica data into R"
+title: "Using ox to get OpenClinica data into R"
 author: "Albert Cobos"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Getting OpenClinica data into R}
+  %\VignetteIndexEntry{Using ox to get OpenClinica data into R}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-The `ox` package provides functions to get [OpenClinica](https://www.openclinica.com/community-edition-open-source-edc/) data into R. OpenClinica offers several formats for export files, the most complete ones being the CDISC ODM formats. 
+The `ox` package provides functions to get [OpenClinica](https://www.openclinica.com/community-edition-open-source-edc/) data into R. OpenClinica offers several export file formats, the most complete ones being the CDISC ODM formats. 
 
 The `ox` package has been developped and tested with the three availabe ODM 1.3 export formats in OpenClinica version 3.3:  
 
@@ -24,15 +24,22 @@ The `ox` package has been developped and tested with the three availabe ODM 1.3 
 - CDISC ODM XML 1.3 Clinical Data with OpenClinica extensions
 - CDISC ODM XML 1.3 Full with OpenClinica extensions
 
-To use the `ox` package, you will need to:
-- Dowload on of these file formats (.zip file), and 
-- Unzip the downloaded file.
+To use the `ox` package, you will need to dowload on of these file formats (.zip file), and unzip the downloaded file.
 
-## Creating and inspecting an `ox_all` object
+In the following, we assume some familiarity with [OpenClinica OIDs](https://docs.openclinica.com/3.1/rules/oid-overview). In an attempt to follow [the tidyverse style guide](https://style.tidyverse.org/syntax.html), we named objects using lower case letters,  and underscores to separate words. OpenClinica uses CamelCase style instead. So, StudyOID in OpenClinica becomes `study_oid` in `ox`, and so on. Less obvious equivalences between OpenClinica OIDs (and other terms used in ODM XML 1.3 export files) and `ox` object names are:
 
-For most users, the most convenient way will be to create an `ox_all` object, and later use a specific function to get a tidy dataframe for related set of items.
+```{r, echo = FALSE, message=FALSE}
+library(dplyr)
+data.frame(OpenClinica = c("StudySubjectID", "Status", "StudyEventOID", "StudyEventRepeatKey", "Status.1",
+  "Version", "ItemGroupOID", "ItemGroupRepeatKey"),
+  ox = c("subject_id", "subject_status", "event_oid", "event_repeat_key", "form_status",
+  "form_version", "group_oid", "group_repeat_key")) %>% knitr::kable()
+```
 
-First, you need to load library `XML` to parse the xml file with function `xmlParse()`.
+
+## Quick start
+
+First, load the `XML` package and parse the xml file with function `xmlParse()` from this package.
 
 ```{r}
 # your (unziped) xml export file
@@ -41,127 +48,170 @@ xml_file <- system.file("extdata",
                         package = "ox",
                         mustWork = TRUE)
 
-# Parsing the xml file
-library(XML)
-doc <- xmlParse(xml_file)
+
+library(XML)                    # load the XML package 
+doc <- xmlParse(xml_file)       # parse the xml file
 ```
 
-Then load the `ox` library, and use function `ox_all()` to create an `ox_all` object, by passing it the parse xml file as argument, and assing the result to an object name of your choice. This is a VERY slow process, even for small studies (like our example file). A progress bar, and some messages, will be displayed in the console (not seen in the example below).  
+Then, load the `ox` package, and use function `ox_all()` (passing it the parsed xml file as argument) to create an `ox_all` object. This is a *VERY* slow process, even for small studies (like our example file). A progress bar, and some messages, will be displayed in the console (not seen in the example below). 
 
-The result is an object of class `ox_all`, which is a specialized list containing two elements named `data` and `metadata`. The `data` element is a dataframe containing all the data collected on study subjects, in vertical (normalized) form; the `metadata` element is a list of elements, most of which are dataframes, describing events, forms, item groups, items, and codelists.  
+```{r message=FALSE}
+library(ox)                     # load the ox package
+d <- ox_all(doc)                # create an ox_all object
+class(d)                        # see its class
+```
+
+The result is an object of class `ox_all`, which is nothing but a specialized list, containing all the relevant data and metadata (for details on its contents, see section on `ox_all` objects below). 
+
+This might be enough to meet the needs of some users, but many others will prefer to have the data in the more familiar format of tidy dataframes of related items. In OpenClinica, related items are organised in *item groups*, each of which is identified in the `ox_all` object by a `group_oid`. Let's see what are the `group_oid``s in the data: 
 
 ```{r}
-library(ox)
+unique(d$data$group_oid)      # to access the group_oid's
 
-# creating an ox object
-d <- ox_all(doc)
+```
 
-class(d)
+Note that one of the `group_oid`'s is "IG_DEMO_DEMOGRAPHICDATA". The following code uses function `ox_xtract_group()` to get a tidy dataframe with all items in the specified group. The first seven variables in this dataframe are keys identifying the site (`study_oid`), subject (`subject_key`), event (`event_oid`and `event_repeat_key`), form (`form_oid`), item group (`group_oid`), and repetition number (`group_repeat_key`). Because demographic data was (as usually is) recorded just once for each patient, all keys but the `study_oid` and the `subject_key` are constant in this dataframe. We do not show these constant keys, just to keep the output more readable.
+
+
+```{r}
+demo <- ox_xtract_group(d, group = "IG_DEMO_DEMOGRAPHICDATA")
+
+class(demo)
+
+names(demo)
+
+# a subset of demo (variables)constant keys not shown)
+head(demo[, c(1,2,8,9)])
+
+```
+
+The last two variables, `I_DEMO_DEMO_AGE` and `I_DEMO_DEMO_MENSTRUAL`, are the actual items in this item group, and have been named using the `item_oid`. This is default behaviour of the `ox_xtract_group()` function, but we can use their `item_name` instead:
+
+```{r}
+demo <- ox_xtract_group(d, group = "IG_DEMO_DEMOGRAPHICDATA",
+                        use_item_names = TRUE)
+
+head(demo[,c(1,2,8,9)])  
+```
+
+Last, we may want to have factors defined for items having an associated codelist, as is the case of the `I_DEMO_DEMO_MENSTRUAL` item. 
+
+```{r}
+demo <- ox_xtract_group(d, group = "IG_DEMO_DEMOGRAPHICDATA",
+                        use_item_names = TRUE,
+                        define_factors = TRUE)
+
+head(demo[,c(1,2,8,9)])
+
+class(demo$demo_menstrual)
+
+levels(demo$demo_menstrual)
+```
+
+ 
+## Tidy dataframes for all
+
+Very likely, you want a tidy dataframe for each and every item group. The following code does the job.  
+
+```{r, message=FALSE}
+# create a vector with all the group_oid's in the data 
+grps <- unique(d$data$group_oid)
+
+# create an empty list of same length as grps to collect results 
+res <- vector("list", length(grps)) 
+
+# loop over grps and extract a dataframe for each
+for (i in 1:length(grps)) {
+  
+  # get dataframe for the i-th grps, using item names, defining factors, 
+  # and save as i-th res element 
+  res[[i]] <- ox_xtract_group(d, grps[i], TRUE, TRUE)
+  
+  # name the i-th res as the i-th grps 
+  names(res)[i] <- grps[i]
+}
+
+```
+
+Note we got the warnings on `Unknown columns: ...` . This is because some items have no data at all, and are excluded from the dataframe of the corresponding group.  
+
+You can now access any dataframe in the `res` list. Let's see, for instance, a bit of the dataframe containing demo data. If you dislike having all dataframes in a list, and prefer to have them all in the Global Environment, use `list2env()`. 
+
+```{r}
+# a bit of the demo data 
+head(res$IG_DEMO_DEMOGRAPHICDATA)[,c(1,2,8,9)]
+
+# res list elements to the Global Environment (and removing res)
+list2env(res, envir=.GlobalEnv)
+rm(res)
+
+# removing other unneded objects
+rm(demo, doc, grps, i, xml_file)
+
+# see what's in the Global Environment
+ls()
+```
+
+
+## Contents of `ox_all` objects
+
+`ox_all` objects are lists with two elements, named `data` and `metadata`.
+
+```{r}
+length(d)
 names(d)
+```
 
-# see the class of data and metadata elements in d 
-class(d$data)
+The `data` element is a dataframe containing all the data collected on study subjects, in vertical (normalized) form. The number of columns in this dataframe depends on the 1.3 export format but, in all of them, item data values are found in a `value`column, as well as all necessary keys to identidy the vallue (`study_oid`, `subject_key`, `event_oid`, etc.).
+
+the `metadata` element is a list, most of whose elements are dataframes describing events, forms, item groups, items, and codelists (the first two elements however, are lists containing file information and global variables). It is then easy to access any of those dataframes. 
+
+```{r}
 class(d$metadata)
-
-# see the names of elements in d$metadata
 names(d$metadata)
 
-# or, get some summary info on the d `ox` object
+# a look to the study event definitions (cols 4 to 7)
+d$metadata$event_def[, 4:7] 
+```
+
+Synthetic (and limited) information of an `ox_all` object can be obtained with function `ox_info()`.
+
+```{r}
 ox_info(d)
 ```
 
 
-## Tidy dataframes for a related set of items
+## Functions in `ox`
 
-Many users, will find unpractical to have all study data in single vertical dataframe like `d$data` above. Rather, they will prefer to have a dataframe for each set of related items. 
+The following functions are provided in the `ox` package:
 
-In OpenClinica, related items are organised in *item groups*. In the previous output we saw there is an item group identified by the `item_oid` "IG_DEMO_DEMOGRAPHICDATA". A dataframe for this particular item group can be obtained with function `ox_xtract_group()`. In so doing, we can optionally use `item_name` instead of `item_oid` to identify variables in the resulting dataframe; and also define factors for items with a codelist. 
+- To create `ox_all` objects and work with them:
+    - ox_all 
+    - ox_xtract_group
+    - ox_info
+    
+- To get data from a parsed xml file:
+    - ox_item_data 
+    - ox_audit_log
 
-```{r}
-library(dplyr)
-
-demo <- ox_xtract_group(d, group = "IG_DEMO_DEMOGRAPHICDATA")
-names(demo)
-
-# same, using item_names (instead of item_oids) to identify variables
-demo_2 <- ox_xtract_group(d, group = "IG_DEMO_DEMOGRAPHICDATA", 
-                          use_item_names = TRUE)
-names(demo_2)
-
-# note that demo_menstrual is numeric
-class(demo_2$demo_menstrual)
-
-# now defining factors for vars with codelists (like demo_menstrual)
-demo_3 <- ox_xtract_group(d, group = "IG_DEMO_DEMOGRAPHICDATA", 
-                          use_item_names = TRUE,
-                          define_factors = TRUE)
-
-class(demo_3$demo_menstrual)
-levels(demo_3$demo_menstrual)
-```
-
-## Tidy dataframes for all and each item groups
-
-In the likely case that you want a tidy dataframe for all and each item group, 
-the following will do the job:
-
-```{r}
-# create a vector with all item group_oid's 
-all_groups <- unique(d$data$group_oid)
-
-# define an empty list to collect results 
-res <- vector("list", length(all_groups)) 
-
-# loop over all_groups to define a dataframe for each
-for (i in 1:length(all_groups)) {
-  message("Extracting group: ", all_groups[i], ".")
-  res[[i]] <- ox_xtract_group(d, all_groups[i], TRUE, TRUE)
-  names(res)[i] <- all_groups[i]
-}
-
-# you can now access each dataframe in the list (e.g., see its varible names) 
-names(res$IG_DEMO_DEMOGRAPHICDATA)
-
-# in case you want to have all dataframes in the global environment
-list2env(res, envir=.GlobalEnv)
-rm(res)
-```
+- To get metadata from a parsed xml file:
+    - ox_metadata 
+    - ox_event_def 
+    - ox_event_ref 
+    - ox_file_info 
+    - ox_form_def 
+    - ox_form_ref 
+    - ox_global_vars 
+    - ox_group_def 
+    - ox_group_ref 
+    - ox_group_repeat  
+    - ox_item_def 
+    - ox_item_ref 
+    - ox_codelist 
+    - ox_codelist_item 
+    - ox_codelist_ref 
+    - ox_measurement_units 
+    - ox_sites 
+    - ox_subject_data 
 
 
-## Other functions
-
-The `html_vignette` template includes a basic CSS theme. To override this theme you can specify your own CSS in the document metadata as follows:
-
-    output: 
-      rmarkdown::html_vignette:
-        css: mystyles.css
-
-## Figures
-
-The figure sizes have been customised so that you can easily put two images side-by-side. 
-
-```{r, fig.show='hold'}
-plot(1:10)
-plot(10:1)
-```
-
-You can enable figure captions by `fig_caption: yes` in YAML:
-
-    output:
-      rmarkdown::html_vignette:
-        fig_caption: yes
-
-Then you can use the chunk option `fig.cap = "Your figure caption."` in **knitr**.
-
-## More Examples
-
-You can write math expressions, e.g. $Y = X\beta + \epsilon$, footnotes^[A footnote here.], and tables, e.g. using `knitr::kable()`.
-
-```{r, echo=FALSE, results='asis'}
-knitr::kable(head(mtcars, 10))
-```
-
-Also a quote using `>`:
-
-> "He who gives up [code] safety for [code] speed deserves neither."
-([via](https://twitter.com/hadleywickham/status/504368538874703872))
