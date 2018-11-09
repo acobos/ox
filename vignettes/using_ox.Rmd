@@ -213,5 +213,3 @@ The following functions are provided in the `ox` package:
     - ox_measurement_units 
     - ox_sites 
     - ox_subject_data 
-
-
