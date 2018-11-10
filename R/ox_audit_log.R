@@ -44,6 +44,9 @@ ox_audit_log <- function (parsed_xml) {
                            stringsAsFactors=FALSE) %>%
     dplyr::bind_rows()
 
+  # change CamelCase by snake_case
+  names(res) <- snakecase::to_snake_case(names(res))
+
   message("Done.")
 
   #return
