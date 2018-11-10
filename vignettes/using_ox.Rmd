@@ -81,7 +81,7 @@ class(demo)
 names(demo)
 
 # a subset of demo (variables)constant keys not shown)
-head(demo[, c(1,2,8,9)])
+head(demo[, c(1,3,9,10)])
 
 ```
 
@@ -91,7 +91,7 @@ The last two variables, `I_DEMO_DEMO_AGE` and `I_DEMO_DEMO_MENSTRUAL`, are the a
 demo <- ox_xtract_group(d, group = "IG_DEMO_DEMOGRAPHICDATA",
                         use_item_names = TRUE)
 
-head(demo[,c(1,2,8,9)])  
+head(demo[,c(1,3,9,10)])  
 ```
 
 Last, we may want to have factors defined for items having an associated codelist, as is the case of the `I_DEMO_DEMO_MENSTRUAL` item. 
@@ -101,7 +101,7 @@ demo <- ox_xtract_group(d, group = "IG_DEMO_DEMOGRAPHICDATA",
                         use_item_names = TRUE,
                         define_factors = TRUE)
 
-head(demo[,c(1,2,8,9)])
+head(demo[,c(1,3,9,10)])
 
 class(demo$demo_menstrual)
 
@@ -139,7 +139,7 @@ You can now access any dataframe in the `res` list. Let's see, for instance, a b
 
 ```{r}
 # a bit of the demo data 
-head(res$IG_DEMO_DEMOGRAPHICDATA)[,c(1,2,8,9)]
+head(res$IG_DEMO_DEMOGRAPHICDATA)[,c(1,3,9,10)]
 
 # res list elements to the Global Environment (and removing res)
 list2env(res, envir=.GlobalEnv)
@@ -171,7 +171,7 @@ class(d$metadata)
 names(d$metadata)
 
 # a look to the study event definitions (cols 4 to 7)
-d$metadata$event_def[, 4:7] 
+d$metadata$event_def 
 ```
 
 Synthetic (and limited) information of an `ox_all` object can be obtained with function `ox_info()`.
