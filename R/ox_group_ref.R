@@ -26,21 +26,12 @@
 #'
 ox_group_ref <- function (parsed_xml) {
 
-  dplyr::bind_rows(
-    lapply(
-      XML::xpathApply(parsed_xml,
-                      "//ns:ItemGroupRef",
-                      namespaces = .ns_alias(parsed_xml, "ns"),
-                      fun = XML::xmlAncestors,
-                      XML::xmlAttrs),
-      data.frame,
-      stringsAsFactors=FALSE)) %>%
-    dplyr::select(study_oid = OID,
-                  version = OID.1,
-                  metadata_version = Name,
-                  form_oid = OID.2,
-                  form_name = Name.1,
-                  form_repeating = Repeating,
+  if (! "XMLInternalDocument" %in% class(parsed_xml)) {
+    stop("parsed_xml should be an object of class XMLInternalDocument", call. = FALSE)
+  }
+
+  .attrs_node_and_ancestors(parsed_xml, "ItemGroupRef") %>%
+    dplyr::select(form_oid = OID.2,
                   group_oid = ItemGroupOID,
                   group_mandatory = Mandatory)
 }

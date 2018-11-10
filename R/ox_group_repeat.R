@@ -30,23 +30,8 @@ ox_group_repeat <- function(parsed_xml) {
     stop("parsed_xml should be an object of class XMLInternalDocument", call. = FALSE)
   }
 
-  dplyr::bind_rows(
-    lapply(
-      XML::xpathApply(parsed_xml,
-                      "//oc:ItemGroupRepeat",
-                      namespaces = .ns_alias(parsed_xml, "oc"),
-                      fun = XML::xmlAncestors,
-                      XML::xmlAttrs),
-      data.frame,
-      stringsAsFactors=FALSE)) %>%
-    dplyr::select(study_oid = OID,
-                  version = OID.1,
-                  metadata_version = Name,
-                  group_oid = OID.2,
-                  group_name = Name.1,
-                  group_repeating = Repeating,
-                  sas_dataset_name = SASDatasetName,
-                  form_oid = FormOID,
+  .attrs_node_and_ancestors(parsed_xml, "ItemGroupRepeat", "oc") %>%
+    dplyr::select(group_oid = OID.2,
                   show_group = ShowGroup,
                   repeat_number = RepeatNumber,
                   repeat_max = RepeatMax)

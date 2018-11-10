@@ -6,17 +6,6 @@
 #' @param parsed_xml An object of class \code{XMLInternalDocument}, as returned
 #' by \code{XML::xmlParse()}.
 #'
-#' @param simplify A \code{logical} indicting whether or not to simplify output
-#' whenever possible (see details). Defaults to \code{FALSE}.
-#'
-#' @details In OpenClinica, diferent sites (\code{study_oid}) may have diferent
-#' events defined. For this reason, by default (\code{simplify = FALSE}), events
-#' (\code{event_oid}) and event characteristics (\code{event_order},
-#' \code{event_mandatory}) are returned for each site (\code{study_oid}). However, in
-#' most studies, all sites have the same events and characteristics. If this is
-#' the case, and \code{simplify = TRUE}, only unique combinations of
-#' \code{event_oid}, \code{event_order} and \code{event_mandatory} are returned.
-#'
 #' @return A dataframe.
 #' @export
 #'
@@ -34,59 +23,28 @@
 #' # Event references in a dataframe
 #' event_ref <- ox_event_ref(doc)
 #' head(event_ref)
-ox_event_ref <- function (parsed_xml, simplify = FALSE) {
+ox_event_ref <- function (parsed_xml) {
 
   if (! "XMLInternalDocument" %in% class(parsed_xml)) {
     stop("parsed_xml should be an object of class XMLInternalDocument", call. = FALSE)
   }
 
-  if (!("logical" %in% class(simplify) & length(simplify) == 1)) {
-    stop("simplify should be a logical value", call. = FALSE)
-  }
-
-  dplyr::bind_rows(
-    lapply(
-      XML::xpathApply(parsed_xml,
-                      "//ns:StudyEventRef",
-                      namespaces = .ns_alias(parsed_xml, "ns"),
-                      fun = XML::xmlAncestors,
-                      XML::xmlAttrs),
-      data.frame, stringsAsFactors=FALSE)) %>%
+  .attrs_node_and_ancestors(parsed_xml, "StudyEventRef") %>%
     dplyr::select(study_oid = OID,
-                  version = OID.1,
-                  metadata_version = Name,
                   event_oid = StudyEventOID,
                   event_order = OrderNumber,
                   event_mandatory = Mandatory) %>%
-    dplyr::mutate(event_order = as.numeric(event_order)) %>%
-    dplyr::arrange(study_oid, version, event_order) -> e_r
+    dplyr::mutate(event_order = as.numeric(event_order)) -> res
 
-  # Pending to decide if allow for simplification when all sites have same data in
-  # event_oid, event_order and event_mandatory:
-  # select(event_oid:event_mandatory) %>% unique()
+  # to see if all study_oid have same info, to simplify result if possible
+  res %>% dplyr::select(-study_oid) %>% unique() -> uniques
+  unique(res$study_oid) %>% length() -> studies
 
-  if (simplify) {
+  if (nrow(uniques) * studies == nrow(res)) {
+    uniques %>%
+      dplyr::arrange(event_order)
+  } else {res %>%
+      dplyr::arrange(study_oid, event_order)}
 
-    # Verify that can be simplified. Assess conditions:
-
-    # should be true
-    with(e_r, table(table(study_oid, event_oid))) -> s_by_e
-    a <- s_by_e["1"] == nrow(e_r)
-
-    # should be true
-    b <- length(unique(e_r$event_oid, e_r$event_order)) == length(unique(e_r$event_oid))
-
-    # should be true
-    c <- length(unique(e_r$event_oid, e_r$event_mandatory)) == length(unique(e_r$event_oid))
-
-    if (a & b & c) {
-      e_r %>%
-        select(event_oid:event_mandatory) %>%
-        unique() -> e_r
-      }
-  }
-
-  # return
-  e_r
-  }
+}
 

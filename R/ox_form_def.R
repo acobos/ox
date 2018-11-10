@@ -30,18 +30,10 @@ ox_form_def <- function (parsed_xml) {
   }
 
   # return
-  dplyr::bind_rows(lapply(XML::xpathApply(parsed_xml,
-                              "//ns:FormDef",
-                              namespaces = .ns_alias(parsed_xml, "ns"),
-                              fun = XML::xmlAncestors,
-                              XML::xmlAttrs),
-                   data.frame, stringsAsFactors=FALSE)) %>%
-    dplyr::select(study_oid = OID,
-           version = OID.1,
-           metadata_version = Name,
-           form_oid = OID.2,
-           form_name = Name.1,
-           form_repeating = Repeating)
+  .attrs_node_and_ancestors(parsed_xml, "FormDef") %>%
+    dplyr::select(form_oid = OID.2,
+                  form_name = Name.1,
+                  form_repeating = Repeating)
 
 }
 

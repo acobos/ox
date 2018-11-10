@@ -40,55 +40,45 @@ ox_item_data <- function(parsed_xml) {
 
   # loop over nodes with a progress bar,
   # extract attributes for node an ancestors,
-  # bind_rows and renames
+  # and bind_rows
   res <- pbapply::pblapply(nodes,
                     FUN = function (x) data.frame(XML::xmlAncestors(x, XML::xmlAttrs),
                                                   stringsAsFactors = FALSE)) %>%
-    dplyr::bind_rows() %>%
-    dplyr::rename(study_oid = StudyOID,
-                  metadata_version_oid = MetaDataVersionOID,
-                  subject_key = SubjectKey,
-                  # subject_id = StudySubjectID,
-                  # subject_status = Status,
-                  event_oid = StudyEventOID,
-                  event_repeat_key = StudyEventRepeatKey,
-                  form_oid = FormOID,
-                  # form_version = Version,
-                  # form_status = Status.1,
-                  group_oid = ItemGroupOID,
-                  group_repeat_key = ItemGroupRepeatKey,
-                  trasaction_type = TransactionType,
-                  item_oid = ItemOID,
-                  value = Value) %>%
-    dplyr::mutate(group_repeat_key = as.numeric(group_repeat_key),
-                  event_repeat_key = as.numeric(event_repeat_key))
+    dplyr::bind_rows()
 
-  # droping unneded vars
+  # Dropping unneded vars
+  # NOT with dplyr::select, because they are NOT all  always present !
   res$FileOID <- NULL
   res$Description <- NULL
   res$CreationDateTime <- NULL
   res$FileType <- NULL
   res$ODMVersion <- NULL
   res$schemaLocation <- NULL
+  res$MetaDataVersionOID <- NULL
 
-  # renaming additional vars in odm1.3_ext and _full,
-  # (these are NOT present in odm1.3_clinical, so I CANNOT assume
-  # they will be always present)
-  if ("StudySubjectID" %in% names(res)) {
-    names(res)[which(names(res) == "StudySubjectID")] <- "subject_id"
+  # to numeric ----
+  if (any("StudyEventRepeatKey" %in% names(res))) {
+    res$StudyEventRepeatKey <- as.numeric(res$StudyEventRepeatKey)
   }
 
-  if ("Status" %in% names(res)) {
-    names(res)[which(names(res) == "Status")] <- "subject_status"
+  if (any("ItemGroupRepeatKey" %in% names(res))) {
+    res$ItemGroupRepeatKey <- as.numeric(res$ItemGroupRepeatKey)
   }
 
-  if ("Version" %in% names(res)) {
-    names(res)[which(names(res) == "Version")] <- "form_version"
+  if (any("StudySubjectID" %in% names(res))) {
+    # only if no NA's resulting from type cohercion
+    if (sum(is.na(as.numeric(res$StudySubjectID))) == 0) {
+      res$StudySubjectID <- as.numeric(res$StudySubjectID)
+    }
   }
 
-  if ("Status.1" %in% names(res)) {
-    names(res)[which(names(res) == "Status.1")] <- "form_status"
-  }
+  # change CamelCase by snake_case
+  names(res) <- snakecase::to_snake_case(names(res))
+
+  # simplify some varnames
+  names(res) <- gsub("study_event", "event", names(res), fixed=TRUE)
+  names(res) <- gsub("item_group", "group", names(res), fixed=TRUE)
+  names(res) <- gsub("study_subject", "subject", names(res), fixed=TRUE)
 
   message("Done")
 

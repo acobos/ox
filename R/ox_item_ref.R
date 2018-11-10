@@ -26,25 +26,17 @@
 #'
 ox_item_ref <- function(parsed_xml) {
 
-  dplyr::bind_rows(
-    lapply(
-      XML::xpathApply(parsed_xml,
-                      "//ns:ItemRef",
-                      namespaces = .ns_alias(parsed_xml, "ns"),
-                      fun = XML::xmlAncestors,
-                      XML::xmlAttrs),
-      data.frame,
-      stringsAsFactors=FALSE)) %>%
-    dplyr::select(study_oid = OID,
-                  version = OID.1,
-                  metadata_version = Name,
-                  group_oid = OID.2,
-                  group_name = Name.1,
-                  group_repeating = Repeating,
-                  sas_dataset_name = SASDatasetName,
+  if (! "XMLInternalDocument" %in% class(parsed_xml)) {
+    stop("parsed_xml should be an object of class XMLInternalDocument", call. = FALSE)
+  }
+
+  .attrs_node_and_ancestors(parsed_xml, "ItemRef") %>%
+    dplyr::select(group_oid = OID.2,
                   item_oid = ItemOID,
                   item_order_number = OrderNumber,
-                  item_mandatory = Mandatory)
+                  item_mandatory = Mandatory) %>%
+    dplyr::mutate(item_order_number = as.numeric(item_order_number)) %>%
+    dplyr::arrange(group_oid, item_order_number)
 
 }
 

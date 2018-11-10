@@ -29,19 +29,8 @@ ox_item_def <- function (parsed_xml) {
     stop("parsed_xml should be an object of class XMLInternalDocument", call. = FALSE)
   }
 
-  # return
-  dplyr::bind_rows(
-    lapply(XML::xpathApply(parsed_xml,
-                           "//ns:ItemDef",
-                           namespaces = .ns_alias(parsed_xml, "ns"),
-                           fun=XML::xmlAncestors,
-                           XML::xmlAttrs),
-           data.frame,
-           stringsAsFactors=FALSE))  %>%
-    dplyr::select(study_oid = OID,
-                  version = OID.1,
-                  metadata_version = Name,
-                  item_oid = OID.2,
+  .attrs_node_and_ancestors(parsed_xml, "ItemDef") %>%
+    dplyr::select(item_oid = OID.2,
                   item_name = Name.1,
                   item_data_type = DataType,
                   item_length = Length,

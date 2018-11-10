@@ -29,13 +29,17 @@ ox_measurement_units <- function (parsed_xml) {
     stop("parsed_xml should be an object of class XMLInternalDocument", call. = FALSE)
   }
 
-  dplyr::bind_rows(
-    lapply(
-      XML::xpathApply(parsed_xml,
-                      "//ns:MeasurementUnit",
-                      namespaces = .ns_alias(parsed_xml, "ns"),
-                      fun = XML::xmlAncestors,
-                      XML::xmlAttrs),
-      data.frame,
-      stringsAsFactors=FALSE))
+  .attrs_node_and_ancestors(parsed_xml, "MeasurementUnit") %>%
+    data.frame(stringsAsFactors = FALSE) -> res
+
+  if ("MeasurementUnitOID" %in% names(res)) {
+    names(res)[which(names(res) == "MeasurementUnitOID")] <- "unit_oid"
+  }
+
+  if ("MeasurementUnitName" %in% names(res)) {
+    names(res)[which(names(res) == "MeasurementUnitName")] <- "unit_name"
+  }
+
+  # return
+  res
 }

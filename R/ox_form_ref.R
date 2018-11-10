@@ -25,25 +25,15 @@
 #' head(form_ref)
 #'
 ox_form_ref <- function (parsed_xml) {
-  dplyr::bind_rows(
-    lapply(
-      XML::xpathApply(parsed_xml,
-                      "//ns:FormRef",
-                      namespaces = .ns_alias(parsed_xml, "ns"),
-                      fun = XML::xmlAncestors,
-                      XML::xmlAttrs),
-      data.frame, stringsAsFactors=FALSE)) %>%
-    dplyr::select(study_oid = OID,
-                  version = OID.1,
-                  metadata_version = Name,
-                  event_oid = OID.2,
-                  event_name = Name.1,
-                  event_repeating = Repeating,
-                  event_type = Type,
-                  form_oid = FormOID,
-                  form_mandatory = Mandatory,
-                  FormOID, Mandatory)
 
+  if (! "XMLInternalDocument" %in% class(parsed_xml)) {
+    stop("parsed_xml should be an object of class XMLInternalDocument", call. = FALSE)
+  }
+
+  .attrs_node_and_ancestors(parsed_xml, "FormRef") %>%
+    dplyr::select(event_oid = OID.2,
+                  form_oid = FormOID,
+                  form_mandatory = Mandatory)
 }
 
 
