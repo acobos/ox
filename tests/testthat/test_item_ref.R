@@ -24,13 +24,7 @@ res <- ox_item_ref(doc)
 test_that("returns dataframe with expected variables, at least 1 row", {
   expect_is(res, "data.frame")
   # vars
-  expect_true("study_oid" %in% names(res))
-  expect_true("version" %in% names(res))
-  expect_true("metadata_version" %in% names(res))
   expect_true("group_oid" %in% names(res))
-  expect_true("group_name" %in% names(res))
-  expect_true("group_repeating" %in% names(res))
-  expect_true("sas_dataset_name" %in% names(res))
   expect_true("item_oid" %in% names(res))
   expect_true("item_order_number" %in% names(res))
   expect_true("item_mandatory" %in% names(res))

@@ -25,14 +25,13 @@ test_that("returns dataframe with expected variables, at least 1 row", {
   expect_is(res, "data.frame")
   # vars
   expect_true("study_oid" %in% names(res))
-  expect_true("metadata_version_oid" %in% names(res))
   expect_true("subject_key" %in% names(res))
   expect_true("event_oid" %in% names(res))
   expect_true("form_oid" %in% names(res))
   expect_true("group_oid" %in% names(res))
   expect_true("group_repeat_key" %in% names(res))
   expect_is(res$group_repeat_key, "numeric")
-  expect_true("trasaction_type" %in% names(res))
+  expect_true("transaction_type" %in% names(res))
   expect_true("item_oid" %in% names(res))
   expect_true("value" %in% names(res))
 

@@ -42,22 +42,6 @@ test_that("ox_xtract_group() works", {
                             define_factors = TRUE), "data.frame")
 })
 
-test_that("Extra variables in item_data are kept", {
-  expect_true("subject_id" %in% names(d$data))
-  expect_true("subject_status" %in% names(d$data))
-  expect_true("form_version" %in% names(d$data))
-  expect_true("form_status" %in% names(d$data))
-})
-
-test_that("ox_audit_log() gives message", {
-  expect_true("subject_id" %in% names(d$data))
-  expect_true("subject_status" %in% names(d$data))
-  expect_true("form_version" %in% names(d$data))
-  expect_true("form_status" %in% names(d$data))
-  expect_message(ox_audit_log(doc))
-  expect_null(ox_audit_log(doc))
-})
-
 # clean
 rm(doc, file, d)
 
