@@ -32,13 +32,32 @@ ox_measurement_units <- function (parsed_xml) {
   .attrs_node_and_ancestors(parsed_xml, "MeasurementUnit") %>%
     data.frame(stringsAsFactors = FALSE) -> res
 
-  if ("MeasurementUnitOID" %in% names(res)) {
-    names(res)[which(names(res) == "MeasurementUnitOID")] <- "unit_oid"
+  # Dropping unneded vars
+  # NOT with dplyr::select, because they are NOT all  always present !
+  res$FileOID <- NULL
+  res$Description <- NULL
+  res$CreationDateTime <- NULL
+  res$FileType <- NULL
+  res$ODMVersion <- NULL
+  res$schemaLocation <- NULL
+  res$MetaDataVersionOID <- NULL
+
+
+  if ("OID" %in% names(res)) {
+    names(res)[which(names(res) == "OID")] <- "study_oid"
   }
 
-  if ("MeasurementUnitName" %in% names(res)) {
-    names(res)[which(names(res) == "MeasurementUnitName")] <- "unit_name"
+
+  if ("OID.1" %in% names(res)) {
+    names(res)[which(names(res) == "OID.1")] <- "unit_oid"
   }
+
+  if ("Name" %in% names(res)) {
+    names(res)[which(names(res) == "Name")] <- "unit_name"
+  }
+
+  # change CamelCase by snake_case
+  names(res) <- snakecase::to_snake_case(names(res))
 
   # return
   res
