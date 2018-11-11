@@ -29,29 +29,47 @@ ox_audit_log <- function (parsed_xml) {
     stop("parsed_xml should be an object of class XMLInternalDocument", call. = FALSE)
   }
 
-  message("Looking for audit_log data...")
+  nodes <- XML::xpathApply(parsed_xml,
+                           "//OpenClinica:AuditLog",
+                           namespaces = .ns_alias(parsed_xml, "OpenClinica"))
 
-  k <- XML::xpathApply(parsed_xml, "//OpenClinica:AuditLog",
-             namespaces = .ns_alias(parsed_xml, "OpenClinica"),
-             fun = XML::xmlAncestors,
-             XML::xmlAttrs)
+  if (!length(nodes) > 0) {
+    stop("Sorry, audit_log data was not found.", call. = FALSE)
+  }
 
-  if (length(k) > 0) {
-  message("Creating dataframe with audit log data...")
+  message("Extracting data from ItemData nodes...")
 
-  res <- pbapply::pblapply(k,
-                           data.frame,
-                           stringsAsFactors=FALSE) %>%
+  # loop over nodes with a progress bar,
+  # extract attributes for node an ancestors,
+  # and bind_rows
+  res <- pbapply::pblapply(nodes,
+                           FUN = function (x) data.frame(XML::xmlAncestors(x, XML::xmlAttrs),
+                                                         stringsAsFactors = FALSE)) %>%
     dplyr::bind_rows()
+
+
+  # Dropping unneded vars
+  # NOT with dplyr::select, just in case some of them is not present in future
+  # odm1.3 exports
+  res$FileOID <- NULL
+  res$Description <- NULL
+  res$CreationDateTime <- NULL
+  res$FileType <- NULL
+  res$ODMVersion <- NULL
+  res$schemaLocation <- NULL
+  res$MetaDataVersionOID <- NULL
 
   # change CamelCase by snake_case
   names(res) <- snakecase::to_snake_case(names(res))
 
-  message("Done.")
+  # simplify some varnames
+  names(res) <- gsub("study_event", "event", names(res), fixed=TRUE)
+  names(res) <- gsub("item_group", "group", names(res), fixed=TRUE)
+  names(res) <- gsub("study_subject", "subject", names(res), fixed=TRUE)
+
+  message("Done")
 
   #return
   res
-  } else message("Sorry, audit_log data was not found.")
-
 }
 
