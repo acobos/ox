@@ -30,12 +30,21 @@ ox_subject_data <- function (parsed_xml) {
   }
 
   # get subject_data
-  sd <- XML::xpathApply(parsed_xml, "//ns:ClinicalData/ns:SubjectData",
+  nodes <- XML::xpathApply(parsed_xml, "//ns:ClinicalData/ns:SubjectData",
                         namespaces = .ns_alias(parsed_xml, "ns"),
                         fun = XML::xmlAttrs)
+  # loop
+  res <- dplyr::bind_rows(
+    lapply(nodes, function (x) data.frame(as.list(x), stringsAsFactors=FALSE))
+  )
+
+  # change CamelCase by snake_case
+  names(res) <- snakecase::to_snake_case(names(res))
+
+  # simplify some varnames
+  names(res) <- gsub("study_subject", "subject", names(res), fixed=TRUE)
+
   # return
-  dplyr::bind_rows(
-    lapply(sd, function (x) data.frame(as.list(x), stringsAsFactors=FALSE))
-    )
+  res
 }
 
