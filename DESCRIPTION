@@ -1,6 +1,6 @@
 Package: ox
 Type: Package
-Title: Reads Openclinica XML export files
+Title: Reads OpenClinica XML export files
 Version: 0.0.0.9002
 Author: Albert Cobos
 Maintainer: The package maintainer <acobos@ub.edu>
