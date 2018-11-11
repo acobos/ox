@@ -83,13 +83,13 @@ ox_xtract_group <- function (ox_all_obj, group,
     dplyr::filter(group_oid == group) %>%
     dplyr::select(study_oid,
                   subject_key,
-                  contains("subject_id"),
+                  dplyr::contains("subject_id"),
                   event_oid,
-                  contains("event_repeat_key"),    # because NOT always present!
+                  dplyr::contains("event_repeat_key"),    # because NOT always present!
                   form_oid,
                   group_oid,
                   item_oid,
-                  contains("group_repeat_key"),    # just in case
+                  dplyr::contains("group_repeat_key"),    # just in case
                   value) %>%
     tidyr::spread(item_oid , value) -> k
 
