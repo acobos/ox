@@ -38,7 +38,7 @@ ox_audit_log <- function (parsed_xml) {
     stop("Sorry, audit_log data was not found.", call. = FALSE)
   }
 
-  message("Extracting data from ItemData nodes...")
+  message("Extracting data from AuditLogs nodes...")
 
   # loop over nodes with a progress bar,
   # extract attributes for node an ancestors,
