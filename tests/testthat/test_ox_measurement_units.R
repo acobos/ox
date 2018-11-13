@@ -1,4 +1,4 @@
-context("ox_measurement_units()")
+context("ox_measurement_units")
 
 # getting the file address
 file <- system.file("extdata", "odm1.3_full_example_Optimal.xml",

@@ -1,4 +1,4 @@
-context("ox_all()")
+context("ox_all")
 
 # getting the file address
 file <- system.file("extdata", "odm1.3_full_example_Optimal.xml",
