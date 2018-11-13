@@ -38,6 +38,15 @@ ox_subject_data <- function (parsed_xml) {
     lapply(nodes, function (x) data.frame(as.list(x), stringsAsFactors=FALSE))
   )
 
+  # to numeric ----
+  if (any("StudySubjectID" %in% names(res))) {
+    # only if no NA's resulting from type cohercion
+    if (sum(is.na(as.numeric(res$StudySubjectID))) == 0) {
+      res$StudySubjectID <- as.numeric(res$StudySubjectID)
+    }
+  }
+
+
   # change CamelCase by snake_case
   names(res) <- snakecase::to_snake_case(names(res))
 
