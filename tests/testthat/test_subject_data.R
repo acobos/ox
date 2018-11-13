@@ -24,8 +24,8 @@ res <- ox_subject_data(doc)
 test_that("returns dataframe, at least 1 row", {
   expect_is(res, "data.frame")
   # vars
-  expect_true("SubjectKey" %in% names(res) |
-                "StudySubjectID" %in% names(res))
+  expect_true("subject_key" %in% names(res) |
+                "subject_id" %in% names(res))
   # rows
   expect_true(nrow(res) >= 1)
 })
