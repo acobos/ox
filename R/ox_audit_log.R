@@ -23,6 +23,7 @@
 #' # Audit log in a dataframe
 #' audit_log <- ox_audit_log(doc)
 #' head(audit_log)
+#'
 ox_audit_log <- function (parsed_xml) {
 
   if (! "XMLInternalDocument" %in% class(parsed_xml)) {
