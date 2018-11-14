@@ -1,9 +1,9 @@
-#' Info on \code{ox} objects
+#' Info on \code{ox_all} objects
 #'
-#' Provides asuperficial view of an \code{ox} object, including minimal
+#' Provides asuperficial view of an \code{ox_all} object, including minimal
 #' information on datapoints, subjects, items, (item) groups, forms and events.
 #'
-#' @param ox_obj An object of class \code{ox}, as returned by \code{ox_all()}.
+#' @param ox_obj An object of class \code{ox_all}, as returned by \code{ox_all()}.
 #'
 #' @return A list with the following components:
 #'

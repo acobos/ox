@@ -2,12 +2,12 @@
 % Please edit documentation in R/ox_info.R
 \name{ox_info}
 \alias{ox_info}
-\title{Info on \code{ox} objects}
+\title{Info on \code{ox_all} objects}
 \usage{
 ox_info(ox_obj)
 }
 \arguments{
-\item{ox_obj}{An object of class \code{ox}, as returned by \code{ox_all()}.}
+\item{ox_obj}{An object of class \code{ox_all}, as returned by \code{ox_all()}.}
 }
 \value{
 A list with the following components:
@@ -24,7 +24,7 @@ groups, and items, in  \code{ox_obj$data}.
 }
 }
 \description{
-Provides asuperficial view of an \code{ox} object, including minimal
+Provides asuperficial view of an \code{ox_all} object, including minimal
 information on datapoints, subjects, items, (item) groups, forms and events.
 }
 \examples{
