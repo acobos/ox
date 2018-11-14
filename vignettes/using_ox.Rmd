@@ -26,7 +26,7 @@ The `ox` package has been developped and tested with the three availabe ODM 1.3 
 
 To use the `ox` package, you will need to dowload on of these file formats (.zip file), and unzip the downloaded file.
 
-In the following, we assume some familiarity with [OpenClinica OIDs](https://docs.openclinica.com/3.1/rules/oid-overview). In an attempt to follow [the tidyverse style guide](https://style.tidyverse.org/syntax.html), we named objects using lower case letters,  and underscores to separate words. OpenClinica uses CamelCase style instead. So, StudyOID in OpenClinica becomes `study_oid` in `ox`, and so on. Less obvious equivalences between OpenClinica OIDs (and other terms used in ODM XML 1.3 export files) and `ox` object names are:
+In the following, we assume some familiarity with [OpenClinica OIDs](https://docs.openclinica.com/3.1/rules/oid-overview). In an attempt to follow [the tidyverse style guide](https://style.tidyverse.org/syntax.html), we named objects using snake_case (lower case letters,  and underscores to separate words). OpenClinica uses CamelCase style instead. So, StudyOID in OpenClinica becomes `study_oid` in `ox`, and so on. Less obvious equivalences between OpenClinica OIDs (and other terms used in ODM XML 1.3 export files) and `ox` object names are:
 
 ```{r, echo = FALSE, message=FALSE}
 library(dplyr)
