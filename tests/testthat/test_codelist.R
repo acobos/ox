@@ -5,13 +5,7 @@ file <- system.file("extdata", "odm1.3_full_example_Optimal.xml",
                     package = "ox",
                     mustWork = TRUE)
 # Parsing the xml file
-library(XML)
-doc <- xmlParse(file)
-
-library(dplyr)
-library(ox)
-
-library(testthat)
+doc <- XML::xmlParse(file)
 
 # function ox_codelist ----
 

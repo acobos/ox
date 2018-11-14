@@ -1,4 +1,4 @@
-context("odm1.3_clinical_ext")
+context("odm1.3_clinical")
 
 # getting the file address
 file <- system.file("extdata", "odm1.3_clinical_example_Optimal.xml",
@@ -6,14 +6,11 @@ file <- system.file("extdata", "odm1.3_clinical_example_Optimal.xml",
                     mustWork = TRUE)
 
 # Parsing the xml file
-library(XML)
-doc <- xmlParse(file)
+doc <- XML::xmlParse(file)
 
-library(ox)
+
 # ox object
 d <- ox_all(doc)
-
-library(testthat)
 
 test_that("ox object has all data and metadata dataframes", {
   expect_is(d$data, "data.frame")

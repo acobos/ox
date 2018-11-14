@@ -6,16 +6,10 @@ file <- system.file("extdata", "odm1.3_clinical_ext_example_Optimal.xml",
                     mustWork = TRUE)
 
 # Parsing the xml file
-library(XML)
-doc <- xmlParse(file)
-
-library(dplyr)
-library(ox)
+doc <- XML::xmlParse(file)
 
 # ox object
 d <- ox_all(doc)
-
-library(testthat)
 
 test_that("ox object has all data and metadata dataframes", {
   expect_is(d$data, "data.frame")

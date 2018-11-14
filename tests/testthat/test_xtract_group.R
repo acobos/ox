@@ -5,16 +5,10 @@ file <- system.file("extdata", "odm1.3_full_example_Optimal.xml",
                     package = "ox",
                     mustWork = TRUE)
 # Parsing the xml file
-library(XML)
-doc <- xmlParse(file)
-
-library(dplyr)
-library(ox)
+doc <- XML::xmlParse(file)
 
 # ox object
 d <- ox_all(doc)
-
-library(testthat)
 
 # correct call
 res <- ox_xtract_group(d, "IG_DEMO_DEMOGRAPHICDATA")
@@ -50,5 +44,5 @@ test_that("returns dataframe with expected variables, at least 1 row", {
 })
 
 # clean
-rm(doc, file, res)
+rm(doc, file, res, d)
 
