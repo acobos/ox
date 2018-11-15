@@ -17,7 +17,7 @@ res <- ox_xtract_group(d, "IG_DEMO_DEMOGRAPHICDATA")
 test_that("gives error when arg is not of expected class", {
   expect_error(ox_xtract_group(doc, "IG_ACUTE_UNGROUPED"))
   expect_error(ox_xtract_group(d))
-  expect_error(ox_xtract_group(d, doc))
+  expect_error(ox_xtract_group(d, 1))
   expect_error(ox_xtract_group(d, "k"))
   expect_error(ox_xtract_group(d, TRUE, "k"))
 })
