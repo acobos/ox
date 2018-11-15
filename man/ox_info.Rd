@@ -4,10 +4,14 @@
 \alias{ox_info}
 \title{Info on \code{ox_all} objects}
 \usage{
-ox_info(ox_obj)
+ox_info(ox_obj, assessments = FALSE)
 }
 \arguments{
-\item{ox_obj}{An object of class \code{ox_all}, as returned by \code{ox_all()}.}
+\item{ox_obj}{An object of class \code{ox_all}, as returned by
+\code{ox_all()}.}
+
+\item{assessments}{\code{logical} indicating if assessments (groups by
+events) should be included in output. Default is \code{FALSE}.}
 }
 \value{
 A list with the following components:
@@ -18,9 +22,9 @@ groups, and items, in  \code{ox_obj$data}.
   \item \code{events}: unique values of \code{event_oid} in \code{ox_obj$data}.
   \item \code{forms}: unique values of \code{form_oid} in \code{ox_obj$data}.
   \item \code{groups}: unique values of \code{group_oid} in \code{ox_obj$data}.
-  \item \code{assessments}: table of \code{event_oid} by \code{group_oid}, in
-  \code{ox_obj$data}, Shows the number of datapoints (rows in
-\code{ox_obj$data}) per event-group combination.
+  \item \code{assessments}: when \code{assessments = TRUE}. A dataframe
+  showing the number of datapoints (rows in \code{ox_obj$data}) per event_oid
+  and group_oid.
 }
 }
 \description{
@@ -38,8 +42,13 @@ my_file <- system.file("extdata",
 library(XML)
 doc <- xmlParse(my_file)
 
-# Creating ox object and getting summary info
+# Creating ox object
 my_ox_obj <- ox_all(doc)
+
+# Getting summary info (default)
 ox_info(my_ox_obj)
+
+# Same, including assessments table
+ox_info(my_ox_obj, assessments = TRUE)
 
 }

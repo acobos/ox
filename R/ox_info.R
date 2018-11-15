@@ -3,10 +3,11 @@
 #' Provides asuperficial view of an \code{ox_all} object, including minimal
 #' information on datapoints, subjects, items, (item) groups, forms and events.
 #'
-#' @param ox_obj An object of class \code{ox_all}, as returned by \code{ox_all()}.
+#' @param ox_obj An object of class \code{ox_all}, as returned by
+#' \code{ox_all()}.
 #'
-#' @param assessments \code{logical) indicating if an assessments (groups by events) be included in
-#' output?
+#' @param assessments \code{logical} indicating if assessments (groups by
+#' events) should be included in output. Default is \code{FALSE}.
 #'
 #' @return A list with the following components:
 #'
@@ -16,9 +17,9 @@
 #'   \item \code{events}: unique values of \code{event_oid} in \code{ox_obj$data}.
 #'   \item \code{forms}: unique values of \code{form_oid} in \code{ox_obj$data}.
 #'   \item \code{groups}: unique values of \code{group_oid} in \code{ox_obj$data}.
-#'   \item \code{assessments}: table of \code{event_oid} by \code{group_oid}, in
-#'   \code{ox_obj$data}, Shows the number of datapoints (rows in
-#' \code{ox_obj$data}) per event-group combination.
+#'   \item \code{assessments}: when \code{assessments = TRUE}. A dataframe
+#'   showing the number of datapoints (rows in \code{ox_obj$data}) per event_oid
+#'   and group_oid.
 #' }
 #'
 #' @export
@@ -34,9 +35,14 @@
 #' library(XML)
 #' doc <- xmlParse(my_file)
 #'
-#' # Creating ox object and getting summary info
+#' # Creating ox object
 #' my_ox_obj <- ox_all(doc)
+#'
+#' # Getting summary info (default)
 #' ox_info(my_ox_obj)
+#'
+#' # Same, including assessments table
+#' ox_info(my_ox_obj, assessments = TRUE)
 #'
 ox_info <- function (ox_obj, assessments = FALSE) {
 
@@ -52,11 +58,10 @@ ox_info <- function (ox_obj, assessments = FALSE) {
               groups = unique(ox_obj$data$group_oid))
 
   if (assessments) {
-    ox_obj$data %>%
+    ueg<- ox_obj$data %>%
       dplyr::select(event_oid, group_oid) %>%
       dplyr::mutate(event_oid = factor(event_oid,
-                                levels = ox_obj$metadata$event_ref$event_oid)) %>%
-      unique() -> ueg
+                                levels = ox_obj$metadata$event_ref$event_oid))
 
     with(ueg, table(event_oid, group_oid)) %>%
       as.data.frame() %>%
