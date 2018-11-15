@@ -5,6 +5,9 @@
 #'
 #' @param ox_obj An object of class \code{ox_all}, as returned by \code{ox_all()}.
 #'
+#' @param assessments \code{logical) indicating if an assessments (groups by events) be included in
+#' output?
+#'
 #' @return A list with the following components:
 #'
 #' \itemize{
@@ -35,22 +38,34 @@
 #' my_ox_obj <- ox_all(doc)
 #' ox_info(my_ox_obj)
 #'
-ox_info <- function (ox_obj) {
+ox_info <- function (ox_obj, assessments = FALSE) {
 
-  list(numbers = c(datapoints = nrow(ox_obj$data),
-                   subjects = length(unique(ox_obj$data$subject_key)),
-                   sites = length(unique(ox_obj$data$study_oid)),
-                   events = length(unique(ox_obj$data$event_oid)),
-                   forms = length(unique(ox_obj$data$form_oid)),
-                   groups = length(unique(ox_obj$data$group_oid)),
-                   items = length(unique(ox_obj$data$item_oid))),
+  res <- list(numbers = c(datapoints = nrow(ox_obj$data),
+                          subjects = length(unique(ox_obj$data$subject_key)),
+                          sites = length(unique(ox_obj$data$study_oid)),
+                          events = length(unique(ox_obj$data$event_oid)),
+                          forms = length(unique(ox_obj$data$form_oid)),
+                          groups = length(unique(ox_obj$data$group_oid)),
+                          items = length(unique(ox_obj$data$item_oid))),
+              events = unique(ox_obj$data$event_oid),
+              forms = unique(ox_obj$data$form_oid),
+              groups = unique(ox_obj$data$group_oid))
 
-       events = unique(ox_obj$data$event_oid),
-       forms = unique(ox_obj$data$form_oid),
-       groups = unique(ox_obj$data$group_oid)
-       # for future versions, with optional args
-       # assessments = with(ox_obj$data, table(group_oid, event_oid))
-  )
+  if (assessments) {
+    ox_obj$data %>%
+      dplyr::select(event_oid, group_oid) %>%
+      dplyr::mutate(event_oid = factor(event_oid,
+                                levels = ox_obj$metadata$event_ref$event_oid)) %>%
+      unique() -> ueg
+
+    with(ueg, table(event_oid, group_oid)) %>%
+      as.data.frame() %>%
+      tidyr::spread(group_oid, Freq) -> res$assessments
+  }
+
+  # return
+  res
+
 }
 
 
