@@ -44,7 +44,7 @@ First, load the `XML` package and parse the xml file with function `xmlParse()` 
 ```{r}
 # your (unziped) xml export file
 xml_file <- system.file("extdata",
-                        "odm1.3_full_example.xml.xml",
+                        "odm1.3_full_example.xml",
                         package = "ox",
                         mustWork = TRUE)
 
