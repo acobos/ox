@@ -12,7 +12,7 @@
 #' @examples
 #' # The example odm1.3_full xml file address
 #' my_file <- system.file("extdata",
-#'                        "odm1.3_full_example_Optimal.xml",
+#'                        "odm1.3_full_example.xml",
 #'                        package = "ox",
 #'                        mustWork = TRUE)
 #'

@@ -31,7 +31,7 @@ obtained with \code{\link{ox_info}}.
 \examples{
 # The example odm1.3 xml file address
 my_file <- system.file("extdata",
-                       "odm1.3_clinical_ext_example.xml",
+                       "odm1.3_full_example.xml",
                        package = "ox",
                        mustWork = TRUE)
 

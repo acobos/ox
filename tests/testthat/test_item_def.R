@@ -1,7 +1,7 @@
 context("Item definitions")
 
 # getting the file address
-file <- system.file("extdata", "odm1.3_full_example_Optimal.xml",
+file <- system.file("extdata", "odm1.3_full_example.xml",
                     package = "ox",
                     mustWork = TRUE)
 # Parsing the xml file
