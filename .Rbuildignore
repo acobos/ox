@@ -1,5 +1,2 @@
-^Meta$
-^doc$
 ^.*\.Rproj$
 ^\.Rproj\.user$
-^aa_tests\.R$
