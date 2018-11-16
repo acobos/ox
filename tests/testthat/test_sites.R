@@ -21,7 +21,7 @@ test_that("returns dataframe with expected variables, at least 1 row", {
   expect_true("study_oid" %in% names(res))
   expect_true("site" %in% names(res))
   # rows
-  expect_true(nrow(res) >= 1)
+  expect_true(nrow(res) >= 0)
 })
 
 test_that("dataframe has no factors", {
