@@ -10,7 +10,7 @@
 #'
 #' \itemize{
 #'   \item \code{data}: a dataframe containig all clinical data, as returned by
-#'   \code{ox_item_data()}.
+#'   \code{ox_data()}.
 #'   \item \code{metadata}: a list, as returned by \code{ox_metadata()}. See
 #'   \code{\link{ox_metadata}} for more details.
 #' }
@@ -56,7 +56,7 @@ ox_all <- function (parsed_xml) {
     stop("parsed_xml should be an object of class XMLInternalDocument", call. = FALSE)
   }
 
-  res <- list(data = ox_item_data(parsed_xml),
+  res <- list(data = ox_data(parsed_xml),
                  metadata = ox_metadata(parsed_xml))
 
   # assign class ox

@@ -9,11 +9,11 @@ doc <- XML::xmlParse(file)
 
 # incorrect call
 test_that("gives error when arg is not of expected class", {
-  expect_error(ox_item_data(file))
+  expect_error(ox_data(file))
 })
 
 # correct call
-res <- ox_item_data(doc)
+res <- ox_data(doc)
 
 test_that("returns dataframe with expected variables, at least 1 row", {
   expect_is(res, "data.frame")

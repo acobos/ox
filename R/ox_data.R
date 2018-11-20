@@ -22,9 +22,9 @@
 #' doc <- xmlParse(my_file)
 #'
 #' # Item data in a dataframe
-#' d <- ox_item_data(doc)
+#' d <- ox_data(doc)
 #' head(d)
-ox_item_data <- function(parsed_xml) {
+ox_data <- function(parsed_xml) {
 
   if (! "XMLInternalDocument" %in% class(parsed_xml)) {
     stop("parsed_xml should be an object of class XMLInternalDocument", call. = FALSE)

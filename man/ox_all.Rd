@@ -15,7 +15,7 @@ An object of class \code{ox_all}, which is a list of two elements:
 
 \itemize{
   \item \code{data}: a dataframe containig all clinical data, as returned by
-  \code{ox_item_data()}.
+  \code{ox_data()}.
   \item \code{metadata}: a list, as returned by \code{ox_metadata()}. See
   \code{\link{ox_metadata}} for more details.
 }

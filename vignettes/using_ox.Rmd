@@ -191,7 +191,7 @@ The following functions are provided in the `ox` package:
     - ox_info
     
 - To get data from a parsed xml file:
-    - ox_item_data 
+    - ox_data 
     - ox_audit_log
 
 - To get metadata from a parsed xml file:
