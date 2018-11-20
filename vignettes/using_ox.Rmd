@@ -210,6 +210,6 @@ The following functions are provided in the `ox` package:
     - ox_codelist 
     - ox_codelist_item 
     - ox_codelist_ref 
-    - ox_measurement_units 
+    - ox_units 
     - ox_sites 
     - ox_subjects 

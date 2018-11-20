@@ -21,9 +21,9 @@
 #' doc <- xmlParse(my_file)
 #'
 #' # Measurement units in a dataframe
-#' measurement_units <- ox_measurement_units(doc)
+#' measurement_units <- ox_units(doc)
 #' head(measurement_units)
-ox_measurement_units <- function (parsed_xml) {
+ox_units <- function (parsed_xml) {
 
   if (! "XMLInternalDocument" %in% class(parsed_xml)) {
     stop("parsed_xml should be an object of class XMLInternalDocument", call. = FALSE)

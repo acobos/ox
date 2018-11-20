@@ -74,7 +74,7 @@ ox_metadata <- function (parsed_xml) {
               codelist = ox_codelist(parsed_xml),
               codelist_item = ox_codelist_item(parsed_xml),
               codelist_ref = ox_codelist_ref(parsed_xml),
-              units = ox_measurement_units(parsed_xml),
+              units = ox_units(parsed_xml),
               sites = ox_sites(parsed_xml),
               subjects = ox_subjects(parsed_xml))
 

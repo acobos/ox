@@ -1,4 +1,4 @@
-context("ox_measurement_units")
+context("ox_units")
 
 # getting the file address
 file <- system.file("extdata", "odm1.3_full_example.xml",
@@ -9,11 +9,11 @@ doc <- XML::xmlParse(file)
 
 # incorrect call
 test_that("gives error when arg is not of expected class", {
-  expect_error(ox_measurement_units(file))
+  expect_error(ox_units(file))
 })
 
 # correct call
-res <- ox_measurement_units(doc)
+res <- ox_units(doc)
 
 test_that("returns dataframe", {
   expect_is(res, "data.frame")
