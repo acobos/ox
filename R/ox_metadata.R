@@ -76,7 +76,7 @@ ox_metadata <- function (parsed_xml) {
               codelist_ref = ox_codelist_ref(parsed_xml),
               units = ox_measurement_units(parsed_xml),
               sites = ox_sites(parsed_xml),
-              subjects = ox_subject_data(parsed_xml))
+              subjects = ox_subjects(parsed_xml))
 
   message("Done")
 
