@@ -13,6 +13,7 @@ Installation
 You can install the development version of `ox` from [GitHub](https://github.com/acobos/ox) with:
 
 ``` r
+library(devtools)
 install_github("acobos/ox")
 ```
 
