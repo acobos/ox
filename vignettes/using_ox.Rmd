@@ -53,7 +53,7 @@ library(XML)                    # load the XML package
 doc <- xmlParse(xml_file)       # parse the xml file
 ```
 
-Then, load the `ox` package, and use function `ox_all()` (passing it the parsed xml file as argument) to create an `ox_all` object. This is a *VERY* slow process, even for small studies (like our example file). A progress bar, and some messages, will be displayed in the console (not seen in the example below). 
+Then, load the `ox` package, and use function `ox_all()` (passing it the parsed xml file as argument) to create an `ox_all` object. This is a *VERY* slow process, even for small studies. A progress bar, and some messages, will be displayed in the console (not shown in the example below). 
 
 ```{r message=FALSE}
 library(ox)                     # load the ox package
