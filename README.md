@@ -21,7 +21,9 @@ Example
 
 This is a basic example which shows you how to solve a common problem: create a tidy dataframe for a group of related items (an **ItemGroup** in OpenCinica terminology), e.g., for demographic data.
 
-First, load packages `XML`and `ox`. Then parse the xml file using `xmlParse` from package `XML`, and use function `ox_all()` to create an `ox_all` object. With `ox_info()` you will see some basic information of this object.
+First, load packages `XML`and `ox`. Then parse the xml file using `xmlParse` from package `XML`, and use function `ox_all()` to create an `ox_all` object. This involves reading data and metadata, and is a slow process. It may take a lot of time with any real study!
+
+With `ox_info()` you will see some basic information of this object.
 
 ``` r
 
@@ -38,7 +40,7 @@ xml_file <- system.file("extdata",
 # parse the xml file
 doc <- xmlParse(xml_file) 
 
-# create an (ox_all) object containing data and metadata
+# create an (ox_all) object 
 d <- ox_all(doc)
 > Getting ItemData nodes...
 > Extracting data from ItemData nodes...
