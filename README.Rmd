@@ -1,0 +1,81 @@
+---
+output: github_document
+---
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = ">",
+  fig.path = "man/figures/README-",
+  out.width = "100%"
+)
+```
+# ox
+
+The goal of the `ox` package is to read OpenClinica odm 1.3 xml export files, 
+and create dataframes for data and metadata (or an `ox_all` object, a list 
+containing both) from parsed xml files. Also, tidy dataframes can be created for any ItemGroup, with optional definition of factors from codelists.
+
+`ox` is currently under development.
+
+## Installation
+
+You can install the development version of `ox` from [GitHub](https://github.com/acobos/ox) with:
+
+``` r
+install_github("acobos/ox")
+```
+
+## Example
+
+This is a basic example which shows you how to solve a common problem: create a 
+tidy dataframe for a group of related items (an **ItemGroup** in OpenCinica 
+terminology), e.g., for demographic data.
+
+First, load packages `XML`and `ox`. Then parse the xml file using `xmlParse` 
+from package `XML`, and use function `ox_all()` to create an `ox_all` object. 
+With `ox_info()` you will see some basic information of this object.
+
+```{r example}
+
+# load packages 
+library(XML)
+library(ox)
+
+# the xml file address/name
+xml_file <- system.file("extdata",
+                        "odm1.3_full_example.xml",
+                        package = "ox",
+                        mustWork = TRUE)
+
+# parse the xml file
+doc <- xmlParse(xml_file) 
+
+# create an (ox_all) object containing data and metadata
+d <- ox_all(doc)
+
+# get basic info
+ox_info(d)
+
+```
+
+In the previous output, `$numbers` documents that this example data includes 240 datapoints on two subjects, from two sites, etc.  
+
+One of the ItemGroups in this study (`$groups` in the output above) is 
+`IG_DEMO_DEMOGRAPHICDATA`. Let's get a tidy dataframe for this group, and see 
+the result. 
+
+```{r example_cont}
+# get tidy dataframe for demographic data
+demo <- ox_xtract_group(d, group = "IG_DEMO_DEMOGRAPHICDATA",
+                        use_item_names = TRUE,
+                        define_factors = TRUE)
+
+demo
+```
+
+In the resulting dataframe, columns `study_oid` to `group_repeat_key` are keys for study site, subject, event, etc.; `demo_age` and `demo_menstrual` are the relevant variables, i.e., the two items included in the `IG_DEMO_DEMOGRAPHICDATA` ItemGroup. 
+
+See the vignette for more details. 
